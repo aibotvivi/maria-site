@@ -348,30 +348,10 @@
 (function () {
   "use strict";
 
-  /* ------------------------------------------------------------------
-     SIGNUP ENDPOINT — set this and the form starts collecting emails.
-     Paste the POST URL from MailerLite / Formspree / Tally / Buttondown.
-
-     Left empty ON PURPOSE: with no endpoint there is nowhere for an
-     address to go, so the form must NOT show "You're on the list" —
-     that would be a lie to a real visitor. Until it's set, the form
-     sends people to Telegram, which is the path that genuinely works
-     today (Maria replies, logs the request, and pings Vivien).
-  ------------------------------------------------------------------ */
-  var SIGNUP_ENDPOINT = "";
-  var TELEGRAM_URL    = "https://t.me/Lucyaibotbot";
-
-  function panel(name) { return document.querySelector('[data-panel="' + name + '"]'); }
-
-  function showSent(which, email) {
-    var form = panel("form-" + which), sent = panel("sent-" + which);
-    if (!form || !sent) return;
-    document.querySelectorAll("[data-email]").forEach(function (el) { el.textContent = email; });
-    form.hidden = true;
-    sent.hidden = false;
-    sent.setAttribute("tabindex", "-1");
-    sent.focus({ preventScroll: true });
-  }
+  /* Both forms here are step 1: they collect the address and hand off to
+     request-invite.html, which asks where they want to fly and does the
+     actual submitting. The endpoint config lives on that page. */
+  var TELEGRAM_URL = "https://t.me/Lucyaibotbot";
 
   document.querySelectorAll("form[data-signup]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
@@ -380,29 +360,12 @@
       var email = String(new FormData(form).get("email") || "").trim();
       if (!email) return;
 
-      if (!SIGNUP_ENDPOINT) {
-        // No list yet — hand them the flow that actually works instead of
-        // pretending we saved the address.
-        window.open(TELEGRAM_URL, "_blank", "noopener");
-        var btn = form.querySelector('button[type="submit"]');
-        if (btn) btn.textContent = "Opening Telegram…";
-        return;
-      }
-
-      var btn2 = form.querySelector('button[type="submit"]');
-      if (btn2) { btn2.disabled = true; btn2.textContent = "Sending…"; }
-
-      fetch(SIGNUP_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({ email: email })
-      }).then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
-        showSent(which, email);
-      }).catch(function () {
-        if (btn2) { btn2.disabled = false; btn2.textContent = "Request an invite"; }
-        window.open(TELEGRAM_URL, "_blank", "noopener");
-      });
+      // Step 1 of 2: carry the address to the invite page, which asks the
+      // question that actually helps — where they want to fly — and owns
+      // the real submit. Nothing is stored here.
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.textContent = "One moment…";
+      window.location.href = "request-invite.html?email=" + encodeURIComponent(email);
     });
   });
 })();

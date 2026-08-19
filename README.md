@@ -1,7 +1,13 @@
 # Maria — landing page
 
-Static single-page site for the Maria airfare assistant. No build step, no
-dependencies: `index.html` is the whole site.
+Static site for the Maria airfare assistant. No build step, no dependencies.
+
+    index.html           landing page  (step 1: takes an email, hands off)
+    request-invite.html  invite form   (step 2: asks where they want to fly)
+
+Signup is deliberately two steps, as in the comp: the landing page only
+carries the address across in the query string, and `request-invite.html`
+owns the real submit. Nothing is stored until that second page.
 
 Built from the Claude Design comp (`design-source/claude-design-export.html`),
 converted from that tool's `<sc-if>` / `DCLogic` template runtime into plain
@@ -13,7 +19,8 @@ HTML + vanilla JS.
 
 ## Before it goes live — the one required edit
 
-`index.html` has a config constant near the bottom:
+`request-invite.html` has a config constant near the bottom (this is the
+only place a signup endpoint is needed — the landing page never submits):
 
     var SIGNUP_ENDPOINT = "";
 
@@ -23,7 +30,13 @@ be a lie to a real visitor. Until it's set, submitting opens Telegram, which
 is the flow that genuinely works today.
 
 Paste in the POST URL from MailerLite / Formspree / Tally / Buttondown and the
-success panel starts working automatically.
+success panel starts working automatically. It posts JSON:
+
+    { "email": "...", "dream": "Tokyo in April", "consent": true }
+
+`dream` is the "where are you dreaming of flying next?" answer — the field
+worth having, since it segments the list from day one and tells you who to
+admit next.
 
 Also replace before publishing:
 - `REPLACE-WITH-YOUR-DOMAIN` (canonical + og:image URLs, 3 places)
