@@ -44,26 +44,58 @@ question about your data, or to exercise any right below, email
 <a href="mailto:CONTACT_EMAIL">CONTACT_EMAIL</a>.</p>
 
 <h2>What is collected, and why</h2>
+<h2 style="font-size:19px;">On this website</h2>
 <ul>
   <li><strong>Your email address</strong> — to send your invite link, and, only if
-      you tick the box, occasional updates. Lawful basis: your consent.</li>
+      you tick the box, occasional updates. Lawful basis: your consent. It is
+      stored with our email provider when you submit the invite form, and
+      nowhere else.</li>
   <li><strong>Where you're dreaming of flying</strong> (optional) — to decide who to
       admit next and to make the fares you're sent relevant.</li>
-  <li><strong>Your Telegram chat ID and messages to Maria</strong>, once you join —
-      needed to reply to you and to remember your conversation so follow-up
-      questions make sense.</li>
+  <li><strong>Anonymous visit counts</strong> — we use cookieless analytics
+      (page views, referrer, country, device type). No cookies are set, no
+      advertising identifiers are used, and nothing links a visit to you as a
+      person. Lawful basis: legitimate interest in knowing whether the site
+      works.</li>
+</ul>
+<p>This site sets no cookies of its own and runs no advertising trackers.</p>
+
+<h2 style="font-size:19px;">In the Telegram bot</h2>
+<ul>
+  <li><strong>Your Telegram chat ID and messages to Maria</strong> — needed to reply
+      to you and to remember your conversation so follow-up questions make
+      sense. Conversation memory is capped: older messages roll off
+      automatically (roughly the last 60 exchanges).</li>
   <li><strong>The flight routes you ask Maria to watch</strong>, and the prices found
       for them.</li>
+  <li><strong>Basic usage counts</strong> — when you joined, how many alerts and
+      messages you've exchanged, and when your first useful alert arrived.
+      Used only to understand whether Maria is worth it and to run fair
+      per-user limits; never sold or shared.</li>
 </ul>
-<p>No payment details are collected. No advertising trackers or analytics
-scripts run on this site.</p>
+
+<h2 style="font-size:19px;">When you tap a booking link</h2>
+<p>Some booking buttons (currently Aviasales) are affiliate links. Tapping one
+takes you to the seller's site, which sets its own cookie containing our
+partner number so that a booking can be credited to Ask Maria — the industry-
+standard attribution window is around 30 days. The link also carries a tag
+saying which <em>kind</em> of alert you tapped (for example "price drop" or
+"trip combo") so we can see which alerts are useful. <strong>The tag never
+contains anything that identifies you</strong> — not your chat ID, name, or
+routes. Google Flights and Skyscanner links carry no tracking from us at
+all.</p>
+<p>No payment details are ever collected by Ask Maria.</p>
 
 <h2>Who it is shared with</h2>
 <p>Your data is not sold or shared for marketing. Delivering the service
 necessarily involves: <strong>Telegram</strong> (which carries the messages),
-and <strong>Anthropic</strong> (whose Claude models generate Maria's replies —
-your messages are processed to produce an answer). Flight prices come from
-public sources such as Google Flights; your identity is not sent to them.</p>
+<strong>Anthropic</strong> (whose Claude models generate Maria's replies —
+your messages are processed to produce an answer), our <strong>email
+provider</strong> (which holds invite-form addresses), and our
+<strong>cookieless analytics provider</strong> (which sees anonymous visit
+counts only). Flight prices come from public sources such as Google Flights;
+your identity is not sent to them. Affiliate attribution is handled by the
+seller you choose to visit, as described above.</p>
 
 <h2>How long it is kept</h2>
 <p>Conversation history is capped and older messages roll off automatically.
@@ -78,4 +110,13 @@ response, you can complain to the Information Commissioner's Office at
 <a href="https://ico.org.uk">ico.org.uk</a>.</p>
 <p style="font-size:13px;color:#6b5c66;margin-top:34px;">&copy; 2026 Ask Maria &middot; Operated by OPERATOR_NAME, London, United Kingdom &middot; <a href="mailto:CONTACT_EMAIL">CONTACT_EMAIL</a></p>
 <a class="back" href="index.html">← Back to Maria</a>
-</div></body></html>
+</div>
+<!-- ── Analytics: GoatCounter (cookieless — no banner needed) ─────────────
+     ACTIVATE ON PUBLISH: create a free account at goatcounter.com, pick a
+     code (e.g. askmaria), replace YOUR-CODE below and delete the comment
+     markers around the script tag. Cookieless = no consent popup required;
+     the privacy page already describes exactly this setup.
+<script data-goatcounter="https://YOUR-CODE.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+──────────────────────────────────────────────────────────────────────── -->
+</body></html>

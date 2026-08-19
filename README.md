@@ -61,6 +61,11 @@ from actual beta users.
     CONTACT_EMAIL            privacy.html, terms.html — a working address people can use
     REPLACE-WITH-YOUR-DOMAIN index.html — canonical + og:image
 
+GOATCOUNTER YOUR-CODE   all four pages — create a free goatcounter.com
+                        account, then activate the commented script tag
+                        (cookieless analytics: page views, referrers,
+                        countries; no cookies, no consent banner needed)
+
 Use a dedicated address (hello@yourdomain), not a personal inbox — it goes on
 a public page.
 
