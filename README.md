@@ -1,9 +1,11 @@
-# Maria — landing page
+# Ask Maria — landing site
 
 Static site for the Maria airfare assistant. No build step, no dependencies.
 
     index.html           landing page  (step 1: takes an email, hands off)
     request-invite.html  invite form   (step 2: asks where they want to fly)
+    privacy.html         privacy notice (site / bot / booking-link capture)
+    terms.html           terms + affiliate disclosure
 
 Signup is deliberately two steps, as in the comp: the landing page only
 carries the address across in the query string, and `request-invite.html`
@@ -49,22 +51,22 @@ Deliberate, and worth preserving if the copy is edited:
 - no cheapest-price guarantee
 - footer states Maria is an information service, not a travel agent
 
-The two quotes are Vivien's own real results. The comp had them attributed to
-invented people ("Sophie L., 31, London" / "Daniel O., 44, Manchester");
-those were replaced with her own attribution rather than ship fabricated
-endorsements. If you'd rather have real third-party testimonials, get them
-from actual beta users.
+The two quotes are Vivien's own real results, attributed to the trip itself
+("London → Hong Kong, £386 return" / "Found while building Maria"). The comp
+had them attributed to invented people; fabricated consumer reviews are
+illegal in the UK (DMCC Act fake-review ban, CMA-enforced). Swap in real
+first-name reviews from beta users, with permission, once they exist.
 
 ## Fill these before publishing
 
-    OPERATOR_NAME            privacy.html, terms.html — UK GDPR needs a named controller
-    CONTACT_EMAIL            privacy.html, terms.html — a working address people can use
-    REPLACE-WITH-YOUR-DOMAIN index.html — canonical + og:image
+    OPERATOR_NAME            all four pages (footers + legal) — UK GDPR needs
+                             a named controller; also E-commerce Regs 2002
+    CONTACT_EMAIL            all four pages — a working address people can use
+    REPLACE-WITH-YOUR-DOMAIN index.html, 2 places — canonical + og:image
 
-GOATCOUNTER YOUR-CODE   all four pages — create a free goatcounter.com
-                        account, then activate the commented script tag
-                        (cookieless analytics: page views, referrers,
-                        countries; no cookies, no consent banner needed)
+    GOATCOUNTER YOUR-CODE    all four pages — create a free goatcounter.com
+                             account, then uncomment the script tag
+                             (cookieless: no consent banner needed)
 
 Use a dedicated address (hello@yourdomain), not a personal inbox — it goes on
 a public page.

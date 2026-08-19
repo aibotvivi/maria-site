@@ -91,8 +91,8 @@
         <div data-panel="hdr-landing" hidden>
           <div style="display: flex; flex-direction: column; gap: 16px;">
             <span style="display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.8); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #5a4433;"><span>✉</span>Step 2 of 2</span>
-            <h1 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(34px, 9vw, 56px); line-height: 1.05; letter-spacing: -.015em; color: #2a1f30; text-wrap: pretty;">You'll receive an invite</h1>
-            <p style="margin: 0; font-size: clamp(16px, 4vw, 19px); line-height: 1.6; font-weight: 300; color: #4e3f4a; max-width: 42ch; text-wrap: pretty;">Your email is saved. One last thing — tell Maria where you're dreaming of flying, and she'll send your single-use invite link when a spot opens.</p>
+            <h1 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(34px, 9vw, 56px); line-height: 1.05; letter-spacing: -.015em; color: #2a1f30; text-wrap: pretty;">Almost there</h1>
+            <p style="margin: 0; font-size: clamp(16px, 4vw, 19px); line-height: 1.6; font-weight: 300; color: #4e3f4a; max-width: 42ch; text-wrap: pretty;">One last thing — tell Maria where you're dreaming of flying, then send it and she'll email your single-use invite link when a spot opens.</p>
           </div>
         </div>
         <div data-panel="hdr-fresh">
@@ -240,20 +240,23 @@
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  function fallback(dream) {
-    if (document.querySelector(".maria-fallback")) return;
+  function fallback(dream, reason) {
+    var existing = document.querySelector(".maria-fallback");
+    if (existing) existing.remove();   // a resubmit deserves a fresh message
     var note = document.createElement("div");
     note.className = "maria-fallback";
     note.setAttribute("role", "status");
-    note.innerHTML =
-      "Email invites aren't switched on yet \u2014 so nothing was saved just now. " +
+    var lead = (reason === "failed")
+      ? "That didn't send \u2014 nothing was saved, sorry. "
+      : "Email invites aren't switched on yet \u2014 so nothing was saved just now. ";
+    note.innerHTML = lead +
       "Message Maria on Telegram and she'll add you to the list herself" +
       (dream ? ", mentioning <strong></strong>" : "") + ". " +
       '<a href="' + TELEGRAM_URL + '" target="_blank" rel="noopener">Open Maria on Telegram &rarr;</a>';
     if (dream) note.querySelector("strong").textContent = dream;
     form.appendChild(note);
     var btn = form.querySelector('button[type="submit"]');
-    if (btn) { btn.disabled = true; btn.textContent = "Message her instead"; }
+    if (btn && reason !== "failed") { btn.disabled = true; btn.textContent = "Message her instead"; }
   }
 
   form.addEventListener("submit", function (e) {
@@ -264,7 +267,7 @@
     var consent = !!data.get("consent");
     if (!email) return;
 
-    if (!SIGNUP_ENDPOINT) { fallback(dream); return; }
+    if (!SIGNUP_ENDPOINT) { fallback(dream, "unconfigured"); return; }
 
     var btn = form.querySelector('button[type="submit"]');
     if (btn) { btn.disabled = true; btn.textContent = "Sending\u2026"; }
@@ -278,7 +281,7 @@
       succeed(email, dream);
     }).catch(function () {
       if (btn) { btn.disabled = false; btn.textContent = "Submit"; }
-      fallback(dream);
+      fallback(dream, "failed");
     });
   });
 })();
