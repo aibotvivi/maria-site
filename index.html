@@ -119,6 +119,12 @@
             </form>
             <span style="font-size: 14px; font-weight: 300; line-height: 1.55; color: #5c4c45; max-width: 46ch;">Access is invite-only. Leave your email and she'll send a single-use link when a spot opens — approved personally, in small batches.</span>
           </div>
+          <div data-panel="sent-top" hidden>
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 460px; padding: 20px 22px; border-radius: 24px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+              <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: #2a1f30;">You're on the list.</span>
+              <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">Maria will email <strong style="font-weight: 500;"><span data-email>your inbox</span></strong> with what she does, then your invite link when a spot opens.</span>
+              <a href="request-invite.html" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px;">Tell her where you're dreaming of flying →</a>
+            </div>
           </div>
           <a href="https://t.me/Lucyaibotbot" target="_blank" rel="noopener" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center;">Already have an invite? Open Maria on Telegram</a>
         </div>
@@ -294,7 +300,7 @@
     </section>
 
     <section style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 46px 24px; border-radius: 34px; background: linear-gradient(150deg, rgba(255,255,255,.46), rgba(247,205,164,.4)); border: 1px solid rgba(255,255,255,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); text-align: center;">
-        <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(21px, 4.6vw, 48px); line-height: 1.1; letter-spacing: -.01em;  color: #2a1f30;">Tell her where you'd rather be.</h2>
+        <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(21px, 4.6vw, 48px); line-height: 1.1; letter-spacing: -.01em; white-space: nowrap; color: #2a1f30;">Tell her where you'd rather be.</h2>
         <div data-panel="form-end">
           <form data-signup="end" action="request-invite.html" method="get" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 460px;">
             <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="flex: 1 1 200px; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.92);" />
@@ -304,6 +310,12 @@
           </form>
           <span style="font-size: 14px; font-weight: 300; color: #5c4c45;">One field, no commitment. Invites go out in small batches.</span>
         </div>
+        <div data-panel="sent-end" hidden>
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: #2a1f30;">You're on the list.</span>
+            <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">Watch for an email at <strong style="font-weight: 500;"><span data-email>your inbox</span></strong>.</span>
+            <a href="request-invite.html" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px;">Tell her where you're dreaming of flying →</a>
+          </div>
         </div>
         <a href="https://t.me/Lucyaibotbot" target="_blank" rel="noopener" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center;">Already have an invite? Open Maria on Telegram</a>
     </section>
@@ -378,8 +390,7 @@
 <!-- ── Analytics: GoatCounter (cookieless — no banner needed) ─────────────
      ACTIVATE ON PUBLISH: create a free account at goatcounter.com, pick a
      code (e.g. askmaria), replace YOUR-CODE below and delete the comment
-     markers around the script tag. Cookieless = no consent popup required;
-     the privacy page already describes exactly this setup.
+     markers around the script tag.
 <script data-goatcounter="https://YOUR-CODE.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 ──────────────────────────────────────────────────────────────────────── -->
