@@ -54,3 +54,25 @@ invented people ("Sophie L., 31, London" / "Daniel O., 44, Manchester");
 those were replaced with her own attribution rather than ship fabricated
 endorsements. If you'd rather have real third-party testimonials, get them
 from actual beta users.
+
+## Fill these before publishing
+
+    OPERATOR_NAME            privacy.html, terms.html — UK GDPR needs a named controller
+    CONTACT_EMAIL            privacy.html, terms.html — a working address people can use
+    REPLACE-WITH-YOUR-DOMAIN index.html — canonical + og:image
+
+Use a dedicated address (hello@yourdomain), not a personal inbox — it goes on
+a public page.
+
+## Copy decisions that are deliberate
+
+- The hero says "like having a friend who's brilliant at finding flights",
+  **not** "a travel agent". The earlier wording contradicted the footer
+  disclaimer, and "travel agent" is a regulated description in the UK
+  (ATOL/bonding). Don't reintroduce it.
+- The two quotes are labelled "Vivien, who built Maria / Her own trips — not
+  a customer review". They are real results but not customer testimonials;
+  presenting them as testimonials would be a fabricated endorsement.
+- No "24/7" or "instant" claims; no cheapest-price guarantee.
+- privacy.html / terms.html are plain-English and honest, but **not
+  solicitor-reviewed**. Get them checked before charging anyone.
