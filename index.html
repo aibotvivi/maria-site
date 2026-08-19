@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maria — a travel agent who texts like a friend</title>
+<meta name="description" content="Maria lives in Telegram. Tell her where you're dreaming of going, in plain English, and she watches the fares — then tells you what she'd actually do about them. Invite-only beta.">
+<link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Maria — a travel agent who texts like a friend">
+<meta property="og:description" content="She watches the fares, checks the seller, and tells you what she'd actually do. Invite-only beta.">
+<meta property="og:image" content="https://REPLACE-WITH-YOUR-DOMAIN/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#e9d9f2">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%E2%9C%88%EF%B8%8F</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  html, body { background: #e9d9f2; }
+  body { margin: 0; -webkit-font-smoothing: antialiased; }
+  *, *::before, *::after { box-sizing: border-box; }
+  img, svg { max-width: 100%; }
+  [hidden] { display: none !important; }
+  :focus-visible { outline: 3px solid #7d4510; outline-offset: 2px; border-radius: 4px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: #e9d9f2; -webkit-font-smoothing: antialiased; }
+  a { color: #a8621b; text-decoration: none; }
+  :focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; border-radius: 6px; }
+  a:hover { color: #7d4510; }
+  @keyframes drift { 0% { transform: translate3d(0,0,0); } 50% { transform: translate3d(2.5vw,-1.6vh,0); } 100% { transform: translate3d(0,0,0); } }
+  @keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.85); } 50% { opacity: .9; transform: scale(1); } }
+  @keyframes glide { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
+</style>
+</helmet>
+<div style="position: relative; overflow: hidden; min-height: 100vh; font-family: Jost, system-ui, sans-serif; color: #35283c; background: radial-gradient(120% 80% at 12% 4%, #d9c2ef 0%, rgba(217,194,239,0) 58%), radial-gradient(110% 70% at 88% 10%, #f3c3d6 0%, rgba(243,195,214,0) 60%), radial-gradient(130% 90% at 78% 52%, #f7c79b 0%, rgba(247,199,155,0) 62%), radial-gradient(120% 80% at 20% 92%, #f0ae74 0%, rgba(240,174,116,0) 60%), linear-gradient(170deg, #e6d5f4 0%, #f6dcd6 45%, #f6c99e 78%, #eab27b 100%);">
+
+  <div style="position: absolute; inset: -10% -20%; pointer-events: none; opacity: .85;">
+    <div style="position: absolute; left: 4%; top: 8%; width: 46vw; height: 46vw; border-radius: 50%; background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.85), rgba(255,255,255,0) 66%); filter: blur(14px); animation: drift 26s ease-in-out infinite;"></div>
+    <div style="position: absolute; right: 2%; top: 26%; width: 54vw; height: 40vw; border-radius: 50%; background: radial-gradient(circle at 60% 45%, rgba(255,255,255,.7), rgba(255,255,255,0) 64%); filter: blur(18px); animation: drift 34s ease-in-out infinite reverse;"></div>
+    <div style="position: absolute; left: 18%; bottom: 4%; width: 60vw; height: 34vw; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.6), rgba(255,255,255,0) 68%); filter: blur(22px); animation: drift 40s ease-in-out infinite;"></div>
+  </div>
+
+  <svg viewBox="0 0 800 1400" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .38;">
+    <g stroke="#6b4a2a" fill="none" stroke-linecap="round">
+      <path d="M-30 340 C 160 150, 520 230, 850 70" stroke-width="1.6" stroke-dasharray="2 12" opacity=".6"></path>
+      <path d="M-30 760 C 210 680, 470 860, 850 690" stroke-width="1.3" stroke-dasharray="2 13" opacity=".42"></path>
+      <path d="M-30 1180 C 250 1090, 560 1230, 850 1060" stroke-width="1.3" stroke-dasharray="2 13" opacity=".34"></path>
+    </g>
+    <g fill="#5c3f24">
+      <g opacity=".5">
+        <circle cx="96" cy="266" r="3.4"></circle><circle cx="486" cy="214" r="3.4"></circle><circle cx="738" cy="112" r="3.4"></circle>
+        <circle cx="182" cy="702" r="3.4"></circle><circle cx="626" cy="784" r="3.4"></circle>
+        <circle cx="312" cy="1122" r="3.4"></circle><circle cx="704" cy="1098" r="3.4"></circle>
+      </g>
+      <g opacity=".22">
+        <circle cx="96" cy="266" r="9" fill="none" stroke="#5c3f24" stroke-width="1"></circle>
+        <circle cx="738" cy="112" r="9" fill="none" stroke="#5c3f24" stroke-width="1"></circle>
+        <circle cx="626" cy="784" r="9" fill="none" stroke="#5c3f24" stroke-width="1"></circle>
+      </g>
+    </g>
+  </svg>
+
+  <svg viewBox="-32 -18 64 36" aria-hidden="true" style="position: absolute; left: 6%; bottom: 26px; width: clamp(70px, 11vw, 130px); pointer-events: none; opacity: .3; transform: rotate(-14deg); animation: drift 30s ease-in-out infinite;">
+    <path d="M22 0 L11.5 3.6 L-4 3.6 L-13 15 L-17.5 15 L-13.5 3.6 L-21 3.6 L-24.5 8 L-27.5 8 L-26 3.2 L-30 2.2 L-30 -2.2 L-26 -3.2 L-27.5 -8 L-24.5 -8 L-21 -3.6 L-13.5 -3.6 L-17.5 -15 L-13 -15 L-4 -3.6 L11.5 -3.6 Z" fill="#4b3520"></path>
+  </svg>
+  <svg viewBox="-32 -18 64 36" aria-hidden="true" style="position: absolute; right: 3%; top: 62%; width: clamp(60px, 9vw, 110px); pointer-events: none; opacity: .26; transform: rotate(12deg); animation: drift 42s ease-in-out infinite reverse;">
+    <path d="M22 0 L11.5 3.6 L-4 3.6 L-13 15 L-17.5 15 L-13.5 3.6 L-21 3.6 L-24.5 8 L-27.5 8 L-26 3.2 L-30 2.2 L-30 -2.2 L-26 -3.2 L-27.5 -8 L-24.5 -8 L-21 -3.6 L-13.5 -3.6 L-17.5 -15 L-13 -15 L-4 -3.6 L11.5 -3.6 Z" fill="#4b3520"></path>
+  </svg>
+
+  <div style="position: absolute; inset: 0; pointer-events: none;">
+    <svg width="26" height="26" viewBox="0 0 24 24" style="position: absolute; left: 8%; top: 22%; animation: twinkle 5s ease-in-out infinite;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".55"></path></svg>
+    <svg width="16" height="16" viewBox="0 0 24 24" style="position: absolute; right: 12%; top: 16%; animation: twinkle 7s ease-in-out infinite 1s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".5"></path></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" style="position: absolute; left: 16%; top: 58%; animation: twinkle 6s ease-in-out infinite .5s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
+    <svg width="18" height="18" viewBox="0 0 24 24" style="position: absolute; right: 8%; bottom: 18%; animation: twinkle 8s ease-in-out infinite 2s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
+  </div>
+
+  <div style="position: relative; max-width: 1080px; margin: 0 auto; padding: 24px 18px 140px; display: flex; flex-direction: column; gap: clamp(56px, 9vw, 88px);">
+
+    <header style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 8px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; letter-spacing: .02em; color: #2c2131;">
+        <span>Maria</span><span aria-hidden="true" style="font-size: 18px; opacity: .7;">✈</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.42); border: 1px solid rgba(255,255,255,.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #5a4433;">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>Invite-only beta
+      </div>
+    </header>
+
+    <section style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(36px, 6vw, 56px);">
+      <div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 22px; max-width: 520px;">
+        <h1 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(46px, 9vw, 76px); line-height: 1.02; letter-spacing: -.015em; color: #2a1f30; text-wrap: pretty;">A travel agent who texts like a friend.</h1>
+        <p style="margin: 0; font-size: clamp(17px, 2.4vw, 20px); line-height: 1.6; font-weight: 300; color: #4e3f4a; max-width: 44ch; text-wrap: pretty;">Maria lives in Telegram. Tell her where you're dreaming of going, in plain English, and she watches the fares — then tells you what she'd actually do about them.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; align-items: flex-start; width: 100%;">
+          <div data-panel="form-top">
+            <form data-signup="top" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 460px;">
+              <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="flex: 1 1 200px; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
+              <button type="submit" style="flex: 1 1 180px; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 26px; border-radius: 999px; background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font: inherit; font-size: 17px; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
+                <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
+              </button>
+            </form>
+            <span style="font-size: 14px; font-weight: 300; line-height: 1.55; color: #5c4c45; max-width: 46ch;">Access is invite-only. Leave your email and she'll send a single-use link when a spot opens — approved personally, in small batches.</span>
+          </div>
+          <div data-panel="sent-top" hidden>
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 460px; padding: 20px 22px; border-radius: 24px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+              <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: #2a1f30;">You're on the list.</span>
+              <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">Maria will email <strong style="font-weight: 500;"><span data-email>your inbox</span></strong> with what she does, then your invite link when a spot opens.</span>
+              <a href="#signup" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px;">Tell her where you're dreaming of flying →</a>
+            </div>
+          </div>
+          <a href="https://t.me/Lucyaibotbot" target="_blank" rel="noopener" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center;">Already have an invite? Open Maria on Telegram</a>
+        </div>
+      </div>
+
+      <div style="flex: 1 1 320px; display: flex; justify-content: center;">
+        <div style="width: 100%; max-width: 372px; padding: 14px; border-radius: 40px; background: rgba(255,255,255,.34); border: 1px solid rgba(255,255,255,.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 30px 70px rgba(88,54,86,.22), inset 0 1px 0 rgba(255,255,255,.6);">
+          <div style="border-radius: 28px; overflow: hidden; background: linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.34)); border: 1px solid rgba(255,255,255,.5);">
+            <div style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; background: rgba(255,255,255,.45); border-bottom: 1px solid rgba(255,255,255,.55);">
+              <div style="width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(140deg, #f0b8cf, #e8a13f); display: flex; align-items: center; justify-content: center; font-size: 15px;">✈</div>
+              <div style="display: flex; flex-direction: column; gap: 1px;">
+                <span style="font-size: 14px; color: #2f2436;">Maria</span>
+                <span style="font-size: 11px; color: #66585a; font-weight: 300;">usually replies within a minute or two</span>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; padding: 18px 14px 20px;">
+              <div style="align-self: flex-end; max-width: 84%; padding: 11px 14px; border-radius: 18px 18px 5px 18px; background: linear-gradient(135deg, rgba(240,182,105,.92), rgba(228,150,58,.92)); color: #3b2408; font-size: 14px; line-height: 1.5;">
+                Watch London to Tokyo, first two weeks of April, under £600
+                <div style="text-align: right; font-size: 10px; opacity: .6; margin-top: 4px;">21:14</div>
+              </div>
+              <div style="align-self: flex-start; max-width: 84%; padding: 11px 14px; border-radius: 18px 18px 18px 5px; background: rgba(255,255,255,.82); font-size: 14px; line-height: 1.5; color: #3a2f3f; box-shadow: 0 6px 18px rgba(90,60,90,.08);">
+                💬 👀 Got it — checking now, one moment…
+                <div style="font-size: 10px; opacity: .5; margin-top: 4px;">21:14</div>
+              </div>
+              <div style="align-self: flex-start; max-width: 92%; padding: 12px 15px; border-radius: 18px 18px 18px 5px; background: rgba(255,255,255,.86); font-size: 14px; line-height: 1.55; color: #3a2f3f; box-shadow: 0 8px 22px rgba(90,60,90,.1);">
+                💬 Found <strong style="font-weight: 500;">£571</strong> departing the 4th. Heads up: the 3rd is £38 cheaper, same airline. And that £519 fare on the discount site? The seller has a 2.9 Trustpilot and no ATOL — I'd skip it.
+                <div style="font-size: 10px; opacity: .5; margin-top: 5px;">21:16</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 26px;">
+      <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(30px, 5vw, 42px); color: #2a1f30;">What a price alert can't do</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 18px;">
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
+          <span aria-hidden="true" style="font-size: 22px;">🗺️</span>
+          <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 25px; color: #2c2131;">She plans trips, not legs</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.65; font-weight: 300; color: #4e3f4a;">Combines one-way fares and self-transfer routings into whole-trip totals that round-trip search engines miss.</p>
+        </div>
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
+          <span aria-hidden="true" style="font-size: 22px;">🛡️</span>
+          <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 25px; color: #2c2131;">She checks the seller, not just the price</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.65; font-weight: 300; color: #4e3f4a;">Screens cheap fares against ATOL/IATA accreditation and Trustpilot before recommending. She won't headline a scammy travel site.</p>
+        </div>
+        <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
+          <span aria-hidden="true" style="font-size: 22px;">🧾</span>
+          <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: 25px; color: #2c2131;">She tells you the real cost</h3>
+          <p style="margin: 0; font-size: 15px; line-height: 1.65; font-weight: 300; color: #4e3f4a;">Includes baggage fees, so a "cheap" fare that charges £50 for a bag doesn't fool the comparison.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 22px;">
+      <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(30px, 5vw, 42px); color: #2a1f30;">Honestly, where she fits</h2>
+      <div role="table" aria-label="Where Maria fits against Google Flights and Hopper" style="display: flex; flex-direction: column;">
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 10px clamp(12px, 3vw, 24px); padding: 0 0 12px; border-bottom: 1px solid rgba(90,60,50,.22);">
+          <span role="columnheader" style="flex: 1 1 40%; min-width: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #5c4b43;">
+            <img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="Google" width="18" height="18" style="width: 18px; height: 18px; border-radius: 4px; flex: 0 0 auto;" />
+            <img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="Hopper" width="18" height="18" style="width: 18px; height: 18px; border-radius: 4px; flex: 0 0 auto;" />
+            <span>Google Flights &amp; Hopper</span>
+          </span>
+          <span role="columnheader" style="flex: 1 1 40%; min-width: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a5a12;">
+            <span style="width: 18px; height: 18px; flex: 0 0 auto; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; background: linear-gradient(140deg, #f0b8cf, #c9761c);">✈</span>
+            <span>Maria</span>
+          </span>
+        </div>
+
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
+          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Breadth</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Every route and airline at once.</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">The routes you asked her to watch.</span>
+        </div>
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
+          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Speed</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">The whole calendar in a second.</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">Twice a day, and she comes to you.</span>
+        </div>
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
+          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Judgment</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">A number and a graph.</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">Whether she'd take it, and why.</span>
+        </div>
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
+          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Seller trust</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Listed without screening.</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">Checked against ATOL, IATA and Trustpilot first.</span>
+        </div>
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
+          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Trip maths</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Round-trip fares, bags extra.</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">One-ways, self-transfers and baggage totalled.</span>
+        </div>
+        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0;">
+          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Memory</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Every search starts fresh.</span>
+          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">She remembers the conversation you had.</span>
+        </div>
+      </div>
+    </section>
+
+    <section style="display: flex; flex-direction: column; gap: 26px;">
+      <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(30px, 5vw, 42px); color: #2a1f30;">How it works</h2>
+      <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; gap: clamp(16px, 4vw, 26px); align-items: stretch;">
+          <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <span style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.85); box-shadow: 0 8px 20px rgba(150,95,30,.14);">🔗</span>
+            <span style="flex: 1 1 auto; width: 0; border-left: 2px dotted rgba(185,120,31,.5);"></span>
+          </div>
+          <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 6px; padding-bottom: 28px;">
+            <span style="font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #8a5a12;">Step one</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(22px, 4.4vw, 28px); color: #2a1f30;">Tap the link and press Start</h3>
+            <span style="font-size: 15px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">She opens as a normal Telegram chat. Nothing to install.</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: clamp(16px, 4vw, 26px); align-items: stretch;">
+          <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <span style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; background: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.85); box-shadow: 0 8px 20px rgba(150,95,30,.14);">💬</span>
+            <span style="flex: 1 1 auto; width: 0; border-left: 2px dotted rgba(185,120,31,.5);"></span>
+          </div>
+          <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 10px; padding-bottom: 28px;">
+            <span style="font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #8a5a12;">Step two</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(22px, 4.4vw, 28px); color: #2a1f30;">Text her what to watch, like a person</h3>
+            <span style="font-size: 15px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">No commands, no forms, no date pickers.</span>
+            <span style="align-self: flex-start; max-width: 100%; padding: 10px 15px; border-radius: 16px 16px 16px 5px; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.85); font-size: 14px; line-height: 1.5; color: #3a2f3f;">"Anywhere sunny in half term, two of us, under £400 each"</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: clamp(16px, 4vw, 26px); align-items: stretch;">
+          <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;">
+            <span style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; background: linear-gradient(140deg, #f3c99a, #e8a13f); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 8px 20px rgba(150,95,30,.2);">🔔</span>
+          </div>
+          <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: #8a5a12;">Step three</span>
+            <h3 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; font-size: clamp(22px, 4.4vw, 28px); color: #2a1f30;">She messages you when it's worth knowing</h3>
+            <span style="font-size: 15px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">Prices checked twice a day. She replies to you usually within a minute or two.</span>
+          </div>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <span style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.4); border: 1px solid rgba(255,255,255,.7); font-size: 13px; font-weight: 300; color: #4e3f4a;"><span>💬</span>replies to you</span>
+        <span style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: rgba(255,255,255,.4); border: 1px solid rgba(255,255,255,.7); font-size: 13px; font-weight: 300; color: #4e3f4a;"><span>🔔</span>automatic price alert</span>
+      </div>
+    </section>
+
+
+    <section style="display: flex; flex-wrap: wrap; gap: clamp(28px, 5vw, 44px);">
+      <figure style="flex: 1 1 320px; margin: 0; display: flex; flex-direction: column; gap: 20px; padding-left: clamp(14px, 3vw, 20px); border-left: 2px solid rgba(185,120,31,.45);">
+        <blockquote style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; font-style: italic; font-size: clamp(21px, 3.6vw, 28px); line-height: 1.35; letter-spacing: -.005em; color: #2a1f30; text-wrap: pretty;">"Maria found my London–Hong Kong round trip for £386 — and told me postponing a week would cost £32 more, so I stopped second-guessing."</blockquote>
+        <figcaption style="display: flex; align-items: center; gap: 13px;">
+          <span style="flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; color: #fff; background: linear-gradient(140deg, #c9a4e6, #e8a13f); box-shadow: inset 0 1px 0 rgba(255,255,255,.55);">V</span>
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 15px; color: #2f2436;">Vivien, founder</span>
+            <span style="font-size: 13px; font-weight: 300; color: #5a4a52;">London</span>
+          </span>
+        </figcaption>
+      </figure>
+
+      <figure style="flex: 1 1 320px; margin: 0; display: flex; flex-direction: column; gap: 20px; padding-left: clamp(14px, 3vw, 20px); border-left: 2px solid rgba(185,120,31,.45);">
+        <blockquote style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; font-style: italic; font-size: clamp(21px, 3.6vw, 28px); line-height: 1.35; letter-spacing: -.005em; color: #2a1f30; text-wrap: pretty;">"She caught that the 1-stop 'cheaper' fare cost more than the nonstop once a checked bag was added."</blockquote>
+        <figcaption style="display: flex; align-items: center; gap: 13px; margin-top: auto;">
+          <span style="flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; color: #fff; background: linear-gradient(140deg, #f0b8cf, #c9761c); box-shadow: inset 0 1px 0 rgba(255,255,255,.55);">V</span>
+          <span style="display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 15px; color: #2f2436;">Vivien, founder</span>
+            <span style="font-size: 13px; font-weight: 300; color: #5a4a52;">London</span>
+          </span>
+        </figcaption>
+      </figure>
+    </section>
+
+    <section style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 46px 24px; border-radius: 34px; background: linear-gradient(150deg, rgba(255,255,255,.46), rgba(247,205,164,.4)); border: 1px solid rgba(255,255,255,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); text-align: center;">
+        <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(21px, 4.6vw, 48px); line-height: 1.1; letter-spacing: -.01em; white-space: nowrap; color: #2a1f30;">Tell her where you'd rather be.</h2>
+        <div data-panel="form-end">
+          <form data-signup="end" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%; max-width: 460px;">
+            <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="flex: 1 1 200px; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.92);" />
+            <button type="submit" style="flex: 1 1 180px; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 26px; border-radius: 999px; background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font: inherit; font-size: 17px; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
+              <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
+            </button>
+          </form>
+          <span style="font-size: 14px; font-weight: 300; color: #5c4c45;">One field, no commitment. Invites go out in small batches.</span>
+        </div>
+        <div data-panel="sent-end" hidden>
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
+            <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; color: #2a1f30;">You're on the list.</span>
+            <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #4e3f4a;">Watch for an email at <strong style="font-weight: 500;"><span data-email>your inbox</span></strong>.</span>
+            <a href="#signup" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px;">Tell her where you're dreaming of flying →</a>
+          </div>
+        </div>
+        <a href="https://t.me/Lucyaibotbot" target="_blank" rel="noopener" style="font-size: 14px; font-weight: 300; text-decoration: underline; text-underline-offset: 3px; min-height: 44px; display: inline-flex; align-items: center;">Already have an invite? Open Maria on Telegram</a>
+    </section>
+
+    <footer style="display: flex; flex-direction: column; gap: 30px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,.6);">
+      <div style="display: flex; flex-wrap: wrap; gap: 18px;">
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">Is it free?</span>
+          <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #52434e;">Free during the beta.</span>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">How do I get in?</span>
+          <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #52434e;">Message her. Requests are approved personally.</span>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">Privacy</span>
+          <span style="font-size: 14px; font-weight: 300; line-height: 1.6; color: #52434e;">Your watches and chats are yours alone.</span>
+        </div>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
+        <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; color: #2c2131;">Maria ✈</span>
+        <span style="font-size: 12px; font-weight: 300; line-height: 1.6; color: #584852; max-width: 62ch;">Maria is an information service, not a travel agent or booking site. Prices change; always confirm at booking.</span>
+      </div>
+    </footer>
+  </div>
+</div>
+</x-dc>
+
+
+<script>
+(function () {
+  "use strict";
+
+  /* ------------------------------------------------------------------
+     SIGNUP ENDPOINT — set this and the form starts collecting emails.
+     Paste the POST URL from MailerLite / Formspree / Tally / Buttondown.
+
+     Left empty ON PURPOSE: with no endpoint there is nowhere for an
+     address to go, so the form must NOT show "You're on the list" —
+     that would be a lie to a real visitor. Until it's set, the form
+     sends people to Telegram, which is the path that genuinely works
+     today (Maria replies, logs the request, and pings Vivien).
+  ------------------------------------------------------------------ */
+  var SIGNUP_ENDPOINT = "";
+  var TELEGRAM_URL    = "https://t.me/Lucyaibotbot";
+
+  function panel(name) { return document.querySelector('[data-panel="' + name + '"]'); }
+
+  function showSent(which, email) {
+    var form = panel("form-" + which), sent = panel("sent-" + which);
+    if (!form || !sent) return;
+    document.querySelectorAll("[data-email]").forEach(function (el) { el.textContent = email; });
+    form.hidden = true;
+    sent.hidden = false;
+    sent.setAttribute("tabindex", "-1");
+    sent.focus({ preventScroll: true });
+  }
+
+  document.querySelectorAll("form[data-signup]").forEach(function (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var which = form.getAttribute("data-signup");
+      var email = String(new FormData(form).get("email") || "").trim();
+      if (!email) return;
+
+      if (!SIGNUP_ENDPOINT) {
+        // No list yet — hand them the flow that actually works instead of
+        // pretending we saved the address.
+        window.open(TELEGRAM_URL, "_blank", "noopener");
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.textContent = "Opening Telegram…";
+        return;
+      }
+
+      var btn2 = form.querySelector('button[type="submit"]');
+      if (btn2) { btn2.disabled = true; btn2.textContent = "Sending…"; }
+
+      fetch(SIGNUP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({ email: email })
+      }).then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        showSent(which, email);
+      }).catch(function () {
+        if (btn2) { btn2.disabled = false; btn2.textContent = "Request an invite"; }
+        window.open(TELEGRAM_URL, "_blank", "noopener");
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
