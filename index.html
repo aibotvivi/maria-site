@@ -26,7 +26,8 @@
   *, *::before, *::after { box-sizing: border-box; }
   img, svg { max-width: 100%; }
   [hidden] { display: none !important; }
-  :focus-visible { outline: 3px solid #7d4510; outline-offset: 2px; border-radius: 4px; }
+  p { max-width: 66ch; }
+      :focus-visible { outline: 3px solid #7d4510; outline-offset: 2px; border-radius: 4px; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   }
@@ -93,7 +94,7 @@
     <svg width="18" height="18" viewBox="0 0 24 24" style="position: absolute; right: 8%; bottom: 18%; animation: twinkle 8s ease-in-out infinite 2s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
   </div>
 
-  <div style="position: relative; max-width: 1080px; margin: 0 auto; padding: 24px 18px 140px; display: flex; flex-direction: column; gap: clamp(56px, 9vw, 88px);">
+  <div style="position: relative; max-width: 1040px; margin: 0 auto; padding: 24px clamp(20px, 5vw, 56px) 140px; display: flex; flex-direction: column; gap: clamp(56px, 9vw, 88px);">
 
     <header style="display: flex; align-items: center; justify-content: space-between; gap: 16px;">
       <div style="display: flex; align-items: center; gap: 8px; font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; letter-spacing: .02em; color: #2c2131;">
