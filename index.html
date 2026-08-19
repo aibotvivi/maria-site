@@ -28,6 +28,47 @@
   [hidden] { display: none !important; }
   p { max-width: 66ch; }
       :focus-visible { outline: 3px solid #7d4510; outline-offset: 2px; border-radius: 4px; }
+
+  /* Comparison table. Three real columns — label, them, Maria — so the two
+     answers sit next to each other on one line instead of the label eating a
+     row of its own and pushing the cells apart. */
+  .cmp { display: flex; flex-direction: column; max-width: 800px; }
+  .cmp-row {
+    display: grid;
+    grid-template-columns: minmax(66px, 112px) minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(10px, 1.5vw, 16px);
+    /* stretch, not baseline: cells carry their own rules, so unequal heights
+       would leave the three underlines at three different levels. */
+    align-items: stretch;
+  }
+  .cmp-row > * { padding: 13px 0; border-bottom: 1px solid rgba(90,60,50,.13); }
+  .cmp-row:last-child > * { border-bottom: 0; }
+  .cmp-lab { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a; }
+  .cmp-them { font-size: 15px; font-weight: 300; line-height: 1.5; color: #52434c; }
+  /* Maria's column is a continuous tinted band: adjacent rows have no gap, so
+     the per-cell backgrounds join up. */
+  .cmp-maria {
+    font-size: 15px; font-weight: 400; line-height: 1.5; color: #2f2436;
+    background: rgba(255,255,255,.42);
+    padding-left: 14px; padding-right: 14px;
+  }
+  .cmp-head > * { padding-top: 0; padding-bottom: 10px; border-bottom-color: rgba(90,60,50,.22); }
+  .cmp-head > *:first-child { border-bottom: 0; }   /* blank corner cell */
+  .cmp-head .cmp-maria { border-radius: 12px 12px 0 0; padding-top: 10px; }
+  .cmp-row:last-child .cmp-maria { border-radius: 0 0 12px 12px; }
+  .cmp-src { display: flex; align-items: center; gap: 7px; font-size: 12px; letter-spacing: .11em; text-transform: uppercase; }
+  .cmp-tag { display: none; }
+  @media (max-width: 620px) {
+    /* Too narrow for three columns: stack, and give each answer its own source
+       label (the header row is gone, so the cells have to say who they are). */
+    .cmp-head { display: none; }
+    .cmp-row { grid-template-columns: 1fr; }
+    .cmp-row > * { border-bottom: 0; padding: 3px 0; }
+    .cmp-row { padding: 12px 0; border-bottom: 1px solid rgba(90,60,50,.13); }
+    .cmp-row:last-child { border-bottom: 0; }
+    .cmp-maria { border-radius: 12px; padding: 8px 12px; margin-top: 4px; }
+    .cmp-tag { display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #7a6555; margin-bottom: 2px; }
+  }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   }
@@ -175,48 +216,49 @@
 
     <section style="display: flex; flex-direction: column; gap: 22px;">
       <h2 style="margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: clamp(30px, 5vw, 42px); color: #2a1f30;">Maria, next to the tools you already use</h2>
-      <div role="table" aria-label="Where Maria fits against Google Flights and Hopper" style="display: flex; flex-direction: column;">
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 10px clamp(12px, 3vw, 24px); padding: 0 0 12px; border-bottom: 1px solid rgba(90,60,50,.22);">
-          <span role="columnheader" style="flex: 1 1 40%; min-width: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #5c4b43;">
+      <div role="table" aria-label="Where Maria fits against Google Flights and Hopper" class="cmp">
+        <div role="row" class="cmp-row cmp-head">
+          <span role="columnheader"></span>
+          <span role="columnheader" class="cmp-src" style="color: #5c4b43;">
             <img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="Google" width="18" height="18" style="width: 18px; height: 18px; border-radius: 4px; flex: 0 0 auto;" />
             <img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="Hopper" width="18" height="18" style="width: 18px; height: 18px; border-radius: 4px; flex: 0 0 auto;" />
             <span>Google Flights &amp; Hopper</span>
           </span>
-          <span role="columnheader" style="flex: 1 1 40%; min-width: 0; display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a5a12;">
+          <span role="columnheader" class="cmp-src cmp-maria" style="color: #8a5a12;">
             <span style="width: 18px; height: 18px; flex: 0 0 auto; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; background: linear-gradient(140deg, #f0b8cf, #c9761c);">✈</span>
             <span>Ask Maria</span>
           </span>
         </div>
 
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
-          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Breadth</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Every route and airline at once.</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">The routes you asked her to watch.</span>
+        <div role="row" class="cmp-row">
+          <span role="rowheader" class="cmp-lab">Breadth</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Every route and airline at once.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>The routes you asked her to watch.</span>
         </div>
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
-          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Speed</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">The whole calendar in a second.</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">Twice a day, and she comes to you.</span>
+        <div role="row" class="cmp-row">
+          <span role="rowheader" class="cmp-lab">Speed</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>The whole calendar in a second.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>Twice a day, and she comes to you.</span>
         </div>
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
-          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Judgment</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">A number and a graph.</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">Whether she'd take it, and why.</span>
+        <div role="row" class="cmp-row">
+          <span role="rowheader" class="cmp-lab">Judgment</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>A number and a graph.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>Whether she'd take it, and why.</span>
         </div>
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
-          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Seller trust</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Listed without screening.</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">Checked against ATOL, IATA and Trustpilot first.</span>
+        <div role="row" class="cmp-row">
+          <span role="rowheader" class="cmp-lab">Seller trust</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Listed without screening.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>Checked against ATOL, IATA and Trustpilot first.</span>
         </div>
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0; border-bottom: 1px solid rgba(90,60,50,.14);">
-          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Trip maths</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Round-trip fares, bags extra.</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">One-ways, self-transfers and baggage totalled.</span>
+        <div role="row" class="cmp-row">
+          <span role="rowheader" class="cmp-lab">Trip maths</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Round-trip fares, bags extra.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>One-ways, self-transfers and baggage totalled.</span>
         </div>
-        <div role="row" style="display: flex; flex-wrap: wrap; gap: 6px clamp(12px, 3vw, 24px); padding: 20px 0;">
-          <span role="rowheader" style="flex: 1 1 100%; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f5a4a;">Memory</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #4a3c46;">Every search starts fresh.</span>
-          <span role="cell" style="flex: 1 1 40%; min-width: 0; font-size: 16px; font-weight: 400; line-height: 1.55; color: #2f2436;">She remembers the conversation you had.</span>
+        <div role="row" class="cmp-row">
+          <span role="rowheader" class="cmp-lab">Memory</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Every search starts fresh.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>She remembers the conversation you had.</span>
         </div>
       </div>
     </section>
