@@ -66,15 +66,43 @@
   .cmp-src { display: flex; align-items: center; gap: 7px; font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; }
   .cmp-tag { display: none; }
   @media (max-width: 620px) {
-    /* Too narrow for three columns: stack, and give each answer its own source
-       label (the header row is gone, so the cells have to say who they are). */
+    /* Too narrow for three real columns, but "them" and "Maria" still belong
+       side by side — that's the entire point of a comparison. The row label
+       becomes a small heading spanning both, with the two answers as a pair
+       of cards underneath, each carrying its own logo since the shared
+       header row is gone. */
     .cmp-head { display: none; }
-    .cmp-row { grid-template-columns: 1fr; }
-    .cmp-row > * { border-bottom: 0; padding: 3px 0; }
-    .cmp-row { padding: 12px 0; border-bottom: 1px solid rgba(90,60,50,.13); }
+    .cmp-row {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: "lab lab" "them maria";
+      row-gap: 8px;
+      column-gap: 8px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(90,60,50,.13);
+    }
     .cmp-row:last-child { border-bottom: 0; }
-    .cmp-maria { border-radius: 12px; padding: 8px 12px; margin-top: 4px; }
-    .cmp-tag { display: block; font-family: 'DM Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: #7a6555; margin-bottom: 2px; }
+    .cmp-row > * { border-bottom: 0; padding: 0; }
+    .cmp-lab { grid-area: lab; }
+    .cmp-them {
+      grid-area: them;
+      background: rgba(120,90,70,.07);
+      border-radius: 12px;
+      padding: 10px 11px;
+    }
+    .cmp-maria {
+      grid-area: maria;
+      border-radius: 12px !important;
+      padding: 10px 11px;
+    }
+    .cmp-tag {
+      display: flex; align-items: center; gap: 5px;
+      font-family: 'DM Mono', ui-monospace, monospace; font-size: 10px;
+      letter-spacing: .04em; text-transform: uppercase; color: #7a6555;
+      margin-bottom: 6px;
+    }
+    .cmp-maria .cmp-tag { color: #8a5a12; }
+    .cmp-tag img { width: 13px; height: 13px; border-radius: 3px; flex: 0 0 auto; }
+    .cmp-tag span { white-space: nowrap; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
@@ -229,7 +257,7 @@
     </section>
 
     <section style="display: flex; flex-direction: column; gap: 22px;">
-      <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">Maria, next to the tools you already use</h2>
+      <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">Not a faster search. A second pair of eyes.</h2>
       <div role="table" aria-label="Where Maria fits against Google Flights and Hopper" class="cmp">
         <div role="row" class="cmp-row cmp-head">
           <span role="columnheader"></span>
@@ -246,33 +274,33 @@
 
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Effort</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>You have to remember to check.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>She checks so you don&rsquo;t have to.</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>You have to remember to check.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>She checks so you don&rsquo;t have to.</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">When you find out</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Only when you happen to look.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>The moment it&rsquo;s worth knowing.</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>Only when you happen to look.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>The moment it&rsquo;s worth knowing.</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Judgment</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>A number and a graph.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>Whether she'd take it, and why.</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>A number and a graph.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>Whether she'd take it, and why.</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Seller trust</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Listed without screening.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>Checked against ATOL, IATA and Trustpilot first.</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>Listed without screening.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>Checked against ATOL, IATA and Trustpilot first.</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Trip maths</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Round-trip fares, bags extra.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>One-ways, self-transfers and baggage totalled.</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>Round-trip fares, bags extra.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>One-ways, self-transfers and baggage totalled.</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Memory</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Every search starts fresh.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>She remembers the conversation you had.</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>Every search starts fresh.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>She remembers the conversation you had.</span>
         </div>
       </div>
     </section>
@@ -405,36 +433,7 @@
 
     <footer style="display: flex; flex-direction: column; gap: 30px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,.6);">
       <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">FAQ</h2>
-      <div style="display: flex; flex-wrap: wrap; gap: 18px;">
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">Is Maria a real person?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">No &mdash; she's a bot, built in London by someone who got tired of watching friends lose money to fake booking sites. She writes like a person because forms are miserable, not because she's pretending to be one.</span>
-        </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">Does a human ever see my messages?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Yes. Maria is run by one person, and your chats sit on her machine, so she can read them &mdash; that's how a beta gets fixed. They're never sold or shared, and the models that write Maria's replies don't train on them. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span>
-        </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">What if she's wrong?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">She might be. Prices move fast and airlines hide fees. Always confirm at booking &mdash; she gives you the link and the reasoning, you make the call.</span>
-        </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">Is it free?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta, and free for good on a basic number of watches. If paid tiers ever arrive, beta users get told first and keep beta terms.</span>
-        </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">How do I get in?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Leave your email. Requests are approved by hand, in small batches.</span>
-        </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">When does she reply?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages get answered in the morning.</span>
-        </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">What happens to my data?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours. Not sold, not shared. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span>
-        </div>
-      </div>
+      <div style="display: flex; flex-direction: column; gap: 30px; max-width: 640px;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #8a5a12;">About Maria</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is Maria a real person?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">No &mdash; she's a bot, built in London by someone who got tired of watching friends lose money to fake booking sites. She writes like a person because forms are miserable, not because she's pretending to be one.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Does a human ever see my messages?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Yes. Maria is run by one person, and your chats sit on her machine, so she can read them &mdash; that's how a beta gets fixed. They're never sold or shared, and the models that write Maria's replies don't train on them. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What if she's wrong?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">She might be. Prices move fast and airlines hide fees. Always confirm at booking &mdash; she gives you the link and the reasoning, you make the call.</span></div></div></div><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #8a5a12;">Using her</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is it free?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta, and free for good on a basic number of watches. If paid tiers ever arrive, beta users get told first and keep beta terms.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">How do I get in?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Leave your email. Requests are approved by hand, in small batches.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">When does she reply?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages get answered in the morning.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What happens to my data?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours. Not sold, not shared. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span></div></div></div></div>
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
         <svg viewBox="0 0 430 100" fill="none" role="img" aria-label="Ask Maria" style="height: 34px; width: auto;"><path d="M14 74L34 34l16 26 16-26 20 40" stroke="#241D38" stroke-width="9"></path><circle cx="86" cy="22" r="7" fill="#241D38"></circle><text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text></svg>
     <div style="display: flex; flex-direction: column; gap: 8px; max-width: 68ch;">
