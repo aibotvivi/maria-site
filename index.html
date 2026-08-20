@@ -456,6 +456,29 @@
       <div style="display: flex; flex-direction: column; gap: 30px; max-width: 640px;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f3d0e;">About Maria</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is Maria a real person?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">No &mdash; she's a bot, built in London by someone who got tired of watching friends lose money to fake booking sites. She writes like a person because forms are miserable, not because she's pretending to be one.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Does a human ever see my messages?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Yes. Maria is run by one person, and your chats sit on her machine, so she can read them &mdash; that's how a beta gets fixed. They're never sold or shared, and the models that write Maria's replies don't train on them. <a href="privacy.html" style="color:#6f3d0e;">Privacy</a>.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What if she's wrong?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">She might be. Prices move fast and airlines hide fees. Always confirm at booking &mdash; she gives you the link and the reasoning, you make the call.</span></div></div></div><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f3d0e;">Using her</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is it free?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta, and free for good on a basic number of watches. If paid tiers ever arrive, beta users get told first and keep beta terms.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">How do I get in?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Leave your email. Requests are approved by hand, in small batches.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">When does she reply?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages get answered in the morning.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What happens to my data?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours. Not sold, not shared. <a href="privacy.html" style="color:#6f3d0e;">Privacy</a>.</span></div></div></div></div>
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
         <svg viewBox="0 0 430 100" fill="none" role="img" aria-label="Ask Maria" style="height: 34px; width: auto;"><path d="M14 74L34 34l16 26 16-26 20 40" stroke="#241D38" stroke-width="9"></path><circle cx="86" cy="22" r="7" fill="#241D38"></circle><text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text></svg>
+    <!-- Updates list. Deliberately in the footer, not a section of its own:
+         the page has one job — get an invite requested — and a second email
+         box competing with that CTA costs more signups than a newsletter
+         gains. This is for the person who read to the bottom and is not ready
+         to join, which is a real but secondary audience. Same quiet
+         open-a-field pattern as the WhatsApp ask, so it costs nothing to
+         scroll past. -->
+    <div data-updates style="width: 100%; max-width: 460px; padding-bottom: 22px; margin-bottom: 4px; border-bottom: 1px solid rgba(120,80,50,.16);">
+      <button type="button" data-up-open style="min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 0; border: 0; background: none; cursor: pointer; font: inherit; font-size: 13px; color: #6f3d0e;">
+        <span aria-hidden="true">✉</span><span style="text-decoration: underline; text-underline-offset: 3px;">Not ready to join? Get occasional updates</span>
+      </button>
+
+      <form data-up-form hidden style="display: flex; flex-direction: column; gap: 10px; width: 100%; padding-top: 4px;">
+        <label for="up-email" style="width: 100%; font-size: 13px; line-height: 1.6; color: #5c4c45;">
+          A few emails a year on what Maria can do &mdash; no fares, no spam. Unsubscribe in one click.
+        </label>
+        <input id="up-email" type="email" name="email" required="required" autocomplete="email" maxlength="254" placeholder="you@example.com" style="width: 100%; min-height: 48px; padding: 12px 16px; border-radius: 999px; background: rgba(255,255,255,.72); border: 1px solid rgba(120,80,50,.32); font: inherit; font-size: 15px; color: #35283c;" />
+        <button type="submit" style="min-height: 48px; padding: 12px 20px; border-radius: 999px; background: rgba(255,255,255,.8); border: 1px solid rgba(169,98,27,.45); font: inherit; font-size: 15px; color: #6f3d0e; cursor: pointer;">Subscribe</button>
+      </form>
+
+      <p data-up-done hidden role="status" style="margin: 0; font-size: 13px; line-height: 1.6; color: #4e3f4a;"></p>
+    </div>
+
     <div style="display: flex; flex-direction: column; gap: 8px; max-width: 68ch;">
       <span style="font-size: 12px; font-weight: 400; line-height: 1.7; color: #584852;">
         Ask Maria is an information service, not a travel agent or booking site — she doesn't sell
@@ -493,7 +516,30 @@
      Same honesty rule as the invite form: with no endpoint configured there is
      nowhere to put an address, so it must NOT claim to have saved one. It
      hands over to email instead, which actually reaches her. */
-  var WA_ENDPOINT = "";        // same POST URL as request-invite.html, when there is one
+  var ML_ENDPOINT = "https://assets.mailerlite.com/jsonp/2587313/forms/196343745674741229/subscribe";
+
+  /* One way in to the list, shared by every form on this page.
+     Contract notes live in request-invite.html; the two that bite here:
+     form-encoded fields[...] names, and HTTP 200 even on rejection, so the
+     body has to be parsed rather than trusting r.ok.
+
+     CRITICAL — only ever pass the fields a form actually owns. MailerLite
+     UPDATES an existing subscriber rather than rejecting a duplicate, so
+     sending fields[dream]="" from a form that never asked for a destination
+     would blank the answer someone gave on the invite page. Silently, with
+     no error anywhere. Hence a whitelist per caller, never a blanket payload. */
+  function mlSubscribe(fields) {
+    var body = new URLSearchParams();
+    Object.keys(fields).forEach(function (k) { body.set("fields[" + k + "]", fields[k]); });
+    body.set("ml-submit", "1");
+    body.set("anticsrf", "true");
+    return fetch(ML_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString()
+    }).then(function (r) { return r.json(); })
+      .then(function (d) { if (!d || d.success !== true) throw new Error("rejected"); return d; });
+  }
 
   /* Local copy of the invite page's helper — index.html had none, and calling
      an undefined track() would have thrown inside the submit handler and
@@ -533,32 +579,64 @@
       if (!email) return;
       track("whatsapp-waitlist");
 
-      if (!WA_ENDPOINT) {
-        finish("There&rsquo;s nowhere to store that yet, so it hasn&rsquo;t been saved. " +
-               'Email <a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist" ' +
-               'style="color:#6f3d0e;">hello@askmaria.app</a> and she&rsquo;ll add you herself.');
-        return;
-      }
-
       var btn = form.querySelector('button[type="submit"]');
       if (btn) { btn.disabled = true; btn.textContent = "One moment…"; }
 
-      fetch(WA_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
-        body: JSON.stringify({
-          email: email,
-          wants_whatsapp: true,
-          source: "askmaria.app/whatsapp-waitlist"
-        })
-      }).then(function (r) {
-        if (!r.ok) throw new Error("HTTP " + r.status);
+      // email + the flag only: this form never asked where they want to fly,
+      // so it must not touch fields[dream] or fields[consent].
+      mlSubscribe({ email: email, wants_whatsapp: "yes" }).then(function () {
         finish("Noted &mdash; you&rsquo;ll get one email if Maria arrives on WhatsApp.");
       }).catch(function () {
         finish("That didn&rsquo;t send, sorry &mdash; nothing was saved. " +
                'Email <a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist" ' +
                'style="color:#6f3d0e;">hello@askmaria.app</a> instead.');
       });
+    });
+  })();
+
+  (function () {
+    var box = document.querySelector("[data-updates]");
+    if (!box) return;
+    var openBtn = box.querySelector("[data-up-open]");
+    var form    = box.querySelector("[data-up-form]");
+    var done    = box.querySelector("[data-up-done]");
+
+    openBtn.addEventListener("click", function () {
+      openBtn.hidden = true;
+      form.hidden = false;
+      form.querySelector("input[type=email]").focus();
+    });
+
+    function finish(html) {
+      form.hidden = true;
+      done.innerHTML = html;
+      done.hidden = false;
+      done.setAttribute("tabindex", "-1");
+      done.focus({ preventScroll: true });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = String(new FormData(form).get("email") || "").trim();
+      if (!email) return;
+      track("updates-subscribe");
+
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = "One moment…"; }
+
+      /* email + consent only. Pressing Subscribe IS the consent, so recording
+         it is right — but this form never asked where they want to fly, so
+         fields[dream] is not passed and an existing answer survives. */
+      mlSubscribe({ email: email, consent: "yes", consent_version: "2026-08-20" })
+        .then(function () {
+          finish("You&rsquo;re on the list &mdash; check your inbox for a confirmation link.");
+        })
+        .catch(function () {
+          if (btn) { btn.disabled = false; btn.textContent = "Subscribe"; }
+          finish("That didn&rsquo;t send, sorry &mdash; nothing was saved. " +
+                 'Email <a href="mailto:hello@askmaria.app?subject=Updates" ' +
+                 'style="color:#6f3d0e;">hello@askmaria.app</a> instead.');
+        });
     });
   })();
 
