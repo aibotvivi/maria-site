@@ -112,8 +112,74 @@
     /* .cmp-tag stays display:none from the base rule — the header names each
        column once, so the per-row repeats have nothing left to do. */
   }
+
+  /* ── Scroll motion ──────────────────────────────────────────────────────
+     Hard rule here: NO effect may hide content, in any failure mode.
+
+     The obvious build — fade sections in from opacity 0 — was written and
+     then thrown away. I could not get a trustworthy reading of it in any
+     environment available to me (a backgrounded tab freezes the animation
+     clock and starves IntersectionObserver; headless with virtual time gave
+     inconsistent results), and twice reproduced the state where every section
+     below the hero rendered invisible. "Content appears only if an animation
+     I could not test fires" is not a trade worth making on a live page.
+
+     So nothing here animates opacity. If the observer never runs, the script
+     errors, JS is off, or motion is reduced, the worst case is content
+     sitting 16px lower than it will settle and a gold accent line never
+     drawing over the rule that is already there. Both are invisible as
+     defects. The motion is a bonus on top of a complete page, never a
+     precondition for one. */
+  .motion .sec + .sec > * {
+    transform: translateY(16px);
+    transition: transform .65s cubic-bezier(.22,.61,.36,1);
+  }
+  .motion .sec + .sec.in > * { transform: none; }
+  .motion .sec + .sec.in > *:nth-child(2) { transition-delay: .08s; }
+  .motion .sec + .sec.in > *:nth-child(3) { transition-delay: .15s; }
+
+  /* The rule you already have stays put and stays visible. This draws a gold
+     line left-to-right OVER it as the section arrives — a route being traced,
+     echoing the dotted flight paths. If it never draws you simply see the
+     ordinary rule. */
+  .motion .sec + .sec { position: relative; }
+  .motion .sec + .sec::before {
+    content: ""; position: absolute; left: 0; right: 0; top: -1px;
+    border-top: 1px solid rgba(111,61,14,.45);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform .9s cubic-bezier(.22,.61,.36,1);
+  }
+  .motion .sec + .sec.in::before { transform: scaleX(1); }
+
+  /* The dotted flight paths drift along their own route as you scroll. Pure
+     decoration on a scroll-timeline: inert where unsupported, and nothing
+     depends on it. */
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) {
+      .flightpath path {
+        animation-name: trail;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: scroll(root block);
+      }
+    }
+  }
+  @keyframes trail { to { stroke-dashoffset: -180; } }
+
+  /* The three blurred blobs drift on 26-40s loops forever, and blur on
+     elements this large is the most expensive thing on the page. On a phone
+     they read as a static wash anyway, so stopping them pays for the scroll
+     motion rather than stacking on top of it. */
+  @media (max-width: 620px) {
+    .ambient > div { animation: none !important; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+    /* Reduced motion never gets .motion added at all; assert the resting
+       state anyway so no future edit can make content depend on animation. */
+    .sec + .sec > * { opacity: 1 !important; transform: none !important; }
+    .sec + .sec::before { display: none !important; }
   }
 </style>
 </head>
@@ -138,16 +204,16 @@
   @keyframes glide { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
 </style>
 </helmet>
-<div style="position: relative; overflow: hidden; min-height: 100vh; font-family: 'Space Grotesk', system-ui, sans-serif; color: #35283c; background: radial-gradient(120% 80% at 12% 4%, #d9c2ef 0%, rgba(217,194,239,0) 58%), radial-gradient(110% 70% at 88% 10%, #f3c3d6 0%, rgba(243,195,214,0) 60%), radial-gradient(130% 90% at 78% 52%, #f7c79b 0%, rgba(247,199,155,0) 62%), radial-gradient(120% 80% at 20% 92%, #f0ae74 0%, rgba(240,174,116,0) 60%), linear-gradient(170deg, #e6d5f4 0%, #f6dcd6 45%, #f6c99e 78%, #eab27b 100%);">
+<div style="position: relative; overflow: clip; min-height: 100vh; font-family: 'Space Grotesk', system-ui, sans-serif; color: #35283c; background: radial-gradient(120% 80% at 12% 4%, #d9c2ef 0%, rgba(217,194,239,0) 58%), radial-gradient(110% 70% at 88% 10%, #f3c3d6 0%, rgba(243,195,214,0) 60%), radial-gradient(130% 90% at 78% 52%, #f7c79b 0%, rgba(247,199,155,0) 62%), radial-gradient(120% 80% at 20% 92%, #f0ae74 0%, rgba(240,174,116,0) 60%), linear-gradient(170deg, #e6d5f4 0%, #f6dcd6 45%, #f6c99e 78%, #eab27b 100%);">
 
-  <div style="position: absolute; inset: -10% -20%; pointer-events: none; opacity: .85;">
+  <div class="ambient" style="position: absolute; inset: -10% -20%; pointer-events: none; opacity: .85;">
     <div style="position: absolute; left: 4%; top: 8%; width: 46vw; height: 46vw; border-radius: 50%; background: radial-gradient(circle at 40% 40%, rgba(255,255,255,.85), rgba(255,255,255,0) 66%); filter: blur(14px); animation: drift 26s ease-in-out infinite;"></div>
     <div style="position: absolute; right: 2%; top: 26%; width: 54vw; height: 40vw; border-radius: 50%; background: radial-gradient(circle at 60% 45%, rgba(255,255,255,.7), rgba(255,255,255,0) 64%); filter: blur(18px); animation: drift 34s ease-in-out infinite reverse;"></div>
     <div style="position: absolute; left: 18%; bottom: 4%; width: 60vw; height: 34vw; border-radius: 50%; background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.6), rgba(255,255,255,0) 68%); filter: blur(22px); animation: drift 40s ease-in-out infinite;"></div>
   </div>
 
   <svg viewBox="0 0 800 1400" preserveAspectRatio="none" aria-hidden="true" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; opacity: .38;">
-    <g stroke="#6b4a2a" fill="none" stroke-linecap="round">
+    <g class="flightpath" stroke="#6b4a2a" fill="none" stroke-linecap="round">
       <path d="M-30 340 C 160 150, 520 230, 850 70" stroke-width="1.6" stroke-dasharray="2 12" opacity=".6"></path>
       <path d="M-30 760 C 210 680, 470 860, 850 690" stroke-width="1.3" stroke-dasharray="2 13" opacity=".42"></path>
       <path d="M-30 1180 C 250 1090, 560 1230, 850 1060" stroke-width="1.3" stroke-dasharray="2 13" opacity=".34"></path>
@@ -659,6 +725,42 @@
 })();
 </script>
 
+<script>
+/* Section reveal. Nothing is hidden until this script has run and confirmed
+   motion is wanted: the CSS that sets opacity:0 is scoped to .motion, which
+   only this line adds. No JS, a script error, or Reduce Motion switched on
+   all land on the same safe outcome — a static, fully visible page. */
+(function () {
+  if (!("IntersectionObserver" in window)) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  var sections = document.querySelectorAll("main#main > section");
+  if (sections.length < 2) return;
+  document.documentElement.classList.add("motion");
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      e.target.classList.add("in");
+      io.unobserve(e.target);      // reveal once; re-animating on every pass
+    });                            // back up the page is a tic, not an effect
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.05 });
+
+  for (var i = 1; i < sections.length; i++) io.observe(sections[i]);
+
+  /* Anything already on screen at load reveals immediately rather than
+     waiting for a scroll that may never come on a short viewport. */
+  requestAnimationFrame(function () {
+    for (var i = 1; i < sections.length; i++) {
+      var r = sections[i].getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) {
+        sections[i].classList.add("in");
+        io.unobserve(sections[i]);
+      }
+    }
+  });
+})();
+</script>
 <script src="/analytics.js" defer></script>
 </body>
 </html>
