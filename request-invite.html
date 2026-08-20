@@ -98,7 +98,7 @@
       </div>
     </header>
 
-    <main id="main">
+    <main id="main" style="display: flex; flex-direction: column; gap: clamp(34px, 6vw, 46px);">
 
     <div data-panel="form">
       <div style="display: flex; flex-direction: column; gap: clamp(28px, 5vw, 38px);">
@@ -251,7 +251,7 @@
      Why double opt-in matters here beyond good manners: the address can be
      pre-filled from ?email= in the URL, so without a confirm step anyone
      could sign someone else up. */
-  var SIGNUP_ENDPOINT = "";
+  var SIGNUP_ENDPOINT = "https://assets.mailerlite.com/jsonp/2587313/forms/196343745674741229/subscribe";
 
   /* Bumped whenever the consent wording below the button changes, so a
      stored consent record says which sentence was actually agreed to —
@@ -381,23 +381,41 @@
     var btn = form.querySelector('button[type="submit"]');
     if (btn) { btn.disabled = true; btn.textContent = "Sending\u2026"; }
 
+    /* MailerLite's embedded-form endpoint. Contract established by probing it
+       directly on 2026-08-20, not from the docs:
+         - form-encoded, not JSON, with fields[...] names
+         - it returns Access-Control-Allow-Origin: *, so the browser can READ
+           the reply. That is the thing that lets this page tell success from
+           failure honestly, rather than the opaque no-cors guesswork the
+           /jsonp/ path in the URL implies
+         - replies {"success":true} or {"success":false,"errors":{...}}
+         - HTTP 200 even on rejection, so r.ok proves nothing; parse the body
+         - rate limited (x-ratelimit-limit: 10)
+       Deliberately no MailerLite JavaScript: their webforms.min.js would put
+       a third-party script on the page and drag signup behind the cookie
+       banner. Posting directly keeps the form cookie-free.
+
+       WARNING: a fields[...] key with no matching entry under Subscribers >
+       Fields is accepted and silently DISCARDED — no error is returned. So
+       dream and consent only land if those custom fields exist; that has to
+       be proven by a real submission, never by the absence of an error. */
+    var body = new URLSearchParams();
+    body.set("fields[email]", email);
+    body.set("fields[dream]", dream);
+    body.set("fields[consent]", consent ? "yes" : "no");
+    body.set("fields[consent_version]", CONSENT_VERSION);
+    body.set("fields[wants_whatsapp]", wantsWhatsapp ? "yes" : "no");
+    body.set("ml-submit", "1");
+    body.set("anticsrf", "true");
+
     fetch(SIGNUP_ENDPOINT, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({
-        email: email,
-        dream: dream,
-        consent: consent,
-        /* What they agreed to, and when — the part that makes a consent
-           record worth having if anyone ever asks. */
-        consent_text: consent ? CONSENT_TEXT : "",
-        consent_version: CONSENT_VERSION,
-        consent_at: new Date().toISOString(),
-        wants_whatsapp: wantsWhatsapp,
-        source: "askmaria.app/request-invite"
-      })
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString()
     }).then(function (r) {
-      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }).then(function (data) {
+      if (!data || data.success !== true) throw new Error("rejected");
       track("invite-requested");
       succeed(email, dream);
     }).catch(function () {
