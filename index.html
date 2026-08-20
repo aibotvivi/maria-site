@@ -66,43 +66,30 @@
   .cmp-src { display: flex; align-items: center; gap: 7px; font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; }
   .cmp-tag { display: none; }
   @media (max-width: 620px) {
-    /* Too narrow for three real columns, but "them" and "Maria" still belong
-       side by side — that's the entire point of a comparison. The row label
-       becomes a small heading spanning both, with the two answers as a pair
-       of cards underneath, each carrying its own logo since the shared
-       header row is gone. */
-    .cmp-head { display: none; }
+    /* Keep the real table shape on narrow screens: the row label stays in its
+       own left column, and the two sources are named ONCE in the header row.
+       The previous mobile treatment stacked the label above a pair of cards
+       and reprinted "Google Flights & Hopper" and "Ask Maria" on every row —
+       seven times each, which reads as noise rather than orientation once
+       you have seen the header. Everything just gets tighter instead. */
     .cmp-row {
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas: "lab lab" "them maria";
-      row-gap: 8px;
+      grid-template-columns: minmax(54px, 76px) minmax(0, 1fr) minmax(0, 1fr);
       column-gap: 8px;
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(90,60,50,.13);
     }
-    .cmp-row:last-child { border-bottom: 0; }
-    .cmp-row > * { border-bottom: 0; padding: 0; }
-    .cmp-lab { grid-area: lab; }
-    .cmp-them {
-      grid-area: them;
-      background: rgba(120,90,70,.07);
-      border-radius: 12px;
-      padding: 10px 11px;
-    }
-    .cmp-maria {
-      grid-area: maria;
-      border-radius: 12px !important;
-      padding: 10px 11px;
-    }
-    .cmp-tag {
-      display: flex; align-items: center; gap: 5px;
-      font-family: 'DM Mono', ui-monospace, monospace; font-size: 10px;
-      letter-spacing: .04em; text-transform: uppercase; color: #7a6555;
-      margin-bottom: 6px;
-    }
-    .cmp-maria .cmp-tag { color: #8a5a12; }
-    .cmp-tag img { width: 13px; height: 13px; border-radius: 3px; flex: 0 0 auto; }
-    .cmp-tag span { white-space: nowrap; }
+    .cmp-row > * { padding: 10px 0; }
+    /* The label column is too narrow for one line of "WHEN YOU FIND OUT", so
+       it is allowed to wrap: two short lines beat a squeezed single one. */
+    .cmp-lab { font-size: 10px; letter-spacing: .02em; line-height: 1.35; }
+    .cmp-them, .cmp-maria { font-size: 13px; line-height: 1.45; }
+    .cmp-maria { padding-left: 9px; padding-right: 9px; }
+    /* Header wraps rather than overflowing; the logos carry the recognition
+       at this size, so the words can afford to break. */
+    .cmp-src { font-size: 10px; letter-spacing: .02em; gap: 5px; flex-wrap: wrap; line-height: 1.3; }
+    .cmp-src img { width: 14px !important; height: 14px !important; }
+    .cmp-head > * { padding-bottom: 8px; }
+    .cmp-head .cmp-maria { padding-top: 8px; }
+    /* .cmp-tag stays display:none from the base rule — the header names each
+       column once, so the per-row repeats have nothing left to do. */
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
