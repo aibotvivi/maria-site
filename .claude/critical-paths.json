@@ -1,0 +1,54 @@
+{
+  "baseUrl": "https://askmaria.app",
+  "paths": [
+    {
+      "name": "request-invite",
+      "description": "The conversion path: landing page -> email carried to step 2 -> submit -> told what happens next",
+      "persona": "genz-digital-native",
+      "priority": "critical",
+      "steps": [
+        { "action": "navigate", "to": "/" },
+        { "action": "task", "do": "enter an email in the hero form and submit" },
+        { "action": "verify", "url": "/request-invite.html" },
+        { "action": "verify", "element": "email carried across and prefilled" },
+        { "action": "task", "do": "add a dream destination and submit the invite request" },
+        { "action": "verify", "element": "confirmation that the request was received" }
+      ]
+    },
+    {
+      "name": "existing-invite-to-telegram",
+      "description": "Someone who already has an invite can reach the bot",
+      "persona": "millennial",
+      "priority": "critical",
+      "steps": [
+        { "action": "navigate", "to": "/" },
+        { "action": "task", "do": "find the link for people who already have an invite" },
+        { "action": "verify", "element": "link points at the live Telegram bot" }
+      ]
+    },
+    {
+      "name": "legal-and-contact",
+      "description": "Privacy, terms and a working contact address are reachable from any page",
+      "persona": "boomer-tech-averse",
+      "priority": "high",
+      "steps": [
+        { "action": "navigate", "to": "/" },
+        { "action": "task", "do": "reach the privacy notice from the footer" },
+        { "action": "task", "do": "reach the terms from the footer" },
+        { "action": "verify", "element": "contact email address" }
+      ]
+    },
+    {
+      "name": "cookie-consent",
+      "description": "GA must not load before consent, and a refusal must stick",
+      "persona": "privacy-conscious",
+      "priority": "high",
+      "steps": [
+        { "action": "navigate", "to": "/" },
+        { "action": "verify", "element": "consent banner with an equal-weight decline" },
+        { "action": "verify", "element": "no Google Analytics before a choice is made" },
+        { "action": "task", "do": "decline, reload, and confirm the refusal is remembered" }
+      ]
+    }
+  ]
+}
