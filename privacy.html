@@ -51,13 +51,23 @@ question about your data, or to exercise any right below, email
       nowhere else.</li>
   <li><strong>Where you're dreaming of flying</strong> (optional) — to decide who to
       admit next and to make the fares you're sent relevant.</li>
-  <li><strong>Anonymous visit counts</strong> — we use cookieless analytics
+  <li><strong>Anonymous visit counts</strong> — cookieless analytics
       (page views, referrer, country, device type). No cookies are set, no
       advertising identifiers are used, and nothing links a visit to you as a
       person. Lawful basis: legitimate interest in knowing whether the site
       works.</li>
+  <li><strong>Google Analytics</strong> — <em>only if you agree to it.</em> It
+      sets cookies and records which pages you visit, roughly where you are,
+      and what device you use, so we can see which parts of the site people
+      actually read. Lawful basis: your consent. It does not run until you
+      press Allow, and if you press No thanks it is never loaded at all.</li>
 </ul>
-<p>This site sets no cookies of its own and runs no advertising trackers.</p>
+<p>Those are the only two, and this site runs no advertising trackers. The
+Google Analytics cookies are the only cookies set here — you choose whether
+they are, and you can change your mind at any time with the
+<a href="#" onclick="askMariaCookieSettings();return false;">Cookies</a> link
+in the footer of any page. We also store one small item on your own device to
+remember that choice; it never leaves your browser.</p>
 
 <h3 style="font-size:19px;font-weight:500;margin:26px 0 6px;">In the Telegram bot</h3>
 <ul>
@@ -92,7 +102,12 @@ necessarily involves: <strong>Telegram</strong> (which carries the messages),
 your messages are processed to produce an answer), our <strong>email
 provider</strong> (which holds invite-form addresses), and our
 <strong>cookieless analytics provider</strong> (which sees anonymous visit
-counts only), and <strong>Google</strong> (this site loads its web fonts and a couple of small brand icons from Google's servers, which means Google sees your IP address when a page loads — no cookies are set by us and nothing identifies you to them). Flight prices come from public sources such as Google Flights;
+counts only), and <strong>Google</strong> (this site loads its web fonts and a
+couple of small brand icons from Google's servers, which means Google sees your
+IP address when a page loads; and, <em>if you agreed to it</em>, Google
+Analytics receives your visit data. Google is based in the United States, so
+that data may be processed outside the UK under the safeguards Google
+publishes). Flight prices come from public sources such as Google Flights;
 your identity is not sent to them. Affiliate attribution is handled by the
 seller you choose to visit, as described above.</p>
 
@@ -105,15 +120,8 @@ deleted, withdraw consent at any time, and object to how it is used. Every
 marketing email has a one-click unsubscribe. If you are unhappy with the
 response, you can complain to the Information Commissioner's Office at
 <a href="https://ico.org.uk">ico.org.uk</a>.</p>
-<p style="font-size:13px;color:#6b5c66;margin-top:34px;">&copy; 2026 Ask Maria &middot; Operated by AskMaria.app, London, United Kingdom &middot; <a href="mailto:hello@askmaria.app">hello@askmaria.app</a></p>
+<p style="font-size:13px;color:#6b5c66;margin-top:34px;">&copy; 2026 Ask Maria &middot; Operated by AskMaria.app, London, United Kingdom &middot; <a href="mailto:hello@askmaria.app">hello@askmaria.app</a> &middot; <a href="#" onclick="askMariaCookieSettings();return false;">Cookies</a></p>
 <a class="back" href="index.html">← Back to Maria</a>
 </div>
-<!-- ── Analytics: GoatCounter (cookieless — no banner needed) ─────────────
-     ACTIVATE ON PUBLISH: create a free account at goatcounter.com, pick a
-     code (e.g. askmaria), replace YOUR-CODE below and delete the comment
-     markers around the script tag. Cookieless = no consent popup required;
-     the privacy page already describes exactly this setup.
-<script data-goatcounter="https://YOUR-CODE.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-──────────────────────────────────────────────────────────────────────── -->
+<script src="/analytics.js" defer></script>
 </body></html>
