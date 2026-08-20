@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ask Maria — like having a friend who's brilliant at finding flights</title>
-<meta name="description" content="Maria lives in Telegram. Tell her where you're dreaming of going, in plain English, and she watches the fares — then tells you what she'd actually do about them. When one's worth taking, she sends you a direct link to book with the airline or a seller she's checked. Invite-only beta.">
+<meta name="description" content="A Telegram bot that watches flight prices twice a day, screens sellers against ATOL and Trustpilot, and tells you when to book. Invite-only beta.">
 <link rel="canonical" href="https://askmaria.app/">
 
 <meta property="og:type" content="website">
@@ -38,9 +38,11 @@
      answers sit next to each other on one line instead of the label eating a
      row of its own and pushing the cells apart. */
   .cmp { display: flex; flex-direction: column; max-width: 800px; }
+  /* 140px, not 112: the longest row label is WHEN YOU FIND OUT, which needs
+     134px in DM Mono at 12px with .06em tracking. Shrink this and it wraps. */
   .cmp-row {
     display: grid;
-    grid-template-columns: minmax(66px, 112px) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(66px, 140px) minmax(0, 1fr) minmax(0, 1fr);
     column-gap: clamp(10px, 1.5vw, 16px);
     /* stretch, not baseline: cells carry their own rules, so unequal heights
        would leave the three underlines at three different levels. */
@@ -142,7 +144,7 @@
         <text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text>
       </svg>
       <div style="display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.42); border: 1px solid rgba(255,255,255,.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .10em; text-transform: uppercase; color: #5a4433;">
-        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>Invite-only beta
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>A bot, not a person &middot; Invite-only beta
       </div>
     </header>
 
@@ -150,15 +152,23 @@
       <div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 22px; max-width: 520px;">
         <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(36px, 7.02vw, 59px); line-height: 1.02; letter-spacing: -.015em; color: #2a1f30; text-wrap: pretty;">Like having a friend who's brilliant at finding flights.</h1>
         <p style="margin: 0; font-size: clamp(17px, 2.4vw, 20px); line-height: 1.6; font-weight: 400; color: #4e3f4a; max-width: 44ch; text-wrap: pretty;">Maria lives in Telegram. Tell her where you're dreaming of going, in plain English, and she watches the fares — then tells you what she'd actually do about them. When one's worth taking, she sends you a direct link to book with the airline or a seller she's checked.</p>
+        <p style="margin: 0; font-size: clamp(15px, 2vw, 17px); line-height: 1.6; font-weight: 400; color: #5c4c45; max-width: 46ch; text-wrap: pretty;">Maria&rsquo;s a bot. That&rsquo;s the point &mdash; she&rsquo;ll check the same route twice a day for four months without getting bored, which no friend of yours will do.</p>
         <div style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; width: 100%;">
           <div data-panel="form-top" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
-            <form data-signup="top" action="request-invite.html" method="get" style="display: flex; flex-wrap: wrap; gap: 14px; width: 100%; max-width: 460px;">
+            <form id="signup-top" data-signup="top" action="request-invite.html" method="get" style="display: flex; flex-wrap: wrap; gap: 14px; width: 100%; max-width: 460px;">
               <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="flex: 1 1 200px; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
               <button type="submit" style="flex: 1 1 180px; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
                 <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
               </button>
             </form>
-            <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45; max-width: 46ch;">Access is invite-only. Leave your email and she'll send a single-use link when a spot opens — approved personally, in small batches.</span>
+            <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45; max-width: 46ch;">Invites go out in small batches on purpose: while Maria is learning, every new watch gets checked by hand, and that doesn&rsquo;t scale past a handful a week yet. Leave your email and she&rsquo;ll send a single-use link when a spot opens.</span>
+            <div style="display: flex; flex-direction: column; gap: 10px; max-width: 46ch; padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,.38); border: 1px solid rgba(255,255,255,.6);">
+              <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;"><strong style="font-weight: 500;">No Telegram?</strong> It&rsquo;s free, takes about thirty seconds, and Maria is the only thing you&rsquo;ll need it for. <a href="https://telegram.org/" target="_blank" rel="noopener" style="color:#7d4510;">How to install &rarr;</a></span>
+              <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">
+                <input type="checkbox" name="whatsapp" form="signup-top" style="width: 18px; height: 18px; margin: 2px 0 0; flex: 0 0 auto; accent-color: #c9761c;" />
+                <span>Tell me when she&rsquo;s on WhatsApp instead</span>
+              </label>
+            </div>
           </div>
           <div data-panel="sent-top" hidden>
             <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 460px; padding: 20px 22px; border-radius: 24px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
@@ -213,6 +223,7 @@
           <span aria-hidden="true" style="font-size: 22px;">🛡️</span>
           <h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: 22px; color: #2c2131;">She checks the seller, not just the price</h3>
           <p style="margin: 0; font-size: 15px; line-height: 1.65; font-weight: 400; color: #4e3f4a;">Screens cheap fares against ATOL/IATA accreditation and Trustpilot before recommending. She won't headline a scammy travel site.</p>
+          <p style="margin: 8px 0 0; padding-top: 12px; border-top: 1px solid rgba(120,80,50,.18); font-size: 13.5px; line-height: 1.6; font-weight: 400; color: #5a4a52;"><strong style="font-weight: 500; color: #46384a;">She earns a commission on some bookings &mdash; and she'll still tell you when the cheap one's a scam.</strong> Screening happens before she knows who pays. If the honest answer is &ldquo;book direct with the airline&rdquo;, that's the answer you get.</p>
         </div>
         <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
           <span aria-hidden="true" style="font-size: 22px;">🧾</span>
@@ -239,14 +250,14 @@
         </div>
 
         <div role="row" class="cmp-row">
-          <span role="rowheader" class="cmp-lab">Breadth</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Every route and airline at once.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>The routes you asked her to watch.</span>
+          <span role="rowheader" class="cmp-lab">Effort</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>You have to remember to check.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>She checks so you don&rsquo;t have to.</span>
         </div>
         <div role="row" class="cmp-row">
-          <span role="rowheader" class="cmp-lab">Speed</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>The whole calendar in a second.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>Twice a day, and she comes to you.</span>
+          <span role="rowheader" class="cmp-lab">When you find out</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag">Google Flights &amp; Hopper</span>Only when you happen to look.</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag">Ask Maria</span>The moment it&rsquo;s worth knowing.</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Judgment</span>
@@ -317,28 +328,44 @@
     </section>
 
 
-    <section style="display: flex; flex-wrap: wrap; gap: clamp(28px, 5vw, 44px);">
-      <figure style="flex: 1 1 320px; margin: 0; display: flex; flex-direction: column; gap: 20px; padding-left: clamp(14px, 3vw, 20px); border-left: 2px solid rgba(185,120,31,.45);">
-        <blockquote style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 300; font-style: italic; font-size: clamp(20px, 3.38vw, 26px); line-height: 1.35; letter-spacing: -.005em; color: #2a1f30; text-wrap: pretty;">"Maria found my London–Hong Kong round trip for £386 — and told me postponing a week would cost £32 more, so I stopped second-guessing."</blockquote>
-        <figcaption style="display: flex; align-items: center; gap: 13px;">
-          <span style="flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Newsreader, Georgia, serif; font-size: 17px; color: #fff; background: linear-gradient(140deg, #c9a4e6, #e8a13f); box-shadow: inset 0 1px 0 rgba(255,255,255,.55);">🇭🇰</span>
-          <span style="display: flex; flex-direction: column; gap: 2px;">
-            <span style="font-size: 15px; color: #2f2436;">London → Hong Kong, £386 return</span>
-            <span style="font-size: 13px; font-weight: 400; color: #5a4a52;">Found while building Maria</span>
-          </span>
-        </figcaption>
-      </figure>
+    <section style="display: flex; flex-direction: column; gap: 22px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;">
+        <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">Recent finds</h2>
+        <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #6f5a4a;">From the beta</span>
+      </div>
 
-      <figure style="flex: 1 1 320px; margin: 0; display: flex; flex-direction: column; gap: 20px; padding-left: clamp(14px, 3vw, 20px); border-left: 2px solid rgba(185,120,31,.45);">
-        <blockquote style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 300; font-style: italic; font-size: clamp(20px, 3.38vw, 26px); line-height: 1.35; letter-spacing: -.005em; color: #2a1f30; text-wrap: pretty;">"She caught that the 1-stop 'cheaper' fare cost more than the nonstop once a checked bag was added."</blockquote>
-        <figcaption style="display: flex; align-items: center; gap: 13px; margin-top: auto;">
-          <span style="flex: 0 0 auto; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Newsreader, Georgia, serif; font-size: 17px; color: #fff; background: linear-gradient(140deg, #f0b8cf, #c9761c); box-shadow: inset 0 1px 0 rgba(255,255,255,.55);">🧳</span>
-          <span style="display: flex; flex-direction: column; gap: 2px;">
-            <span style="font-size: 15px; color: #2f2436;">The bag-fee catch</span>
-            <span style="font-size: 13px; font-weight: 400; color: #5a4a52;">Found while building Maria</span>
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; max-width: 800px;">
+        <li style="display: grid; grid-template-columns: minmax(58px, 76px) minmax(0, 1fr); column-gap: clamp(12px, 2vw, 20px); padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);">
+          <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #6f5a4a; padding-top: 2px;">12 Aug</span>
+          <span style="display: flex; flex-direction: column; gap: 4px;">
+            <span style="font-size: 16px; font-weight: 500; color: #2f2436;">London &rarr; Hong Kong, &pound;386 return</span>
+            <span style="font-size: 15px; font-weight: 400; line-height: 1.55; color: #52434c;">Flagged that postponing a week would cost &pound;32 more. Booked the original.</span>
           </span>
-        </figcaption>
-      </figure>
+        </li>
+        <li style="display: grid; grid-template-columns: minmax(58px, 76px) minmax(0, 1fr); column-gap: clamp(12px, 2vw, 20px); padding: 16px 0;">
+          <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #6f5a4a; padding-top: 2px;">Jul</span>
+          <span style="display: flex; flex-direction: column; gap: 4px;">
+            <span style="font-size: 16px; font-weight: 500; color: #2f2436;">The bag-fee catch</span>
+            <span style="font-size: 15px; font-weight: 400; line-height: 1.55; color: #52434c;">A 1-stop fare advertised as cheaper cost more than the nonstop once a checked bag was added.</span>
+          </span>
+        </li>
+
+        <!-- ADD A REJECTED FIND HERE — the single most valuable entry on this
+             page, because it proves the screening is real rather than
+             decoration. It has to be one that actually happened; a plausible
+             invented one would be a fabricated claim about the service. Shape:
+
+        <li style="display: grid; grid-template-columns: minmax(58px, 76px) minmax(0, 1fr); column-gap: clamp(12px, 2vw, 20px); padding: 16px 0;">
+          <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #6f5a4a; padding-top: 2px;">DATE</span>
+          <span style="display: flex; flex-direction: column; gap: 4px;">
+            <span style="font-size: 16px; font-weight: 500; color: #2f2436;">ROUTE &mdash; <em style="font-style: italic; font-weight: 400;">didn't recommend</em></span>
+            <span style="font-size: 15px; font-weight: 400; line-height: 1.55; color: #52434c;">WHY SHE PASSED.</span>
+          </span>
+        </li>
+        -->
+      </ul>
+
+      <p style="margin: 0; font-size: 13.5px; font-weight: 400; line-height: 1.6; color: #5a4a52;">Real watches from the beta, found by Maria while she was being built &mdash; not customer reviews. Prices were correct when found and will have moved since.</p>
     </section>
 
     <section style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 46px 24px; border-radius: 34px; background: linear-gradient(150deg, rgba(255,255,255,.46), rgba(247,205,164,.4)); border: 1px solid rgba(255,255,255,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); text-align: center;">
@@ -365,16 +392,32 @@
     <footer style="display: flex; flex-direction: column; gap: 30px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,.6);">
       <div style="display: flex; flex-wrap: wrap; gap: 18px;">
         <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">Is Maria a real person?</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">No &mdash; she's a bot, built in London by someone who got tired of watching friends lose money to fake booking sites. She writes like a person because forms are miserable, not because she's pretending to be one.</span>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">Does a human ever see my messages?</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Yes. Maria is run by one person, and your chats sit on her machine, so she can read them &mdash; that's how a beta gets fixed. They're never sold or shared, and the models that write Maria's replies don't train on them. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">What if she's wrong?</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">She might be. Prices move fast and airlines hide fees. Always confirm at booking &mdash; she gives you the link and the reasoning, you make the call.</span>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
           <span style="font-size: 15px; color: #2f2436;">Is it free?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta.</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta, and free for good on a basic number of watches. If paid tiers ever arrive, beta users get told first and keep beta terms.</span>
         </div>
         <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
           <span style="font-size: 15px; color: #2f2436;">How do I get in?</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Message her. Requests are approved personally.</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Leave your email. Requests are approved by hand, in small batches.</span>
         </div>
-        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;"><span style="font-size: 15px; color: #2f2436;">When does she reply?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages are answered in the morning &mdash; she's in beta, not a call centre.</span></div><div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
-          <span style="font-size: 15px; color: #2f2436;">Privacy</span>
-          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours alone.</span>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">When does she reply?</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages get answered in the morning.</span>
+        </div>
+        <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
+          <span style="font-size: 15px; color: #2f2436;">What happens to my data?</span>
+          <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours. Not sold, not shared. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span>
         </div>
       </div>
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
@@ -391,7 +434,7 @@
         <a href="mailto:hello@askmaria.app" style="color:#7d4510;">hello@askmaria.app</a> &middot;
         <a href="privacy.html" style="color:#7d4510;">Privacy</a> &middot;
         <a href="terms.html" style="color:#7d4510;">Terms</a> &middot;
-        <a href="#" onclick="askMariaCookieSettings();return false;" style="color:#7d4510;">Cookies</a>
+        <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#7d4510;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
       </span>
       <span style="font-size: 12px; font-weight: 400; color: #6b5c66;">
         &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#7d4510;">@AskMariaTravelBot</a>

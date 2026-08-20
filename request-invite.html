@@ -194,7 +194,7 @@
         <a href="mailto:hello@askmaria.app" style="color:#7d4510;">hello@askmaria.app</a> &middot;
         <a href="privacy.html" style="color:#7d4510;">Privacy</a> &middot;
         <a href="terms.html" style="color:#7d4510;">Terms</a> &middot;
-        <a href="#" onclick="askMariaCookieSettings();return false;" style="color:#7d4510;">Cookies</a>
+        <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#7d4510;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
       </span>
       <span style="font-size: 12px; font-weight: 400; color: #6b5c66;">
         &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#7d4510;">@AskMariaTravelBot</a>
@@ -253,6 +253,10 @@
      reads "Step 2 of 2" instead of asking for it cold. */
   var params = new URLSearchParams(location.search);
   var prefill = (params.get("email") || "").trim();
+  /* The landing page's "tell me when she's on WhatsApp" tick arrives here in
+     the query string. Carried into the POST rather than dropped, because the
+     whole point of that checkbox is measuring how much demand Telegram costs. */
+  var wantsWhatsapp = params.get("whatsapp") !== null;
   var input = document.querySelector('input[name="email"]');
   if (prefill && input) {
     input.value = prefill;
@@ -346,6 +350,7 @@
         consent_text: consent ? CONSENT_TEXT : "",
         consent_version: CONSENT_VERSION,
         consent_at: new Date().toISOString(),
+        wants_whatsapp: wantsWhatsapp,
         source: "askmaria.app/request-invite"
       })
     }).then(function (r) {
