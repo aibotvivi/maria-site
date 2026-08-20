@@ -83,15 +83,40 @@ had them attributed to invented people; fabricated consumer reviews are
 illegal in the UK (DMCC Act fake-review ban, CMA-enforced). Swap in real
 first-name reviews from beta users, with permission, once they exist.
 
-## Fill these before publishing
+## Analytics
 
-    OPERATOR_NAME            all four pages (footers + legal) — UK GDPR needs
-                             a named controller; also E-commerce Regs 2002
-    CONTACT_EMAIL            all four pages — a working address people can use
+Both trackers are configured in one place, `analytics.js`, and every page
+loads that one file:
 
-    GOATCOUNTER YOUR-CODE    all four pages — create a free goatcounter.com
-                             account, then uncomment the script tag
-                             (cookieless: no consent banner needed)
+    GOATCOUNTER_CODE   = "askmaria"   live since 2026-08-20
+    GA_MEASUREMENT_ID  = ""           off — paste a G-XXXXXXXXXX to enable
+
+They are treated differently on purpose. GoatCounter sets no cookies, so
+under PECR it needs no consent and runs for everyone. GA4 does set cookies,
+so `gtag.js` is injected **only** after someone presses Allow — never on load
+with a banner over the top. Declining is remembered and GA is then never
+fetched at all.
+
+The banner only appears when `GA_MEASUREMENT_ID` is non-empty, so today there
+is no banner: there is nothing cookie-setting to consent to. Every footer has
+a **Cookies** link that reopens the choice, because withdrawing consent has to
+be as easy as giving it.
+
+Expect GA to under-count against GoatCounter once it is on. That gap is the
+consent rate, not a bug — GoatCounter is the number to trust for "how many
+visits", GA is for behaviour within the consenting subset.
+
+If you enable GA, `privacy.html` already describes it; check the wording still
+matches what you have switched on.
+
+## Still to fill
+
+    OPERATOR_NAME            all four pages (footers + legal) — currently
+                             "AskMaria.app", which is a domain, not a legal
+                             person. UK GDPR wants a named controller and the
+                             E-commerce Regs want a trading name, so this
+                             needs a real name or company before you charge
+                             anyone or field a data-subject request.
 
 Use a dedicated address (hello@askmaria.app), not a personal inbox — it goes on
 a public page. Owning the domain does not by itself give you mail on it; add a
