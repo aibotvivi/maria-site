@@ -32,7 +32,17 @@
   img, svg { max-width: 100%; }
   [hidden] { display: none !important; }
   p { max-width: 66ch; }
-      :focus-visible { outline: 3px solid #7d4510; outline-offset: 2px; border-radius: 4px; }
+
+  /* 2.4.1 Bypass Blocks. Visible only when focused, so keyboard users get a
+     way past the header without changing the visual design for anyone else. */
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 10000;
+    padding: 12px 18px; border-radius: 0 0 12px 0;
+    background: #6f3d0e; color: #fff; font-size: 15px; text-decoration: none;
+  }
+  .skip-link:focus { left: 0; }
+
+      :focus-visible { outline: 3px solid #6f3d0e; outline-offset: 2px; border-radius: 4px; }
 
   /* Comparison table. Three real columns — label, them, Maria — so the two
      answers sit next to each other on one line instead of the label eating a
@@ -97,6 +107,8 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
+
 
 <x-dc>
 <helmet>
@@ -107,9 +119,9 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body { margin: 0; background: #e9d9f2; -webkit-font-smoothing: antialiased; }
-  a { color: #a8621b; text-decoration: none; }
-  :focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; border-radius: 6px; }
-  a:hover { color: #7d4510; }
+  a { color: #6f3d0e; text-decoration: none; }
+  :focus-visible { outline: 3px solid #6f3d0e; outline-offset: 3px; border-radius: 6px; }
+  a:hover { color: #4a2a09; }
   @keyframes drift { 0% { transform: translate3d(0,0,0); } 50% { transform: translate3d(2.5vw,-1.6vh,0); } 100% { transform: translate3d(0,0,0); } }
   @keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.85); } 50% { opacity: .9; transform: scale(1); } }
   @keyframes glide { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
@@ -143,10 +155,10 @@
   </svg>
 
   <div style="position: absolute; inset: 0; pointer-events: none;">
-    <svg width="26" height="26" viewBox="0 0 24 24" style="position: absolute; left: 8%; top: 22%; animation: twinkle 5s ease-in-out infinite;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".55"></path></svg>
-    <svg width="16" height="16" viewBox="0 0 24 24" style="position: absolute; right: 12%; top: 16%; animation: twinkle 7s ease-in-out infinite 1s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".5"></path></svg>
-    <svg width="20" height="20" viewBox="0 0 24 24" style="position: absolute; left: 16%; top: 58%; animation: twinkle 6s ease-in-out infinite .5s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
-    <svg width="18" height="18" viewBox="0 0 24 24" style="position: absolute; right: 8%; bottom: 18%; animation: twinkle 8s ease-in-out infinite 2s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
+    <svg aria-hidden="true" width="26" height="26" viewBox="0 0 24 24" style="position: absolute; left: 8%; top: 22%; animation: twinkle 5s ease-in-out infinite;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".55"></path></svg>
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" style="position: absolute; right: 12%; top: 16%; animation: twinkle 7s ease-in-out infinite 1s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".5"></path></svg>
+    <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" style="position: absolute; left: 16%; top: 58%; animation: twinkle 6s ease-in-out infinite .5s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
+    <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" style="position: absolute; right: 8%; bottom: 18%; animation: twinkle 8s ease-in-out infinite 2s;"><path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z" fill="#4b3520" opacity=".4"></path></svg>
   </div>
 
   <div style="position: relative; max-width: 1040px; margin: 0 auto; padding: 24px clamp(20px, 5vw, 56px) 140px; display: flex; flex-direction: column; gap: clamp(56px, 9vw, 88px);">
@@ -163,6 +175,8 @@
       </div>
     </header>
 
+    <main id="main">
+
     <section style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(36px, 6vw, 56px);">
       <div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 22px; max-width: 520px;">
         <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(36px, 7.02vw, 59px); line-height: 1.02; letter-spacing: -.015em; color: #2a1f30; text-wrap: pretty;">Like having a friend who's brilliant at finding flights.</h1>
@@ -170,14 +184,14 @@
         <div style="display: flex; flex-direction: column; gap: 20px; align-items: flex-start; width: 100%;">
           <div data-panel="form-top" style="display: flex; flex-direction: column; gap: 16px; width: 100%;">
             <form id="signup-top" data-signup="top" action="request-invite.html" method="get" style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 460px;">
-              <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="width: 100%; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
-              <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
+              <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="width: 100%; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(111,61,14,.7); font: inherit; font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
+              <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #a1560f, #8a4a0d); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
                 <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
               </button>
             </form>
             <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45; max-width: 46ch;">Invites go out in small batches on purpose: while Maria is learning, every new watch gets checked by hand, and that doesn&rsquo;t scale past a handful a week yet. Leave your email and she&rsquo;ll send a single-use link when a spot opens.</span>
             <div style="display: flex; flex-direction: column; gap: 10px; max-width: 46ch; padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,.38); border: 1px solid rgba(255,255,255,.6);">
-              <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;"><strong style="font-weight: 500;">No Telegram?</strong> It&rsquo;s free, takes about thirty seconds, and Maria is the only thing you&rsquo;ll need it for. <a href="https://telegram.org/" target="_blank" rel="noopener" style="color:#7d4510;">How to install &rarr;</a></span>
+              <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;"><strong style="font-weight: 500;">No Telegram?</strong> It&rsquo;s free, takes about thirty seconds, and Maria is the only thing you&rsquo;ll need it for. <a href="https://telegram.org/" target="_blank" rel="noopener" style="color:#6f3d0e;">How to install &rarr;</a></span>
             </div>
           </div>
           <div data-panel="sent-top" hidden>
@@ -259,7 +273,7 @@
             <img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="Hopper" width="18" height="18" style="width: 18px; height: 18px; border-radius: 4px; flex: 0 0 auto;" />
             <span>Google Flights &amp; Hopper</span>
           </span>
-          <span role="columnheader" class="cmp-src cmp-maria" style="color: #8a5a12;">
+          <span role="columnheader" class="cmp-src cmp-maria" style="color: #6f3d0e;">
             <img src="logo/ask-maria-favicon.svg" alt="" width="18" height="18" style="width: 18px; height: 18px; flex: 0 0 auto; border-radius: 5px;">
             <span>Ask Maria</span>
           </span>
@@ -307,7 +321,7 @@
             <span style="flex: 1 1 auto; width: 0; border-left: 2px dotted rgba(185,120,31,.5);"></span>
           </div>
           <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 6px; padding-bottom: 28px;">
-            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a5a12;">Step one</span>
+            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6f3d0e;">Step one</span>
             <h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: clamp(19px, 3.78vw, 24px); color: #2a1f30;">Tap the link and press Start</h3>
             <span style="font-size: 15px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">She opens as a normal Telegram chat. Nothing to install.</span>
           </div>
@@ -319,7 +333,7 @@
             <span style="flex: 1 1 auto; width: 0; border-left: 2px dotted rgba(185,120,31,.5);"></span>
           </div>
           <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 10px; padding-bottom: 28px;">
-            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a5a12;">Step two</span>
+            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6f3d0e;">Step two</span>
             <h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: clamp(19px, 3.78vw, 24px); color: #2a1f30;">Text her what to watch, like a person</h3>
             <span style="font-size: 15px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">No commands, no forms, no date pickers.</span>
             <span style="align-self: flex-start; max-width: 100%; padding: 10px 15px; border-radius: 16px 16px 16px 5px; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.85); font-size: 14px; line-height: 1.5; color: #3a2f3f;">"Anywhere sunny in half term, two of us, under £400 each"</span>
@@ -331,7 +345,7 @@
             <span style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 19px; background: linear-gradient(140deg, #f3c99a, #e8a13f); border: 1px solid rgba(255,255,255,.7); box-shadow: 0 8px 20px rgba(150,95,30,.2);">🔔</span>
           </div>
           <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 6px;">
-            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #8a5a12;">Step three</span>
+            <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6f3d0e;">Step three</span>
             <h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: clamp(19px, 3.78vw, 24px); color: #2a1f30;">She messages you when it's worth knowing</h3>
             <span style="font-size: 15px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">Prices checked twice a day. She replies to you usually within a minute or two.</span>
           </div>
@@ -388,8 +402,8 @@
         <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(20px, 4.32vw, 45px); line-height: 1.1; letter-spacing: -.01em; white-space: nowrap; color: #2a1f30;">Tell her where you'd rather be.</h2>
         <div data-panel="form-end" style="display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%;">
           <form data-signup="end" action="request-invite.html" method="get" style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 460px;">
-            <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="width: 100%; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.92);" />
-            <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
+            <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="width: 100%; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(111,61,14,.7); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.92);" />
+            <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #a1560f, #8a4a0d); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
               <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
             </button>
           </form>
@@ -399,7 +413,7 @@
              so the WhatsApp ask costs nothing to ignore but is a real signup
              for anyone Telegram is actually blocking. -->
         <div data-whatsapp style="width: 100%; max-width: 460px; margin-top: 6px; padding-top: 18px; border-top: 1px solid rgba(120,80,50,.16);">
-          <button type="button" data-wa-open style="width: 100%; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 4px; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 400; color: #8a5a12; cursor: pointer;">
+          <button type="button" data-wa-open style="width: 100%; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 4px; border: 0; background: none; font: inherit; font-size: 14px; font-weight: 400; color: #6f3d0e; cursor: pointer;">
             <span aria-hidden="true">🔔</span><span style="text-decoration: underline; text-underline-offset: 3px;">Notify me when she&rsquo;s on WhatsApp</span>
           </button>
 
@@ -407,8 +421,8 @@
             <label for="wa-email" style="width: 100%; font-size: 13px; line-height: 1.6; color: #5c4c45; text-align: center;">
               She&rsquo;s only on Telegram today. Leave your address and you&rsquo;ll get one email if that changes &mdash; nothing else.
             </label>
-            <input id="wa-email" type="email" name="email" required="required" autocomplete="email" placeholder="you@example.com" style="width: 100%; min-width: 0; min-height: 50px; padding: 13px 18px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" />
-            <button type="submit" style="width: 100%; min-height: 50px; padding: 13px 20px; border-radius: 999px; background: rgba(255,255,255,.8); border: 1px solid rgba(169,98,27,.45); font: inherit; font-size: 15px; font-weight: 500; color: #8a5a12; white-space: nowrap; cursor: pointer;">Notify me</button>
+            <input id="wa-email" type="email" name="email" required="required" autocomplete="email" placeholder="you@example.com" style="width: 100%; min-width: 0; min-height: 50px; padding: 13px 18px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid rgba(111,61,14,.7); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" />
+            <button type="submit" style="width: 100%; min-height: 50px; padding: 13px 20px; border-radius: 999px; background: rgba(255,255,255,.8); border: 1px solid rgba(169,98,27,.45); font: inherit; font-size: 15px; font-weight: 500; color: #6f3d0e; white-space: nowrap; cursor: pointer;">Notify me</button>
           </form>
 
           <p data-wa-done hidden role="status" style="margin: 0; font-size: 14px; line-height: 1.6; color: #4e3f4a;"></p>
@@ -424,9 +438,11 @@
         <a href="https://t.me/AskMariaTravelBot" target="_blank" rel="noopener" style="font-size: 14px; font-weight: 400; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center; gap: 8px;"><span style="text-decoration: underline; text-underline-offset: 3px;">Already have an invite? Open Maria on Telegram</span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="display:block;flex:0 0 auto;"><circle cx="12" cy="12" r="12" fill="#229ED9"/><path d="M17.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.535.223l.19-2.712 4.94-4.465c.215-.19-.047-.297-.332-.107L8.55 13.03l-2.598-.812c-.566-.176-.578-.566.12-.836l10.15-3.911c.472-.176.882.106.672.75z" fill="#fff"/></svg></a>
     </section>
 
+    </main>
+
     <footer style="display: flex; flex-direction: column; gap: 30px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,.6);">
       <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">FAQ</h2>
-      <div style="display: flex; flex-direction: column; gap: 30px; max-width: 640px;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #8a5a12;">About Maria</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is Maria a real person?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">No &mdash; she's a bot, built in London by someone who got tired of watching friends lose money to fake booking sites. She writes like a person because forms are miserable, not because she's pretending to be one.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Does a human ever see my messages?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Yes. Maria is run by one person, and your chats sit on her machine, so she can read them &mdash; that's how a beta gets fixed. They're never sold or shared, and the models that write Maria's replies don't train on them. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What if she's wrong?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">She might be. Prices move fast and airlines hide fees. Always confirm at booking &mdash; she gives you the link and the reasoning, you make the call.</span></div></div></div><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #8a5a12;">Using her</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is it free?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta, and free for good on a basic number of watches. If paid tiers ever arrive, beta users get told first and keep beta terms.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">How do I get in?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Leave your email. Requests are approved by hand, in small batches.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">When does she reply?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages get answered in the morning.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What happens to my data?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours. Not sold, not shared. <a href="privacy.html" style="color:#7d4510;">Privacy</a>.</span></div></div></div></div>
+      <div style="display: flex; flex-direction: column; gap: 30px; max-width: 640px;"><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f3d0e;">About Maria</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is Maria a real person?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">No &mdash; she's a bot, built in London by someone who got tired of watching friends lose money to fake booking sites. She writes like a person because forms are miserable, not because she's pretending to be one.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Does a human ever see my messages?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Yes. Maria is run by one person, and your chats sit on her machine, so she can read them &mdash; that's how a beta gets fixed. They're never sold or shared, and the models that write Maria's replies don't train on them. <a href="privacy.html" style="color:#6f3d0e;">Privacy</a>.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What if she's wrong?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">She might be. Prices move fast and airlines hide fees. Always confirm at booking &mdash; she gives you the link and the reasoning, you make the call.</span></div></div></div><div style="display: flex; flex-direction: column; gap: 8px;"><span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6f3d0e;">Using her</span><div style="display: flex; flex-direction: column;"><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">Is it free?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Free during the beta, and free for good on a basic number of watches. If paid tiers ever arrive, beta users get told first and keep beta terms.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">How do I get in?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Leave your email. Requests are approved by hand, in small batches.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 1px solid rgba(90,60,50,.13);"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">When does she reply?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Usually within a minute or two. Overnight messages get answered in the morning.</span></div><div style="display: flex; flex-direction: column; gap: 6px; padding: 16px 0; border-bottom: 0;"><span style="font-size: 16px; font-weight: 500; color: #2a1f30;">What happens to my data?</span><span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #52434e;">Your watches and chats are yours. Not sold, not shared. <a href="privacy.html" style="color:#6f3d0e;">Privacy</a>.</span></div></div></div></div>
       <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
         <svg viewBox="0 0 430 100" fill="none" role="img" aria-label="Ask Maria" style="height: 34px; width: auto;"><path d="M14 74L34 34l16 26 16-26 20 40" stroke="#241D38" stroke-width="9"></path><circle cx="86" cy="22" r="7" fill="#241D38"></circle><text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text></svg>
     <div style="display: flex; flex-direction: column; gap: 8px; max-width: 68ch;">
@@ -438,13 +454,13 @@
       </span>
       <span style="font-size: 12px; font-weight: 400; line-height: 1.7; color: #584852;">
         Operated by AskMaria.app, London, United Kingdom &middot;
-        <a href="mailto:hello@askmaria.app" style="color:#7d4510;">hello@askmaria.app</a> &middot;
-        <a href="privacy.html" style="color:#7d4510;">Privacy</a> &middot;
-        <a href="terms.html" style="color:#7d4510;">Terms</a> &middot;
-        <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#7d4510;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
+        <a href="mailto:hello@askmaria.app" style="color:#6f3d0e;">hello@askmaria.app</a> &middot;
+        <a href="privacy.html" style="color:#6f3d0e;">Privacy</a> &middot;
+        <a href="terms.html" style="color:#6f3d0e;">Terms</a> &middot;
+        <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#6f3d0e;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
       </span>
       <span style="font-size: 12px; font-weight: 400; color: #6b5c66;">
-        &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#7d4510;">@AskMariaTravelBot</a>
+        &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#6f3d0e;">@AskMariaTravelBot</a>
       </span>
     </div>
       </div>
@@ -509,7 +525,7 @@
       if (!WA_ENDPOINT) {
         finish("There&rsquo;s nowhere to store that yet, so it hasn&rsquo;t been saved. " +
                'Email <a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist" ' +
-               'style="color:#7d4510;">hello@askmaria.app</a> and she&rsquo;ll add you herself.');
+               'style="color:#6f3d0e;">hello@askmaria.app</a> and she&rsquo;ll add you herself.');
         return;
       }
 
@@ -530,7 +546,7 @@
       }).catch(function () {
         finish("That didn&rsquo;t send, sorry &mdash; nothing was saved. " +
                'Email <a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist" ' +
-               'style="color:#7d4510;">hello@askmaria.app</a> instead.');
+               'style="color:#6f3d0e;">hello@askmaria.app</a> instead.');
       });
     });
   })();

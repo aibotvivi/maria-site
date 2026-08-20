@@ -19,15 +19,26 @@
   h2{font-family:Newsreader,Georgia,serif;font-weight:500;font-size:20px;
      color:#2a1f30;margin:36px 0 8px}
   p,li{font-size:16px;color:#4e3f4a}
-  a{color:#7d4510}
+  a{color:#6f3d0e}
   .meta{font-size:14px;color:#6b5c66;margin:0 0 30px}
   .note{background:rgba(255,255,255,.6);border:1px solid rgba(125,69,16,.22);
         border-radius:14px;padding:16px 18px;font-size:14.5px;margin:26px 0}
   .back{display:inline-block;margin-top:38px;font-size:15px}
-  :focus-visible{outline:3px solid #7d4510;outline-offset:2px;border-radius:4px}
+  /* 2.4.1 Bypass Blocks. Visible only when focused, so keyboard users get a
+     way past the header without changing the visual design for anyone else. */
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 10000;
+    padding: 12px 18px; border-radius: 0 0 12px 0;
+    background: #6f3d0e; color: #fff; font-size: 15px; text-decoration: none;
+  }
+  .skip-link:focus { left: 0; }
+
+  :focus-visible{outline:3px solid #6f3d0e;outline-offset:2px;border-radius:4px}
 </style>
 </head>
-<body><div class="wrap">
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<main id="main"><div class="wrap">
 <h1>Terms</h1>
 <p class="meta">Last updated: 19 August 2026</p>
 
@@ -84,6 +95,6 @@ limited by law, and your statutory rights as a consumer are unaffected.</p>
 <p><a href="mailto:hello@askmaria.app">hello@askmaria.app</a></p>
 <p style="font-size:13px;color:#6b5c66;margin-top:34px;">&copy; 2026 Ask Maria &middot; Operated by AskMaria.app, London, United Kingdom &middot; <a href="mailto:hello@askmaria.app">hello@askmaria.app</a> &middot; <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button></p>
 <a class="back" href="index.html">← Back to Maria</a>
-</div>
+</div></main>
 <script src="/analytics.js" defer></script>
 </body></html>

@@ -18,7 +18,17 @@
   img, svg { max-width: 100%; }
   [hidden] { display: none !important; }
   p { max-width: 66ch; }
-      :focus-visible { outline: 3px solid #7d4510; outline-offset: 2px; border-radius: 4px; }
+
+  /* 2.4.1 Bypass Blocks. Visible only when focused, so keyboard users get a
+     way past the header without changing the visual design for anyone else. */
+  .skip-link {
+    position: absolute; left: -9999px; top: 0; z-index: 10000;
+    padding: 12px 18px; border-radius: 0 0 12px 0;
+    background: #6f3d0e; color: #fff; font-size: 15px; text-decoration: none;
+  }
+  .skip-link:focus { left: 0; }
+
+      :focus-visible { outline: 3px solid #6f3d0e; outline-offset: 2px; border-radius: 4px; }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .001ms !important; transition-duration: .001ms !important; }
   }
@@ -28,10 +38,12 @@
     font-family: 'Space Grotesk', system-ui, sans-serif; font-size: 14px;
     line-height: 1.6; color: #4e3f4a;
   }
-  .maria-fallback a { color: #7d4510; font-weight: 500; }
+  .maria-fallback a { color: #6f3d0e; font-weight: 500; }
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
+
 
 <x-dc>
 <helmet>
@@ -42,9 +54,9 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; }
   body { margin: 0; background: #e9d9f2; -webkit-font-smoothing: antialiased; }
-  a { color: #a8621b; }
-  :focus-visible { outline: 3px solid #8a5a12; outline-offset: 3px; border-radius: 6px; }
-  a:hover { color: #7d4510; }
+  a { color: #6f3d0e; }
+  :focus-visible { outline: 3px solid #6f3d0e; outline-offset: 3px; border-radius: 6px; }
+  a:hover { color: #4a2a09; }
   input, textarea, button { font: inherit; color: inherit; }
   input::placeholder, textarea::placeholder { color: #6e6069; }
   @keyframes drift { 0% { transform: translate3d(0,0,0); } 50% { transform: translate3d(2.5vw,-1.6vh,0); } 100% { transform: translate3d(0,0,0); } }
@@ -86,6 +98,8 @@
       </div>
     </header>
 
+    <main id="main">
+
     <div data-panel="form">
       <div style="display: flex; flex-direction: column; gap: clamp(28px, 5vw, 38px);">
         <div data-panel="hdr-landing" hidden>
@@ -115,7 +129,7 @@
           </div>
           <label style="display: flex; flex-direction: column; gap: 8px;">
             <span style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 14px; letter-spacing: .04em; color: #4a3a44;"><span>Email</span><span style="font-size: 12px; font-weight: 400; color: #655460;">Edit if this isn't right</span></span>
-            <input type="email" name="email" required="required" autoComplete="email" maxlength="254" placeholder="you@example.com" value=""  style="width: 100%; min-height: 52px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.8); font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
+            <input type="email" name="email" required="required" autoComplete="email" maxlength="254" placeholder="you@example.com" value=""  style="width: 100%; min-height: 52px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.55); border: 1px solid rgba(111,61,14,.7); font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
           </label>
 
           <label style="display: flex; flex-direction: column; gap: 8px;">
@@ -123,7 +137,7 @@
               <span>Where are you dreaming of flying next?</span>
               <span style="font-size: 12px; font-weight: 400; color: #655460;">Optional</span>
             </span>
-            <textarea name="dream" rows="3" maxlength="300" placeholder="Tokyo in April, or anywhere warm in half term…" style="width: 100%; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.85); font-size: 16px; line-height: 1.5; resize: vertical; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);"></textarea>
+            <textarea name="dream" rows="3" maxlength="300" placeholder="Tokyo in April, or anywhere warm in half term…" style="width: 100%; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.72); border: 1px solid rgba(111,61,14,.7); font-size: 16px; line-height: 1.5; resize: vertical; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);"></textarea>
             <span style="font-size: 13px; font-weight: 400; line-height: 1.5; color: #5a4a52;">It helps her pick who to admit next, and means the fares she emails you are ones you'd actually take.</span>
           </label>
 
@@ -132,11 +146,11 @@
             <span style="font-size: 14px; font-weight: 400; line-height: 1.55; color: #4e3f4a;">Send me flight deals and Maria updates.</span>
           </label>
 
-          <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 22px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font-size: 16px; white-space: nowrap; cursor: pointer; box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
+          <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 22px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); background: linear-gradient(135deg, #a1560f, #8a4a0d); color: #fff; font-size: 16px; white-space: nowrap; cursor: pointer; box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
             Request an invite
           </button>
 
-          <p style="margin: 0; font-size: 12px; font-weight: 400; line-height: 1.6; color: #584852;">Your email is used to send your invite and, if you tick the box, occasional updates. Nothing else, no sharing, unsubscribe in one click. See our <a href="privacy.html" style="color:#7d4510;">Privacy notice</a> and <a href="terms.html" style="color:#7d4510;">Terms</a>.</p>
+          <p style="margin: 0; font-size: 12px; font-weight: 400; line-height: 1.6; color: #584852;">Your email is used to send your invite and, if you tick the box, occasional updates. Nothing else, no sharing, unsubscribe in one click. See our <a href="privacy.html" style="color:#6f3d0e;">Privacy notice</a> and <a href="terms.html" style="color:#6f3d0e;">Terms</a>.</p>
         </form>
 
         <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
@@ -181,6 +195,8 @@
       </div>
     </div>
 
+    </main>
+
     <footer style="display: flex; flex-direction: column; gap: 10px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,.6);">
     <div style="display: flex; flex-direction: column; gap: 8px; max-width: 68ch;">
       <span style="font-size: 12px; font-weight: 400; line-height: 1.7; color: #584852;">
@@ -191,13 +207,13 @@
       </span>
       <span style="font-size: 12px; font-weight: 400; line-height: 1.7; color: #584852;">
         Operated by AskMaria.app, London, United Kingdom &middot;
-        <a href="mailto:hello@askmaria.app" style="color:#7d4510;">hello@askmaria.app</a> &middot;
-        <a href="privacy.html" style="color:#7d4510;">Privacy</a> &middot;
-        <a href="terms.html" style="color:#7d4510;">Terms</a> &middot;
-        <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#7d4510;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
+        <a href="mailto:hello@askmaria.app" style="color:#6f3d0e;">hello@askmaria.app</a> &middot;
+        <a href="privacy.html" style="color:#6f3d0e;">Privacy</a> &middot;
+        <a href="terms.html" style="color:#6f3d0e;">Terms</a> &middot;
+        <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#6f3d0e;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
       </span>
       <span style="font-size: 12px; font-weight: 400; color: #6b5c66;">
-        &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#7d4510;">@AskMariaTravelBot</a>
+        &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#6f3d0e;">@AskMariaTravelBot</a>
       </span>
     </div>
   </footer>
