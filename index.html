@@ -163,10 +163,6 @@
             <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45; max-width: 46ch;">Invites go out in small batches on purpose: while Maria is learning, every new watch gets checked by hand, and that doesn&rsquo;t scale past a handful a week yet. Leave your email and she&rsquo;ll send a single-use link when a spot opens.</span>
             <div style="display: flex; flex-direction: column; gap: 10px; max-width: 46ch; padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,.38); border: 1px solid rgba(255,255,255,.6);">
               <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;"><strong style="font-weight: 500;">No Telegram?</strong> It&rsquo;s free, takes about thirty seconds, and Maria is the only thing you&rsquo;ll need it for. <a href="https://telegram.org/" target="_blank" rel="noopener" style="color:#7d4510;">How to install &rarr;</a></span>
-              <label style="display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">
-                <input type="checkbox" name="whatsapp" form="signup-top" style="width: 18px; height: 18px; margin: 2px 0 0; flex: 0 0 auto; accent-color: #c9761c;" />
-                <span>Tell me when she&rsquo;s on WhatsApp instead</span>
-              </label>
             </div>
           </div>
           <div data-panel="sent-top" hidden>
@@ -378,6 +374,25 @@
           </form>
           <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45;">One field, no commitment. Invites go out in small batches.</span>
         </div>
+        <!-- Back-in-stock pattern: one quiet button that opens an email field,
+             so the WhatsApp ask costs nothing to ignore but is a real signup
+             for anyone Telegram is actually blocking. -->
+        <div data-whatsapp style="width: 100%; max-width: 460px; margin-top: 6px; padding-top: 18px; border-top: 1px solid rgba(120,80,50,.16);">
+          <button type="button" data-wa-open style="width: 100%; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 20px; border-radius: 999px; background: rgba(255,255,255,.5); border: 1px solid rgba(120,80,50,.22); font: inherit; font-size: 15px; color: #5c4b43; cursor: pointer;">
+            <span aria-hidden="true">🔔</span>Notify me when she&rsquo;s on WhatsApp
+          </button>
+
+          <form data-wa-form hidden style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%;">
+            <label for="wa-email" style="flex: 1 1 100%; font-size: 13px; line-height: 1.6; color: #5c4c45; text-align: left;">
+              She&rsquo;s only on Telegram today. Leave your address and you&rsquo;ll get one email if that changes &mdash; nothing else.
+            </label>
+            <input id="wa-email" type="email" name="email" required="required" autocomplete="email" placeholder="you@example.com" style="flex: 1 1 200px; min-width: 0; min-height: 50px; padding: 13px 18px; border-radius: 999px; background: rgba(255,255,255,.7); border: 1px solid rgba(255,255,255,.85); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" />
+            <button type="submit" style="flex: 1 1 150px; min-height: 50px; padding: 13px 20px; border-radius: 999px; background: rgba(255,255,255,.62); border: 1px solid rgba(120,80,50,.3); font: inherit; font-size: 15px; color: #5c4b43; white-space: nowrap; cursor: pointer;">Notify me</button>
+          </form>
+
+          <p data-wa-done hidden role="status" style="margin: 0; font-size: 14px; line-height: 1.6; color: #4e3f4a;"></p>
+        </div>
+
         <div data-panel="sent-end" hidden>
           <div style="display: flex; flex-direction: column; gap: 8px; align-items: center;">
             <span style="font-family: Newsreader, Georgia, serif; font-size: 22px; color: #2a1f30;">You're on the list.</span>
@@ -455,6 +470,79 @@
      request-invite.html, which asks where they want to fly and does the
      actual submitting. The endpoint config lives on that page. */
 
+  /* WhatsApp waitlist — the "email me when it's back in stock" pattern.
+     Same honesty rule as the invite form: with no endpoint configured there is
+     nowhere to put an address, so it must NOT claim to have saved one. It
+     hands over to email instead, which actually reaches her. */
+  var WA_ENDPOINT = "";        // same POST URL as request-invite.html, when there is one
+
+  /* Local copy of the invite page's helper — index.html had none, and calling
+     an undefined track() would have thrown inside the submit handler and
+     swallowed the signup. Analytics must never break a form. */
+  function track(name) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: name, title: "WhatsApp waitlist", event: true });
+      }
+    } catch (err) { /* ignore */ }
+  }
+
+  (function () {
+    var box = document.querySelector("[data-whatsapp]");
+    if (!box) return;
+    var openBtn = box.querySelector("[data-wa-open]");
+    var form    = box.querySelector("[data-wa-form]");
+    var done    = box.querySelector("[data-wa-done]");
+
+    openBtn.addEventListener("click", function () {
+      openBtn.hidden = true;
+      form.hidden = false;
+      form.querySelector("input[type=email]").focus();
+    });
+
+    function finish(html) {
+      form.hidden = true;
+      done.innerHTML = html;
+      done.hidden = false;
+      done.setAttribute("tabindex", "-1");
+      done.focus({ preventScroll: true });
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = String(new FormData(form).get("email") || "").trim();
+      if (!email) return;
+      track("whatsapp-waitlist");
+
+      if (!WA_ENDPOINT) {
+        finish("There&rsquo;s nowhere to store that yet, so it hasn&rsquo;t been saved. " +
+               'Email <a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist" ' +
+               'style="color:#7d4510;">hello@askmaria.app</a> and she&rsquo;ll add you herself.');
+        return;
+      }
+
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = "One moment…"; }
+
+      fetch(WA_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          wants_whatsapp: true,
+          source: "askmaria.app/whatsapp-waitlist"
+        })
+      }).then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        finish("Noted &mdash; you&rsquo;ll get one email if Maria arrives on WhatsApp.");
+      }).catch(function () {
+        finish("That didn&rsquo;t send, sorry &mdash; nothing was saved. " +
+               'Email <a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist" ' +
+               'style="color:#7d4510;">hello@askmaria.app</a> instead.');
+      });
+    });
+  })();
+
   document.querySelectorAll("form[data-signup]").forEach(function (form) {
     form.addEventListener("submit", function (e) {
       e.preventDefault();
@@ -462,17 +550,13 @@
       var data = new FormData(form);
       var email = String(data.get("email") || "").trim();
       if (!email) return;
-      // The tick lives outside the <form> and is bound to it by form="signup-top",
-      // so FormData picks it up — but only if we actually read it.
-      var whatsapp = data.get("whatsapp") !== null;
 
       // Step 1 of 2: carry the address to the invite page, which asks the
       // question that actually helps — where they want to fly — and owns
       // the real submit. Nothing is stored here.
       var btn = form.querySelector('button[type="submit"]');
       if (btn) btn.textContent = "One moment…";
-      window.location.href = "request-invite.html?email=" + encodeURIComponent(email)
-                           + (whatsapp ? "&whatsapp=1" : "");
+      window.location.href = "request-invite.html?email=" + encodeURIComponent(email);
     });
   });
 })();
