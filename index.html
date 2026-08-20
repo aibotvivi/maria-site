@@ -144,7 +144,7 @@
         <text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text>
       </svg>
       <div style="display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.42); border: 1px solid rgba(255,255,255,.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .10em; text-transform: uppercase; color: #5a4433;">
-        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>A bot, not a person &middot; Invite-only beta
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>Invite-only beta
       </div>
     </header>
 
@@ -390,6 +390,7 @@
     </section>
 
     <footer style="display: flex; flex-direction: column; gap: 30px; padding-top: 34px; border-top: 1px solid rgba(255,255,255,.6);">
+      <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">FAQ</h2>
       <div style="display: flex; flex-wrap: wrap; gap: 18px;">
         <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 6px;">
           <span style="font-size: 15px; color: #2f2436;">Is Maria a real person?</span>
@@ -459,15 +460,20 @@
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var which = form.getAttribute("data-signup");
-      var email = String(new FormData(form).get("email") || "").trim();
+      var data = new FormData(form);
+      var email = String(data.get("email") || "").trim();
       if (!email) return;
+      // The tick lives outside the <form> and is bound to it by form="signup-top",
+      // so FormData picks it up — but only if we actually read it.
+      var whatsapp = data.get("whatsapp") !== null;
 
       // Step 1 of 2: carry the address to the invite page, which asks the
       // question that actually helps — where they want to fly — and owns
       // the real submit. Nothing is stored here.
       var btn = form.querySelector('button[type="submit"]');
       if (btn) btn.textContent = "One moment…";
-      window.location.href = "request-invite.html?email=" + encodeURIComponent(email);
+      window.location.href = "request-invite.html?email=" + encodeURIComponent(email)
+                           + (whatsapp ? "&whatsapp=1" : "");
     });
   });
 })();

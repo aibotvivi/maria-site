@@ -289,10 +289,21 @@
     var lead = (reason === "failed")
       ? "That didn't send \u2014 nothing was saved, sorry. "
       : "Email invites aren't switched on yet \u2014 so nothing was saved just now. ";
-    note.innerHTML = lead +
-      "Message Maria on Telegram and she'll add you to the list herself" +
-      (dream ? ", mentioning <strong></strong>" : "") + ". " +
-      '<a href="' + TELEGRAM_URL + '" target="_blank" rel="noopener">Open Maria on Telegram &rarr;</a>';
+    if (wantsWhatsapp) {
+      // Someone who just said "WhatsApp instead" is the last person to send to
+      // Telegram. Give them the one route that doesn't need it.
+      note.innerHTML = lead +
+        "You asked to be told when she's on WhatsApp, and there's nowhere to " +
+        "record that yet \u2014 so email her directly and she'll note it" +
+        (dream ? ", mentioning <strong></strong>" : "") + ". " +
+        '<a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist">' +
+        'hello@askmaria.app &rarr;</a>';
+    } else {
+      note.innerHTML = lead +
+        "Message Maria on Telegram and she'll add you to the list herself" +
+        (dream ? ", mentioning <strong></strong>" : "") + ". " +
+        '<a href="' + TELEGRAM_URL + '" target="_blank" rel="noopener">Open Maria on Telegram &rarr;</a>';
+    }
     if (dream) note.querySelector("strong").textContent = dream;
     form.appendChild(note);
     var btn = form.querySelector('button[type="submit"]');
