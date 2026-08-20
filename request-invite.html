@@ -7,7 +7,7 @@
 <meta name="description" content="Maria is in a small private beta. Leave your email and tell her where you're dreaming of flying, and she'll send a single-use invite link when a spot opens.">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#e9d9f2">
-<link rel="icon" type="image/svg+xml" href="/logo/ask-maria-favicon.svg">
+<link rel="icon" type="image/svg+xml" href="/logo/ask-maria-mark.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -103,9 +103,19 @@
         </div>
 
         <form data-invite-form style="display: flex; flex-direction: column; gap: 20px; padding: clamp(22px, 5vw, 32px); border-radius: 28px; background: rgba(255,255,255,.42); border: 1px solid rgba(255,255,255,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 24px 60px rgba(96,62,92,.16), inset 0 1px 0 rgba(255,255,255,.6);">
+
+          <!-- Spam guards. Not "security" — just enough friction that the
+               cheap bots which fill every field on every form get dropped.
+               aria-hidden + tabindex=-1 keeps it away from screen readers and
+               keyboard users; only a script filling inputs blindly will touch it. -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+            <label>Leave this empty
+              <input type="text" name="company" tabindex="-1" autocomplete="off" />
+            </label>
+          </div>
           <label style="display: flex; flex-direction: column; gap: 8px;">
             <span style="display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; font-size: 14px; letter-spacing: .04em; color: #4a3a44;"><span>Email</span><span style="font-size: 12px; font-weight: 400; color: #655460;">Edit if this isn't right</span></span>
-            <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" value=""  style="width: 100%; min-height: 52px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.8); font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
+            <input type="email" name="email" required="required" autoComplete="email" maxlength="254" placeholder="you@example.com" value=""  style="width: 100%; min-height: 52px; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.55); border: 1px solid rgba(255,255,255,.8); font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
           </label>
 
           <label style="display: flex; flex-direction: column; gap: 8px;">
@@ -113,7 +123,7 @@
               <span>Where are you dreaming of flying next?</span>
               <span style="font-size: 12px; font-weight: 400; color: #655460;">Optional</span>
             </span>
-            <textarea name="dream" rows="3" placeholder="Tokyo in April, or anywhere warm in half term…" style="width: 100%; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.85); font-size: 16px; line-height: 1.5; resize: vertical; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);"></textarea>
+            <textarea name="dream" rows="3" maxlength="300" placeholder="Tokyo in April, or anywhere warm in half term…" style="width: 100%; padding: 14px 16px; border-radius: 16px; background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.85); font-size: 16px; line-height: 1.5; resize: vertical; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);"></textarea>
             <span style="font-size: 13px; font-weight: 400; line-height: 1.5; color: #5a4a52;">It helps her pick who to admit next, and means the fares she emails you are ones you'd actually take.</span>
           </label>
 
@@ -123,7 +133,7 @@
           </label>
 
           <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 22px; border-radius: 999px; border: 1px solid rgba(255,255,255,.35); background: linear-gradient(135deg, #c9761c, #a1560f); color: #fff; font-size: 16px; white-space: nowrap; cursor: pointer; box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
-            Submit
+            Request an invite
           </button>
 
           <p style="margin: 0; font-size: 12px; font-weight: 400; line-height: 1.6; color: #584852;">Your email is used to send your invite and, if you tick the box, occasional updates. Nothing else, no sharing, unsubscribe in one click. See our <a href="privacy.html" style="color:#7d4510;">Privacy notice</a> and <a href="terms.html" style="color:#7d4510;">Terms</a>.</p>
@@ -158,8 +168,9 @@
     <div data-panel="sent" hidden>
       <div style="display: flex; flex-direction: column; gap: 22px; padding: clamp(26px, 6vw, 40px); border-radius: 30px; background: linear-gradient(150deg, rgba(255,255,255,.5), rgba(247,205,164,.42)); border: 1px solid rgba(255,255,255,.75); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); box-shadow: 0 24px 60px rgba(96,62,92,.16);">
         <span style="font-size: 30px;">✉</span>
-        <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(28px, 6.88vw, 40px); line-height: 1.1; color: #2a1f30;">You're on the list.</h1>
-        <p style="margin: 0; font-size: clamp(16px, 4vw, 18px); line-height: 1.6; font-weight: 400; color: #46384a; max-width: 44ch; text-wrap: pretty;">Maria will email <strong style="font-weight: 500;"><span data-email>your inbox</span></strong> shortly with what she does, and your single-use invite link when a spot opens. Requests are approved personally.</p>
+        <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(28px, 6.88vw, 40px); line-height: 1.1; color: #2a1f30;">One click left.</h1>
+        <p style="margin: 0; font-size: clamp(16px, 4vw, 18px); line-height: 1.6; font-weight: 400; color: #46384a; max-width: 44ch; text-wrap: pretty;">Check <strong style="font-weight: 500;"><span data-email>your inbox</span></strong> and tap the confirm link — that's how Maria knows the address is really yours. <strong style="font-weight: 500;">You're not on the list until you do.</strong></p>
+        <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 1.6; color: #5a4a54; max-width: 44ch;">Nothing in a minute or two? Check spam — and if it's not there either, message her on Telegram and she'll add you by hand.</p>
         <div data-panel="has-dream" hidden>
           <p style="margin: 0; font-size: 15px; font-weight: 400; line-height: 1.6; color: #5a4a54;">Noted for you: <em><span data-dream></span></em></p>
         </div>
@@ -208,8 +219,32 @@
      at Telegram, which is the invite flow that genuinely works today.
      Posts JSON: { email, dream, consent }
   ------------------------------------------------------------------ */
+  /* ── The one thing to fill in ──────────────────────────────────────────
+     Paste the POST URL from your email provider. Nothing is captured until
+     you do — the form says so honestly rather than faking success.
+
+     Pick one that does DOUBLE OPT-IN (sends a confirm link before adding
+     anyone). The success panel now tells people to go and confirm, so a
+     provider that just swallows the address would make that copy a lie:
+
+       MailerLite  — Forms > Embedded form; double opt-in is on by default
+       Buttondown  — Settings > Subscribing; tick "require confirmation"
+       Formspree   — collects only, sends nothing. Fine as a holding pen,
+                     but then change the success copy back.
+
+     Why double opt-in matters here beyond good manners: the address can be
+     pre-filled from ?email= in the URL, so without a confirm step anyone
+     could sign someone else up. */
   var SIGNUP_ENDPOINT = "";
+
+  /* Bumped whenever the consent wording below the button changes, so a
+     stored consent record says which sentence was actually agreed to —
+     "we have consent" is not defensible without knowing to what. */
+  var CONSENT_VERSION = "2026-08-20";
+  var CONSENT_TEXT    = "Send me flight deals and Maria updates.";
+
   var TELEGRAM_URL    = "https://t.me/AskMariaTravelBot";
+  var RENDERED_AT     = Date.now();   // for the bot timing check
 
   function panel(n) { return document.querySelector('[data-panel="' + n + '"]'); }
   function show(n, on) { var p = panel(n); if (p) p.hidden = !on; }
@@ -260,15 +295,41 @@
     if (btn && reason !== "failed") { btn.disabled = true; btn.textContent = "Message her instead"; }
   }
 
+  /* Pageviews alone can't tell you whether this page works — you need the
+     ratio of arrivals to completions. The success state is a panel, not a
+     URL, so it would otherwise be invisible to analytics. GoatCounter events
+     are cookieless like the rest of it, so this needs no consent. */
+  function track(name) {
+    try {
+      if (window.goatcounter && window.goatcounter.count) {
+        window.goatcounter.count({ path: name, title: "Invite form", event: true });
+      }
+    } catch (err) { /* never let analytics break a signup */ }
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var data    = new FormData(form);
     var email   = String(data.get("email") || "").trim();
     var dream   = String(data.get("dream") || "").trim();
     var consent = !!data.get("consent");
+
+    /* Spam guards. Both fail silently and pretend to succeed: telling a bot
+       why it was rejected just teaches whoever wrote it what to change.
+
+       Deliberately mild. The real filter is double opt-in — a bot does not
+       click the confirm link, so it never reaches the list. These only exist
+       to keep obvious junk out of the provider's quota, and the cost of a
+       false positive is severe: a real person silently dropped while being
+       shown a success screen. Hence 1.2s, not the 5s some guides suggest —
+       arriving from the landing page the email is already filled in, so a
+       genuine fast click is entirely plausible. */
+    if (String(data.get("company") || "").trim() !== "") { succeed(email, dream); return; }
+    if (Date.now() - RENDERED_AT < 1200) { succeed(email, dream); return; }
+
     if (!email) return;
 
-    if (!SIGNUP_ENDPOINT) { fallback(dream, "unconfigured"); return; }
+    if (!SIGNUP_ENDPOINT) { track("invite-blocked-no-endpoint"); fallback(dream, "unconfigured"); return; }
 
     var btn = form.querySelector('button[type="submit"]');
     if (btn) { btn.disabled = true; btn.textContent = "Sending\u2026"; }
@@ -276,12 +337,24 @@
     fetch(SIGNUP_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify({ email: email, dream: dream, consent: consent })
+      body: JSON.stringify({
+        email: email,
+        dream: dream,
+        consent: consent,
+        /* What they agreed to, and when — the part that makes a consent
+           record worth having if anyone ever asks. */
+        consent_text: consent ? CONSENT_TEXT : "",
+        consent_version: CONSENT_VERSION,
+        consent_at: new Date().toISOString(),
+        source: "askmaria.app/request-invite"
+      })
     }).then(function (r) {
       if (!r.ok) throw new Error("HTTP " + r.status);
+      track("invite-requested");
       succeed(email, dream);
     }).catch(function () {
-      if (btn) { btn.disabled = false; btn.textContent = "Submit"; }
+      if (btn) { btn.disabled = false; btn.textContent = "Request an invite"; }
+      track("invite-failed");
       fallback(dream, "failed");
     });
   });
