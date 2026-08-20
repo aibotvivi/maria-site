@@ -21,7 +21,7 @@
  * something that isn't running would be theatre.
  */
 var GOATCOUNTER_CODE  = "askmaria";              // e.g. "askmaria"  -> askmaria.goatcounter.com
-var GA_MEASUREMENT_ID = "";              // e.g. "G-XXXXXXXXXX"
+var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
 
 (function () {
   "use strict";
@@ -35,9 +35,36 @@ var GA_MEASUREMENT_ID = "";              // e.g. "G-XXXXXXXXXX"
     try { localStorage.setItem(STORE_KEY, v); } catch (e) {}
   }
 
+  /* ── Strip the query string before anything is reported ──────────────────
+   * The landing page hands the address to request-invite.html in the query
+   * string, so location.href on that page contains a REAL EMAIL ADDRESS.
+   * Both trackers report the page URL by default, which would have sent
+   * subscribers' emails to Google and to GoatCounter — caught in a network
+   * trace on 2026-08-20, where a collect call carried ?email=... verbatim.
+   * Nothing here may report a raw URL; route it through this first.
+   */
+  function cleanUrl(u) {
+    if (!u) return "";
+    try {
+      var x = new URL(u, location.href);
+      x.search = "";
+      x.hash = "";
+      return x.toString();
+    } catch (e) {
+      return String(u).split("?")[0].split("#")[0];
+    }
+  }
+
   /* ── GoatCounter: cookieless, no consent needed ─────────────────────────── */
   function loadGoatCounter() {
     if (!GOATCOUNTER_CODE) return;
+
+    // GoatCounter counts pathname + search by default; override both before
+    // count.js loads, or the email lands in the hit.
+    window.goatcounter = window.goatcounter || {};
+    window.goatcounter.path = function () { return location.pathname; };
+    window.goatcounter.referrer = function () { return cleanUrl(document.referrer); };
+
     var s = document.createElement("script");
     s.async = true;
     s.src = "//gc.zgo.at/count.js";
@@ -72,7 +99,11 @@ var GA_MEASUREMENT_ID = "";              // e.g. "G-XXXXXXXXXX"
     document.head.appendChild(s);
 
     gtag("js", new Date());
-    gtag("config", GA_MEASUREMENT_ID);
+    gtag("config", GA_MEASUREMENT_ID, {
+      // Both default to the raw URL, which can carry ?email=... See cleanUrl.
+      page_location: cleanUrl(location.href),
+      page_referrer: cleanUrl(document.referrer)
+    });
   }
 
   /* ── Consent banner ─────────────────────────────────────────────────────── */
