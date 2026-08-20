@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="205" viewBox="0 0 240 205" fill="none">
+<defs><linearGradient id="g" x1="10" y1="80" x2="90" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7C6CE8"></stop><stop offset=".55" stop-color="#C77BE0"></stop><stop offset="1" stop-color="#F58AA8"></stop></linearGradient></defs><path d="M14 74L34 34l16 26 16-26 20 40" stroke="url(#g)" stroke-width="9"></path>
+<circle cx="86" cy="22" r="7" fill="#F58AA8"></circle>
+<text x="0" y="152" font-family="Newsreader, Georgia, serif" font-size="46" fill="#241D38">Ask</text>
+<text x="0" y="198" font-family="Newsreader, Georgia, serif" font-size="46" font-style="italic" fill="#241D38">Maria</text>
+</svg>

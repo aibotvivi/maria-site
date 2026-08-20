@@ -22,8 +22,7 @@
   .g2{right:-4%;top:22%;width:600px;height:460px;
       background:radial-gradient(circle at 60% 45%, rgba(255,255,255,.65), rgba(255,255,255,0) 64%);filter:blur(18px)}
   .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:0 88px 104px}
-  .brand{display:flex;align-items:center;gap:12px;font-family:Newsreader,Georgia,serif;font-size:30px;letter-spacing:.02em;color:#2c2131}
-  .brand em{font-style:italic}
+  .brand{width:241px;height:56px;flex:0 0 auto;align-self:flex-start}
   h1{margin:0;font-family:Newsreader,Georgia,serif;font-weight:400;font-size:58px;line-height:1.06;
      color:#2a1f30;max-width:16ch;letter-spacing:-.01em}
   p{margin:0;font-size:24px;font-weight:400;line-height:1.5;color:#4e3f4a;max-width:34ch}
@@ -31,18 +30,18 @@
         font-family:'DM Mono',ui-monospace,monospace;
         font-size:18px;letter-spacing:.08em;text-transform:uppercase;color:#8a5a12}
   .dot{width:8px;height:8px;border-radius:50%;background:#c9761c}
-  .plane{position:absolute;right:88px;bottom:96px;width:230px;height:230px;opacity:.12}
+  .plane{position:absolute;right:88px;bottom:96px;width:230px;height:230px;opacity:.14}
 </style>
 </head>
 <body>
   <div class="glow g1"></div>
   <div class="glow g2"></div>
   <div class="wrap">
-    <div class="brand"><svg width="40" height="40" viewBox="0 0 100 100" fill="none"><path d="M14 74L34 34l16 26 16-26 20 40" stroke="#2c2131" stroke-width="7"></path><circle cx="86" cy="22" r="6" fill="#c9761c"></circle></svg><span>Ask <em>Maria</em></span></div>
+    <svg class="brand" viewBox="0 0 430 100" fill="none" role="img" aria-label="Ask Maria"><defs><linearGradient id="lgOg" x1="10" y1="80" x2="90" y2="18" gradientUnits="userSpaceOnUse"><stop stop-color="#7C6CE8"></stop><stop offset=".55" stop-color="#C77BE0"></stop><stop offset="1" stop-color="#F58AA8"></stop></linearGradient></defs><path d="M14 74L34 34l16 26 16-26 20 40" stroke="url(#lgOg)" stroke-width="9"></path><circle cx="86" cy="22" r="7" fill="#F58AA8"></circle><text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text></svg>
     <h1>Like having a friend who's brilliant at finding flights.</h1>
     <p>She watches your routes, checks the seller, and tells you what she'd actually do.</p>
   </div>
   <div class="foot"><span class="dot"></span><span>Invite-only beta · askmaria.app</span></div>
-  <svg class="plane" viewBox="0 0 100 100" fill="none"><path d="M14 74L34 34l16 26 16-26 20 40" stroke="#4b3520" stroke-width="7"></path></svg>
+  <svg class="plane" viewBox="0 0 100 100" fill="none"><path d="M14 74L34 34l16 26 16-26 20 40" stroke="#7C6CE8" stroke-width="9"></path></svg>
 </body>
 </html>
