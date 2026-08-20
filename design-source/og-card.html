@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;width:1200px;height:630px;overflow:hidden}
+  body{
+    font-family:Jost,system-ui,sans-serif;color:#35283c;
+    background:
+      radial-gradient(120% 80% at 12% 4%, #d9c2ef 0%, rgba(217,194,239,0) 58%),
+      radial-gradient(110% 70% at 88% 10%, #f3c3d6 0%, rgba(243,195,214,0) 60%),
+      radial-gradient(130% 90% at 78% 52%, #f7c79b 0%, rgba(247,199,155,0) 62%),
+      radial-gradient(120% 80% at 20% 92%, #f0ae74 0%, rgba(240,174,116,0) 60%),
+      linear-gradient(170deg, #e6d5f4 0%, #f6dcd6 45%, #f6c99e 78%, #eab27b 100%);
+    position:relative;
+  }
+  .glow{position:absolute;border-radius:50%;pointer-events:none}
+  .g1{left:2%;top:6%;width:520px;height:520px;
+      background:radial-gradient(circle at 40% 40%, rgba(255,255,255,.8), rgba(255,255,255,0) 66%);filter:blur(14px)}
+  .g2{right:-4%;top:22%;width:600px;height:460px;
+      background:radial-gradient(circle at 60% 45%, rgba(255,255,255,.65), rgba(255,255,255,0) 64%);filter:blur(18px)}
+  .wrap{position:relative;height:100%;display:flex;flex-direction:column;justify-content:center;gap:22px;padding:0 88px 104px}
+  .brand{display:flex;align-items:center;gap:10px;font-size:24px;letter-spacing:.02em;color:#4a3a44}
+  h1{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:72px;line-height:1.06;
+     color:#2a1f30;max-width:16ch;letter-spacing:-.01em}
+  p{margin:0;font-size:26px;font-weight:300;line-height:1.5;color:#4e3f4a;max-width:34ch}
+  .foot{position:absolute;left:88px;bottom:58px;display:flex;align-items:center;gap:14px;
+        font-size:20px;letter-spacing:.13em;text-transform:uppercase;color:#8a5a12}
+  .dot{width:8px;height:8px;border-radius:50%;background:#c9761c}
+  .plane{position:absolute;right:96px;bottom:78px;font-size:150px;opacity:.16;transform:rotate(-12deg)}
+</style>
+</head>
+<body>
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="wrap">
+    <div class="brand">Ask Maria ✈</div>
+    <h1>Like having a friend who's brilliant at finding flights.</h1>
+    <p>She watches your routes, checks the seller, and tells you what she'd actually do.</p>
+  </div>
+  <div class="foot"><span class="dot"></span><span>Invite-only beta · askmaria.app</span></div>
+  <div class="plane">✈</div>
+</body>
+</html>

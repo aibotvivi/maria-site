@@ -40,9 +40,35 @@ success panel starts working automatically. It posts JSON:
 worth having, since it segments the list from day one and tells you who to
 admit next.
 
-Also replace before publishing:
-- `REPLACE-WITH-YOUR-DOMAIN` (canonical + og:image URLs, 3 places)
-- add an `og.png` (1200x630) for link previews
+## Domain and deployment
+
+The domain is **askmaria.app** (bought 2026-08-20). It is already wired in:
+
+    CNAME        askmaria.app        — GitHub Pages reads this file
+    robots.txt   allows /, blocks /request-invite.html, points at the sitemap
+    sitemap.xml  the landing page only (the other pages are noindex)
+    og.png       1200x630 link preview, referenced absolutely in index.html
+                 rebuild it from design-source/og-card.html:
+                 chrome --headless --screenshot=og.png --window-size=1200,630 \
+                        file://.../og-card.html
+
+**`.app` is on the HSTS preload list** — browsers refuse plain HTTP for it, with
+no click-through warning. There is no "put it up now, add HTTPS later" option:
+whatever hosts it must serve a valid certificate from the first request.
+GitHub Pages issues one automatically (tick *Enforce HTTPS* once DNS resolves;
+the certificate can take up to an hour to appear).
+
+DNS for the apex domain — four A records, all four needed:
+
+    A     @     185.199.108.153
+    A     @     185.199.109.153
+    A     @     185.199.110.153
+    A     @     185.199.111.153
+    CNAME www   <github-username>.github.io.
+
+Note GitHub Pages needs a **public** repo on a free account. Nothing here is
+secret (no keys, no endpoint yet), so publishing the source is fine — but it is
+a deliberate choice, not an accident.
 
 ## Honesty constraints baked into the copy
 
@@ -62,14 +88,15 @@ first-name reviews from beta users, with permission, once they exist.
     OPERATOR_NAME            all four pages (footers + legal) — UK GDPR needs
                              a named controller; also E-commerce Regs 2002
     CONTACT_EMAIL            all four pages — a working address people can use
-    REPLACE-WITH-YOUR-DOMAIN index.html, 2 places — canonical + og:image
 
     GOATCOUNTER YOUR-CODE    all four pages — create a free goatcounter.com
                              account, then uncomment the script tag
                              (cookieless: no consent banner needed)
 
-Use a dedicated address (hello@yourdomain), not a personal inbox — it goes on
-a public page.
+Use a dedicated address (hello@askmaria.app), not a personal inbox — it goes on
+a public page. Owning the domain does not by itself give you mail on it; add a
+forwarder at the registrar, or Fastmail / Google Workspace, and confirm mail
+actually arrives before the address goes on a legal page.
 
 ## Copy decisions that are deliberate
 

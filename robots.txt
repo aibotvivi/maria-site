@@ -1,0 +1,8 @@
+# Ask Maria — https://askmaria.app
+# The landing page is the only page meant for search results; the invite form
+# and the legal pages carry <meta name="robots" content="noindex"> as well.
+User-agent: *
+Allow: /
+Disallow: /request-invite.html
+
+Sitemap: https://askmaria.app/sitemap.xml
