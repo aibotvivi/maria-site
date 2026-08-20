@@ -306,8 +306,24 @@
     }
     if (dream) note.querySelector("strong").textContent = dream;
     form.appendChild(note);
+
+    /* The submit button used to disable itself and relabel to "Message her
+       instead" — naming the next step while being unable to perform it, with
+       the actual link buried as underlined text inside the note. On a phone
+       that reads as a dead end. Swap it for a real control that does the
+       thing, keeping the same styling so it stays the obvious next tap. */
     var btn = form.querySelector('button[type="submit"]');
-    if (btn && reason !== "failed") { btn.disabled = true; btn.textContent = "Message her instead"; }
+    if (btn && reason !== "failed") {
+      var go = document.createElement("a");
+      go.href = wantsWhatsapp
+        ? "mailto:hello@askmaria.app?subject=WhatsApp%20waitlist"
+        : TELEGRAM_URL;
+      if (!wantsWhatsapp) { go.target = "_blank"; go.rel = "noopener"; }
+      go.textContent = wantsWhatsapp ? "Email her instead" : "Message her on Telegram";
+      go.style.cssText = btn.getAttribute("style") + ";text-decoration:none;";
+      btn.parentNode.replaceChild(go, btn);
+      go.focus({ preventScroll: true });
+    }
   }
 
   /* Pageviews alone can't tell you whether this page works — you need the
