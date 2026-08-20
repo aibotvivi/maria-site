@@ -20,7 +20,7 @@
  * If GA_MEASUREMENT_ID is empty, no banner appears at all — asking consent for
  * something that isn't running would be theatre.
  */
-var GOATCOUNTER_CODE  = "";              // e.g. "askmaria"  -> askmaria.goatcounter.com
+var GOATCOUNTER_CODE  = "askmaria";              // e.g. "askmaria"  -> askmaria.goatcounter.com
 var GA_MEASUREMENT_ID = "";              // e.g. "G-XXXXXXXXXX"
 
 (function () {
