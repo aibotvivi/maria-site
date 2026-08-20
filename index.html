@@ -33,6 +33,17 @@
   [hidden] { display: none !important; }
   p { max-width: 66ch; }
 
+  /* Section divider. Same rule as the one above the FAQ — that is the
+     footer's border-top — so the whole page is separated the same way.
+     Sections are flex children of <main>, so the container gap gives the
+     space ABOVE each rule and this padding gives the space below it.
+     `.sec + .sec` keeps the hero clean: no rule above the first section. */
+  .sec + .sec {
+    border-top: 1px solid rgba(255,255,255,.6);
+    padding-top: clamp(30px, 4vw, 42px);
+  }
+
+
   /* 2.4.1 Bypass Blocks. Visible only when focused, so keyboard users get a
      way past the header without changing the visual design for anyone else. */
   .skip-link {
@@ -175,9 +186,9 @@
       </div>
     </header>
 
-    <main id="main" style="display: flex; flex-direction: column; gap: clamp(56px, 9vw, 88px);">
+    <main id="main" style="display: flex; flex-direction: column; gap: clamp(64px, 10vw, 104px);">
 
-    <section style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(36px, 6vw, 56px);">
+    <section class="sec" style="display: flex; flex-wrap: wrap; align-items: center; gap: clamp(36px, 6vw, 56px);">
       <div style="flex: 1 1 340px; display: flex; flex-direction: column; gap: 22px; max-width: 520px;">
         <h1 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(36px, 7.02vw, 59px); line-height: 1.02; letter-spacing: -.015em; color: #2a1f30; text-wrap: pretty;">Like having a friend who's brilliant at finding flights.</h1>
         <p style="margin: 0; font-size: clamp(17px, 2.4vw, 20px); line-height: 1.6; font-weight: 400; color: #4e3f4a; max-width: 46ch; text-wrap: pretty;">Except she&rsquo;s a bot, so she&rsquo;ll actually check your route twice a day for four months without getting bored.</p>
@@ -235,7 +246,7 @@
       </div>
     </section>
 
-    <section style="display: flex; flex-direction: column; gap: 26px;">
+    <section class="sec" style="display: flex; flex-direction: column; gap: 26px;">
       <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">What a price alert can't do</h2>
       <div style="display: flex; flex-wrap: wrap; gap: 18px;">
         <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
@@ -263,7 +274,7 @@
       </div>
     </section>
 
-    <section style="display: flex; flex-direction: column; gap: 22px;">
+    <section class="sec" style="display: flex; flex-direction: column; gap: 22px;">
       <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">Not a faster search. A second pair of eyes.</h2>
       <div role="table" aria-label="Where Maria fits against Google Flights and Hopper" class="cmp">
         <div role="row" class="cmp-row cmp-head">
@@ -312,7 +323,7 @@
       </div>
     </section>
 
-    <section style="display: flex; flex-direction: column; gap: 26px;">
+    <section class="sec" style="display: flex; flex-direction: column; gap: 26px;">
       <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">How it works</h2>
       <div style="display: flex; flex-direction: column;">
         <div style="display: flex; gap: clamp(16px, 4vw, 26px); align-items: stretch;">
@@ -358,7 +369,7 @@
     </section>
 
 
-    <section style="display: flex; flex-direction: column; gap: 22px;">
+    <section class="sec" style="display: flex; flex-direction: column; gap: 22px;">
       <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 12px;">
         <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(26px, 4.3vw, 36px); color: #2a1f30;">Recent finds</h2>
         <span style="font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #6f5a4a;">From the beta</span>
@@ -398,7 +409,7 @@
       <p style="margin: 0; font-size: 13.5px; font-weight: 400; line-height: 1.6; color: #5a4a52;">Real watches from the beta, found by Maria while she was being built &mdash; not customer reviews. Prices were correct when found and will have moved since.</p>
     </section>
 
-    <section style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 46px 24px; border-radius: 34px; background: linear-gradient(150deg, rgba(255,255,255,.46), rgba(247,205,164,.4)); border: 1px solid rgba(255,255,255,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); text-align: center;">
+    <section class="sec" style="display: flex; flex-direction: column; align-items: center; gap: 18px; padding: 46px 24px; border-radius: 34px; background: linear-gradient(150deg, rgba(255,255,255,.46), rgba(247,205,164,.4)); border: 1px solid rgba(255,255,255,.72); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); text-align: center;">
         <h2 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 400; font-size: clamp(20px, 4.32vw, 45px); line-height: 1.1; letter-spacing: -.01em; white-space: nowrap; color: #2a1f30;">Tell her where you'd rather be.</h2>
         <div data-panel="form-end" style="display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%;">
           <form data-signup="end" action="request-invite.html" method="get" style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 460px;">
