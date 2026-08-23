@@ -199,8 +199,45 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
     showBanner();
   };
 
+  /* ── Telegram click tracking ────────────────────────────────────────────
+     Tapping through to Telegram is the most important action on this site
+     and, until now, the only one that was invisible: every t.me link was a
+     bare <a href> with no handler, so page views could be counted and the
+     thing the page exists to cause could not.
+
+     Delegated rather than per-link, so it covers all of them (currently
+     seven across two pages) and keeps covering any added later.
+
+     GoatCounter only — it is cookieless, so this needs no consent and works
+     for the people who decline GA. And it counts the CLICK, never the link:
+     the route in a ?start= payload is the visitor's own text and belongs
+     only in Telegram, not in an analytics provider's logs. */
+  function tgLabel(a) {
+    if (a.closest("footer") || /&copy;|©/.test((a.parentElement || {}).innerHTML || "")) {
+      return "footer";
+    }
+    return /already have an invite/i.test(a.textContent || "") ? "returning" : "primary";
+  }
+
+  function trackTelegramClicks() {
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="t.me/"]');
+      if (!a) return;
+      try {
+        if (window.goatcounter && window.goatcounter.count) {
+          window.goatcounter.count({
+            path: "telegram-open/" + tgLabel(a),
+            title: "Opened Telegram",
+            event: true
+          });
+        }
+      } catch (err) { /* analytics must never block the tap */ }
+    }, true);
+  }
+
   function start() {
     loadGoatCounter();
+    trackTelegramClicks();
 
     if (!GA_MEASUREMENT_ID) return;          // nothing to consent to
     var consent = readConsent();

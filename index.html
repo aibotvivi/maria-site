@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ask Maria — like having a friend who's brilliant at finding flights</title>
-<meta name="description" content="A Telegram bot that watches flight prices twice a day, screens sellers against ATOL and Trustpilot, and tells you when to book. Invite-only beta.">
+<meta name="description" content="A Telegram bot that watches flight prices twice a day and tells you when a fare is the lowest she has seen. You set the price. Free while she is in beta.">
 <link rel="canonical" href="https://askmaria.app/">
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ask Maria">
 <meta property="og:url" content="https://askmaria.app/">
 <meta property="og:title" content="Ask Maria — like having a friend who's brilliant at finding flights">
-<meta property="og:description" content="She watches the fares, checks the seller, and tells you what she'd actually do. Invite-only beta.">
+<meta property="og:description" content="She remembers every price, so she can tell you when one is genuinely low. You set the number. Free beta.">
 <meta property="og:image" content="https://askmaria.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -248,7 +248,7 @@
         <text x="118" y="72" font-family="Newsreader, Georgia, serif" font-size="54" fill="#241D38">Ask <tspan font-style="italic">Maria</tspan></text>
       </svg>
       <div style="display: flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 999px; background: rgba(255,255,255,.42); border: 1px solid rgba(255,255,255,.65); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); font-family: 'DM Mono', ui-monospace, monospace; font-size: 12px; letter-spacing: .10em; text-transform: uppercase; color: #5a4433;">
-        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>Invite-only beta
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #c9871f;"></span>Free beta · limited places
       </div>
     </header>
 
@@ -263,10 +263,10 @@
             <form id="signup-top" data-signup="top" action="request-invite.html" method="get" style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 460px;">
               <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="width: 100%; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(111,61,14,.7); font: inherit; font-size: 16px; color: #35283c; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.9);" />
               <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #a1560f, #8a4a0d); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
-                <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
+                <span aria-hidden="true" style="font-size: 17px;">✈</span>Get my link to Maria
               </button>
             </form>
-            <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45; max-width: 46ch;">Invites go out in small batches on purpose: while Maria is learning, every new watch gets checked by hand, and that doesn&rsquo;t scale past a handful a week yet. Leave your email and she&rsquo;ll send a single-use link when a spot opens.</span>
+            <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45; max-width: 46ch;">Places are limited on purpose: while Maria is learning, there are only so many routes she can watch properly. Leave your email and she&rsquo;ll hand you the link straight away.</span>
             <div style="display: flex; flex-direction: column; gap: 10px; max-width: 46ch; padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,.38); border: 1px solid rgba(255,255,255,.6);">
               <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;"><strong style="font-weight: 500;">No Telegram?</strong> It&rsquo;s free, takes about thirty seconds, and Maria is the only thing you&rsquo;ll need it for. <a href="https://telegram.org/" target="_blank" rel="noopener" style="color:#6f3d0e;">How to install &rarr;</a></span>
             </div>
@@ -274,7 +274,7 @@
           <div data-panel="sent-top" hidden>
             <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 460px; padding: 20px 22px; border-radius: 24px; background: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.78); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
               <span style="font-family: Newsreader, Georgia, serif; font-size: 22px; color: #2a1f30;">You're on the list.</span>
-              <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">Maria will email <strong style="font-weight: 500;"><span data-email>your inbox</span></strong> with what she does, then your invite link when a spot opens.</span>
+              <span style="font-size: 14px; font-weight: 400; line-height: 1.6; color: #4e3f4a;">Maria will email <strong style="font-weight: 500;"><span data-email>your inbox</span></strong> with a copy of your Telegram link, so you can open it on your phone.</span>
               <a href="request-invite.html" style="font-size: 14px; font-weight: 400; text-decoration: underline; text-underline-offset: 3px;">Tell her where you're dreaming of flying →</a>
             </div>
           </div>
@@ -303,7 +303,7 @@
                 <div style="font-size: 10px; opacity: .5; margin-top: 4px;">21:14</div>
               </div>
               <div style="align-self: flex-start; max-width: 92%; padding: 12px 15px; border-radius: 18px 18px 18px 5px; background: rgba(255,255,255,.86); font-size: 14px; line-height: 1.55; color: #3a2f3f; box-shadow: 0 8px 22px rgba(90,60,90,.1);">
-                💬 Found <strong style="font-weight: 500;">£571</strong> departing the 4th. Heads up: the 3rd is £38 cheaper, same airline. And that £519 fare on the discount site? The seller has a 2.9 Trustpilot and no ATOL — I'd skip it.
+                💬 <strong style="font-weight: 500;">£487</strong> departing the 4th — lowest I've seen since May, and under the £600 you gave me. The 3rd is £38 cheaper but lands at 06:20, so you'd lose the day.
                 <div style="font-size: 10px; opacity: .5; margin-top: 5px;">21:16</div>
               </div>
             </div>
@@ -324,11 +324,11 @@
         </div>
         <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
           <div style="display: flex; align-items: flex-start; gap: 12px;">
-            <span aria-hidden="true" style="font-size: 22px; line-height: 1.2; flex: 0 0 auto;">🛡️</span>
-            <h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: 22px; color: #2c2131;">She checks the seller, not just the price</h3>
+            <span aria-hidden="true" style="font-size: 22px; line-height: 1.2; flex: 0 0 auto;">📓</span>
+            <h3 style="margin: 0; font-family: Newsreader, Georgia, serif; font-weight: 500; font-size: 22px; color: #2c2131;">She remembers every price</h3>
           </div>
-          <p style="margin: 0; font-size: 15px; line-height: 1.65; font-weight: 400; color: #4e3f4a;">Screens cheap fares against ATOL/IATA accreditation and Trustpilot before recommending. She won't headline a scammy travel site.</p>
-          <p style="margin: 8px 0 0; padding-top: 12px; border-top: 1px solid rgba(120,80,50,.18); font-size: 13.5px; line-height: 1.6; font-weight: 400; color: #5a4a52;"><strong style="font-weight: 500; color: #46384a;">She earns a commission on some bookings &mdash; and she'll still tell you when the cheap one's a scam.</strong> Screening happens before she knows who pays. If the honest answer is &ldquo;book direct with the airline&rdquo;, that's the answer you get.</p>
+          <p style="margin: 0; font-size: 15px; line-height: 1.65; font-weight: 400; color: #4e3f4a;">Not &ldquo;prices look low&rdquo; &mdash; &ldquo;&pound;487, the lowest I&rsquo;ve seen since May.&rdquo; She has been writing every check down since the day she started watching your route.</p>
+          <p style="margin: 8px 0 0; padding-top: 12px; border-top: 1px solid rgba(120,80,50,.18); font-size: 13.5px; line-height: 1.6; font-weight: 400; color: #5a4a52;"><strong style="font-weight: 500; color: #46384a;">And you set the number, not her.</strong> &ldquo;Tell me if Tokyo goes under &pound;600&rdquo; watches for your price &mdash; not someone else&rsquo;s idea of a good deal.</p>
         </div>
         <div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 12px; padding: 26px 24px; border-radius: 26px; background: rgba(255,255,255,.36); border: 1px solid rgba(255,255,255,.66); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); box-shadow: 0 18px 44px rgba(96,62,92,.13), inset 0 1px 0 rgba(255,255,255,.55);">
           <div style="display: flex; align-items: flex-start; gap: 12px;">
@@ -372,9 +372,9 @@
           <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>Whether she'd take it, and why.</span>
         </div>
         <div role="row" class="cmp-row">
-          <span role="rowheader" class="cmp-lab">Seller trust</span>
-          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>Listed without screening.</span>
-          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>Checked against ATOL, IATA and Trustpilot first.</span>
+          <span role="rowheader" class="cmp-lab">Knowing it's cheap</span>
+          <span role="cell" class="cmp-them"><span class="cmp-tag"><img src="https://www.google.com/s2/favicons?domain=google.com&amp;sz=64" alt="" /><img src="https://www.google.com/s2/favicons?domain=hopper.com&amp;sz=64" alt="" /><span>Google &amp; Hopper</span></span>&ldquo;Prices are currently low.&rdquo;</span>
+          <span role="cell" class="cmp-maria"><span class="cmp-tag"><img src="logo/ask-maria-favicon.svg" alt="" /><span>Ask Maria</span></span>&ldquo;Lowest I&rsquo;ve seen since May.&rdquo;</span>
         </div>
         <div role="row" class="cmp-row">
           <span role="rowheader" class="cmp-lab">Trip maths</span>
@@ -481,7 +481,7 @@
           <form data-signup="end" action="request-invite.html" method="get" style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 460px;">
             <input type="email" name="email" required="required" autoComplete="email" placeholder="you@example.com" aria-label="Email address" style="width: 100%; min-width: 0; min-height: 56px; padding: 15px 18px; border-radius: 999px; background: rgba(255,255,255,.66); border: 1px solid rgba(111,61,14,.7); font: inherit; font-size: 16px; color: #35283c; text-align: center; outline: none;" style-focus="border-color: #dc9a3e; background: rgba(255,255,255,.92);" />
             <button type="submit" style="width: 100%; min-height: 56px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; padding: 16px 24px; border-radius: 999px; background: linear-gradient(135deg, #a1560f, #8a4a0d); color: #fff; font: inherit; font-size: 16px; white-space: nowrap; cursor: pointer; border: 1px solid rgba(255,255,255,.35); box-shadow: 0 14px 34px rgba(160,96,20,.32), inset 0 1px 0 rgba(255,255,255,.4);" style-hover="transform: translateY(-2px);">
-              <span aria-hidden="true" style="font-size: 17px;">✉</span>Request an invite
+              <span aria-hidden="true" style="font-size: 17px;">✈</span>Get my link to Maria
             </button>
           </form>
           <span style="font-size: 14px; font-weight: 400; line-height: 1.7; color: #5c4c45;">One field, no commitment. Invites go out in small batches.</span>
