@@ -212,11 +212,21 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
      for the people who decline GA. And it counts the CLICK, never the link:
      the route in a ?start= payload is the visitor's own text and belongs
      only in Telegram, not in an analytics provider's logs. */
+  /* Read the label off the link, never off its wording. The first version
+     matched /already have an invite/i against the link text — and the very
+     next copy edit renamed that link to "Already talking to Maria?", so every
+     returning-user click was silently counted as "primary". Analytics that
+     break when someone rewrites a sentence are worse than none: they keep
+     reporting, just wrongly.
+
+     Falls back to position for any link that predates the attribute. */
   function tgLabel(a) {
+    var explicit = a.getAttribute("data-tg");
+    if (explicit) return explicit;
     if (a.closest("footer") || /&copy;|©/.test((a.parentElement || {}).innerHTML || "")) {
       return "footer";
     }
-    return /already have an invite/i.test(a.textContent || "") ? "returning" : "primary";
+    return "primary";
   }
 
   function trackTelegramClicks() {

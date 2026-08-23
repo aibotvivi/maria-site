@@ -154,7 +154,7 @@
         </form>
 
         <div style="display: flex; flex-direction: column; gap: 14px; align-items: flex-start;">
-          <a href="https://t.me/AskMariaTravelBot" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 400; text-decoration: none;">
+          <a data-tg="returning" href="https://t.me/AskMariaTravelBot" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 400; text-decoration: none;">
             <span style="text-decoration: underline; text-underline-offset: 3px;">Already talking to Maria? Open Telegram</span><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="display:block;flex:0 0 auto;"><circle cx="12" cy="12" r="12" fill="#229ED9"/><path d="M17.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.535.223l.19-2.712 4.94-4.465c.215-.19-.047-.297-.332-.107L8.55 13.03l-2.598-.812c-.566-.176-.578-.566.12-.836l10.15-3.911c.472-.176.882.106.672.75z" fill="#fff"/></svg>
           </a>
         </div>
@@ -191,7 +191,7 @@
         <div data-panel="has-dream" hidden>
           <p style="margin: 0; font-size: 15px; font-weight: 400; line-height: 1.6; color: #5a4a54;">Noted for you: <em><span data-dream></span></em></p>
         </div>
-        <a data-tg-open href="https://t.me/AskMariaTravelBot" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 16px 28px; border-radius: 999px; background: linear-gradient(135deg,#c9761c,#a1560f); border: 1px solid rgba(255,255,255,.35); color: #fff; font-size: 16px; text-decoration: none; box-shadow: 0 14px 34px rgba(160,96,20,.3), inset 0 1px 0 rgba(255,255,255,.4);">Open Maria on Telegram
+        <a data-tg="primary" data-tg-open href="https://t.me/AskMariaTravelBot" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; padding: 16px 28px; border-radius: 999px; background: linear-gradient(135deg,#c9761c,#a1560f); border: 1px solid rgba(255,255,255,.35); color: #fff; font-size: 16px; text-decoration: none; box-shadow: 0 14px 34px rgba(160,96,20,.3), inset 0 1px 0 rgba(255,255,255,.4);">Open Maria on Telegram
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" focusable="false" style="display:block;flex:0 0 auto;"><circle cx="12" cy="12" r="12" fill="#fff" fill-opacity=".22"/><path d="M17.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.18-.357.223-.535.223l.19-2.712 4.94-4.465c.215-.19-.047-.297-.332-.107L8.55 13.03l-2.598-.812c-.566-.176-.578-.566.12-.836l10.15-3.911c.472-.176.882.106.672.75z" fill="#fff"/></svg>
         </a>
         <p style="margin: 0; font-size: 14px; font-weight: 400; line-height: 1.6; color: #5a4a54; max-width: 44ch;">A copy of that link is on its way to <strong style="font-weight: 500;"><span data-email>your inbox</span></strong>, in case you'd rather open it on your phone. Nothing in a few minutes? Check spam.</p>
@@ -219,7 +219,7 @@
         <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:#6f3d0e;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button>
       </span>
       <span style="font-size: 12px; font-weight: 400; color: #6b5c66;">
-        &copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot" style="color:#6f3d0e;">@AskMariaTravelBot</a>
+        &copy; 2026 Ask Maria &middot; Telegram: <a data-tg="footer" href="https://t.me/AskMariaTravelBot" style="color:#6f3d0e;">@AskMariaTravelBot</a>
       </span>
     </div>
   </footer>
@@ -283,15 +283,51 @@
      Degrades in two steps rather than failing: no route (or one too long to
      encode) still carries the bare source tag, so a join is never
      unattributable. signup.py re-checks every rule server-side. */
+  function b64url(s) {
+    var bytes = new TextEncoder().encode(s), bin = "";
+    bytes.forEach(function (b) { bin += String.fromCharCode(b); });
+    return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+
+  /* Telegram's 64-character start payload is far smaller than it looks:
+     base64 expands by 4/3, and "rw-" costs three more, so only about 45
+     plain-ASCII characters survive — fewer with accents, far fewer with kana.
+     The placeholder in the form below is itself 45 characters, so the very
+     example we show people sits exactly on the edge.
+
+     The first version dropped the whole route when it overflowed, silently,
+     and served the generic welcome instead. That is the worst of the options:
+     the visitor typed something specific, was shown a confirmation, and Maria
+     then opened as though they had said nothing.
+
+     So trim to fit instead, at a word boundary, and mark it with an ellipsis
+     that signup.py detects — Maria then invites them to fill in the rest
+     rather than pretending she got it all. The FULL text is still posted to
+     the email provider, so nothing they typed is lost; only the link is
+     capacity-bound. */
   function tgLink(route, source) {
     var tag   = { web: "w", email: "e", shared: "s" }[source] || "w";
-    var clean = String(route || "").replace(/\s+/g, " ").trim().slice(0, 80);
+    var clean = String(route || "").replace(/\s+/g, " ").trim();
     if (!clean) return TELEGRAM_URL + "?start=" + tag;
-    var bytes = new TextEncoder().encode(clean), bin = "";
-    bytes.forEach(function (b) { bin += String.fromCharCode(b); });
-    var payload = "r" + tag + "-" +
-      btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-    return TELEGRAM_URL + "?start=" + (payload.length > 64 ? tag : payload);
+
+    var fits = function (s) { return ("r" + tag + "-" + b64url(s)).length <= 64; };
+    if (!fits(clean)) {
+      var words = clean.split(" ");
+      while (words.length > 1 && !fits(words.join(" ") + "…")) words.pop();
+      clean = words.join(" ") + "…";
+      // Word trimming does nothing for a script without spaces — Japanese and
+      // Chinese arrive as one "word", and are three bytes per character, so
+      // they overflow soonest and benefit least. Fall back to trimming by
+      // character. Array.from, not slice, so an astral character is never cut
+      // in half into a broken surrogate.
+      if (!fits(clean)) {
+        var chars = Array.from(String(route).replace(/\s+/g, " ").trim());
+        while (chars.length > 1 && !fits(chars.join("") + "…")) chars.pop();
+        clean = chars.join("") + "…";
+      }
+      if (!fits(clean)) return TELEGRAM_URL + "?start=" + tag;
+    }
+    return TELEGRAM_URL + "?start=r" + tag + "-" + b64url(clean);
   }
 
   function panel(n) { return document.querySelector('[data-panel="' + n + '"]'); }
