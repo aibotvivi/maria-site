@@ -221,12 +221,13 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
 
      Falls back to position for any link that predates the attribute. */
   function tgLabel(a) {
-    var explicit = a.getAttribute("data-tg");
-    if (explicit) return explicit;
-    if (a.closest("footer") || /&copy;|©/.test((a.parentElement || {}).innerHTML || "")) {
-      return "footer";
-    }
-    return "primary";
+    // Unlabelled links report as "unlabelled" rather than guessing "primary".
+    // The old positional heuristic is gone: every link now carries data-tg, so
+    // it was unreachable, and a fallback that silently picks a plausible label
+    // recreates the original bug — analytics that keep reporting, just wrongly.
+    // A link that shows up as "unlabelled" in the stats is a link someone
+    // forgot to tag, which is exactly what you want to be able to see.
+    return a.getAttribute("data-tg") || "unlabelled";
   }
 
   function trackTelegramClicks() {

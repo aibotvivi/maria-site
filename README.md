@@ -31,14 +31,24 @@ address to go, so the form does *not* show "You're on the list" — that would
 be a lie to a real visitor. Until it's set, submitting opens Telegram, which
 is the flow that genuinely works today.
 
-Paste in the POST URL from MailerLite / Formspree / Tally / Buttondown and the
-success panel starts working automatically. It posts JSON:
+Wired to MailerLite since 2026-08-22. It posts form-encoded fields, not JSON:
 
-    { "email": "...", "dream": "Tokyo in April", "consent": true }
+    fields[email]            the address
+    fields[dream]            "where are you dreaming of flying next?"
+    fields[tg_link]          the Telegram deep link for the EMAIL button
+    fields[consent]          yes | no
+    fields[consent_version]  which wording they agreed to
+    fields[wants_whatsapp]   yes | no
 
-`dream` is the "where are you dreaming of flying next?" answer — the field
-worth having, since it segments the list from day one and tells you who to
-admit next.
+Two of these need care.
+
+`fields[dream]` is only sent when non-empty. MailerLite UPDATES an existing
+subscriber rather than rejecting a duplicate, so posting an empty string would
+silently wipe a route somebody gave on an earlier signup.
+
+`fields[tg_link]` requires a custom field named `tg_link` to exist under
+Subscribers > Fields. An unknown field name is accepted and SILENTLY
+DISCARDED — no error, `success:true`, and a blank button in every email.
 
 ## Domain and deployment
 
@@ -86,7 +96,11 @@ first-name reviews from beta users, with permission, once they exist.
 ## Analytics
 
 Both trackers are configured in one place, `analytics.js`, and every page
-loads that one file:
+loads that one file. One contract lives outside it: every `t.me` link carries
+a **`data-tg`** attribute (`primary` | `returning` | `footer`) and the click
+tracker reads that attribute. It used to infer the label from the link's
+wording, which broke the moment the copy was reworded — anything untagged now
+reports as `unlabelled` rather than guessing.
 
     GOATCOUNTER_CODE   = "askmaria"   live since 2026-08-20
     GA_MEASUREMENT_ID  = ""           off — paste a G-XXXXXXXXXX to enable

@@ -305,29 +305,55 @@
      rather than pretending she got it all. The FULL text is still posted to
      the email provider, so nothing they typed is lost; only the link is
      capacity-bound. */
+  /* MUST STAY IN STEP WITH signup.build_payload() in the airfare-monitor repo.
+     They are the same algorithm in two languages because a browser cannot call
+     the Python, and they live in separate repositories, so nothing but a test
+     keeps them honest: tests/test_payload_parity.py runs a fixture list
+     through both and fails if a single output differs. Drift here would not
+     raise an error anywhere — the decoder accepts whatever arrives, so the
+     symptom would be quietly mangled routes. */
   function tgLink(route, source) {
-    var tag   = { web: "w", email: "e", shared: "s" }[source] || "w";
-    var clean = String(route || "").replace(/\s+/g, " ").trim();
+    var tag = { web: "w", email: "e", shared: "s" }[source] || "w";
+    var clean = String(route || "").replace(/\s+/g, " ").trim()
+                                   .replace(/[…. ]+$/, "");
     if (!clean) return TELEGRAM_URL + "?start=" + tag;
 
-    var fits = function (s) { return ("r" + tag + "-" + b64url(s)).length <= 64; };
-    if (!fits(clean)) {
-      var words = clean.split(" ");
-      while (words.length > 1 && !fits(words.join(" ") + "…")) words.pop();
-      clean = words.join(" ") + "…";
-      // Word trimming does nothing for a script without spaces — Japanese and
-      // Chinese arrive as one "word", and are three bytes per character, so
-      // they overflow soonest and benefit least. Fall back to trimming by
-      // character. Array.from, not slice, so an astral character is never cut
-      // in half into a broken surrogate.
-      if (!fits(clean)) {
-        var chars = Array.from(String(route).replace(/\s+/g, " ").trim());
-        while (chars.length > 1 && !fits(chars.join("") + "…")) chars.pop();
-        clean = chars.join("") + "…";
+    var fits = function (s, t) { return ("r" + t + "-" + b64url(s)).length <= 64; };
+    if (fits(clean, tag)) return TELEGRAM_URL + "?start=r" + tag + "-" + b64url(clean);
+
+    // Truncation is flagged by upper-casing the tag, never by a character in
+    // the text — a visitor can type an ellipsis, and iOS makes one from "..."
+    // on its own.
+    var up = tag.toUpperCase(), words = clean.split(" "), i, tail, head, cand;
+
+    // Keep BOTH ends, eliding the middle. Trimming the tail reads as the
+    // natural thing to do and is exactly wrong: a route ends "...under £600",
+    // so the tail is the price ceiling — the one part Maria cannot infer and
+    // the part that decides when she alerts.
+    var tailSizes = [3, 2, 1, 0];
+    for (i = 0; i < tailSizes.length; i++) {
+      var keep = tailSizes[i];
+      if (keep >= words.length) continue;
+      tail = keep ? words.slice(words.length - keep).join(" ") : "";
+      head = keep ? words.slice(0, words.length - keep) : words.slice();
+      while (head.length) {
+        cand = head.join(" ") + "…" + tail;
+        if (fits(cand, up)) return TELEGRAM_URL + "?start=r" + up + "-" + b64url(cand);
+        head.pop();
       }
-      if (!fits(clean)) return TELEGRAM_URL + "?start=" + tag;
     }
-    return TELEGRAM_URL + "?start=r" + tag + "-" + b64url(clean);
+
+    // No spaces to trim on: CJK arrives as a single "word" at three bytes per
+    // character, so it overflows soonest and gains least from word trimming.
+    // Array.from, not slice, so an astral character is never cut into a
+    // broken surrogate pair.
+    var chars = Array.from(clean);
+    while (chars.length > 1) {
+      chars.pop();
+      cand = chars.join("") + "…";
+      if (fits(cand, up)) return TELEGRAM_URL + "?start=r" + up + "-" + b64url(cand);
+    }
+    return TELEGRAM_URL + "?start=" + tag;
   }
 
   function panel(n) { return document.querySelector('[data-panel="' + n + '"]'); }
