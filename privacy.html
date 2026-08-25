@@ -3,6 +3,36 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Consent Mode defaults. MUST run before gtm.js and gtag.js below:
+     a default declared after the tag has started is a default that arrived
+     too late. Storage is denied until the banner in /analytics.js says
+     otherwise, so both tags start up cookieless.
+     The localStorage read re-grants for a returning visitor who already
+     accepted — without it the first hit of every later visit would be
+     recorded with storage off, and the banner would have to re-ask. -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{
+  ad_storage:'denied',
+  ad_user_data:'denied',
+  ad_personalization:'denied',
+  analytics_storage:'denied',
+  wait_for_update:500
+});
+try{if(localStorage.getItem('askmaria-consent')==='granted'){
+  gtag('consent','update',{analytics_storage:'granted'});
+}}catch(e){}
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TWRBWLNP');</script>
+<!-- End Google Tag Manager -->
 <meta name="robots" content="noindex">
 <title>Privacy — Ask Maria</title>
 <link rel="icon" type="image/svg+xml" href="/logo/ask-maria-favicon.svg">
@@ -37,6 +67,10 @@
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TWRBWLNP"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <a class="skip-link" href="#main">Skip to content</a>
 <main id="main"><div class="wrap">
 <h1>Privacy</h1>
@@ -67,14 +101,19 @@ question about your data, or to exercise any right below, email
       advertising identifiers are used, and nothing links a visit to you as a
       person. Lawful basis: legitimate interest in knowing whether the site
       works.</li>
-  <li><strong>Google Analytics</strong> — <em>only if you agree to it.</em> It
-      sets cookies and records which pages you visit, roughly where you are,
-      and what device you use, so we can see which parts of the site people
-      actually read. Lawful basis: your consent. It does not run until you
-      press Allow, and if you press No thanks it is never loaded at all.</li>
+  <li><strong>Google Analytics</strong> — <em>it can only remember you if you
+      agree.</em> It records which pages you visit, roughly where you are, and
+      what device you use, so we can see which parts of the site people
+      actually read. Lawful basis: your consent. The tag loads on every page,
+      but until you press Allow it runs in a restricted mode: no cookies are
+      set, no identifier is kept, and nothing can be tied to you from one
+      visit to the next. Press Allow and the cookies described below start;
+      press No thanks and they never do. Change your mind whenever you like —
+      withdrawing stops the storage straight away.</li>
 </ul>
-<p>Those are the only two, and this site runs no advertising trackers. The
-Google Analytics cookies are the only cookies set here — you choose whether
+<p>Those are the only two, and this site runs no advertising trackers. Both
+Google tags are delivered through Google Tag Manager, which sets no cookies of
+its own. The Google Analytics cookies are the only cookies set here — you choose whether
 they are, and you can change your mind at any time with the
 <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button> link
 in the footer of any page. We also store one small item on your own device to

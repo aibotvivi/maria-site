@@ -8,9 +8,18 @@
  *   honest visit count.
  *
  *   Google Analytics 4 sets cookies. UK PECR reg 6 requires opt-in consent
- *   BEFORE such a cookie is written — "carry on browsing = consent" is not
- *   lawful here, and neither is loading gtag.js first and asking after. So GA
- *   is injected only once someone has actively accepted, and never before.
+ *   BEFORE such a cookie is written — but that rule governs the STORAGE, not
+ *   the script. So gtag.js now loads for every visitor while Consent Mode v2,
+ *   declared in each page's <head> ABOVE the tags, holds analytics_storage at
+ *   'denied': it starts up cookieless and writes nothing until Allow is
+ *   pressed. What remains forbidden, and remains undone here, is writing the
+ *   cookie first and asking afterwards.
+ *
+ *   Why it loads for everyone, when it used to load only on accept: a tag
+ *   that appears only after a button press cannot be found by anything that
+ *   does not press the button. GA4 reported "your Google tag wasn't detected
+ *   on your website" permanently, and every automated check of this site
+ *   failed, because Google's crawler does not click Allow.
  *
  * The consequence to expect: GA will under-count, because it only sees people
  * who accepted. GoatCounter is the number to trust for "how many visits";
@@ -73,25 +82,23 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
     document.head.appendChild(s);
   }
 
-  /* ── GA4: only ever called after an explicit accept ─────────────────────── */
+  /* Same shape as the snippet in every page head, pushing to the SAME
+     dataLayer — which is now also GTM's. Defined here as well because
+     dismiss() has to reach it, and because a page that somehow shipped
+     without the head block should still not throw. */
+  function gtag() { (window.dataLayer = window.dataLayer || []).push(arguments); }
+  window.gtag = window.gtag || gtag;
+
+  /* ── GA4: on every page, storing nothing until consent ──────────────────
+     The consent DEFAULT is not set here. It has to be in the head, before
+     gtag.js starts — a default declared at this point would arrive after the
+     tag had already decided how to behave. Advertising stays denied there
+     permanently: this site does not advertise, and agreeing to visit stats
+     is not agreeing to ad profiling. */
   var gaLoaded = false;
   function loadGA() {
     if (gaLoaded || !GA_MEASUREMENT_ID) return;
     gaLoaded = true;
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { window.dataLayer.push(arguments); }
-    window.gtag = gtag;
-
-    // Consent Mode v2. Analytics is on because they just said so; advertising
-    // and personalisation stay denied — this site does not advertise, and
-    // consenting to visit stats is not consent to ad profiling.
-    gtag("consent", "default", {
-      ad_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-      analytics_storage: "granted"
-    });
 
     var s = document.createElement("script");
     s.async = true;
@@ -126,7 +133,13 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
 
   function dismiss(choice) {
     writeConsent(choice);
-    if (choice === "granted") loadGA();
+    /* The tag is already running; consent only turns its storage on or off.
+       An explicit "No thanks" is sent too, not just an accept — it costs
+       nothing to repeat the default, and a decline that is never transmitted
+       is indistinguishable from a visitor who has not answered yet. */
+    gtag("consent", "update", {
+      analytics_storage: choice === "granted" ? "granted" : "denied"
+    });
     releaseSpace();
     if (banner) { banner.remove(); banner = null; }
     window.removeEventListener("resize", reserveSpace);
@@ -196,6 +209,10 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
      this to re-open the choice. */
   window.askMariaCookieSettings = function () {
     try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+    /* Reopening the choice withdraws the previous one immediately, rather
+       than leaving storage granted while the banner stands there asking the
+       question. Withdrawing has to actually withdraw something. */
+    gtag("consent", "update", { analytics_storage: "denied" });
     showBanner();
   };
 
@@ -251,9 +268,11 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
     trackTelegramClicks();
 
     if (!GA_MEASUREMENT_ID) return;          // nothing to consent to
-    var consent = readConsent();
-    if (consent === "granted") loadGA();
-    else if (consent !== "denied") showBanner();
+    /* Loads either way now. The head block has already denied storage — and
+       re-granted it if this visitor accepted on an earlier visit — so nothing
+       is written before a choice exists. */
+    loadGA();
+    if (readConsent() === null) showBanner();
   }
 
   if (document.readyState === "loading") {
