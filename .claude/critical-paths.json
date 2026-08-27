@@ -1,9 +1,10 @@
 {
   "baseUrl": "https://askmaria.app",
+  "_note": "Updated 2026-08-27. The invite model was replaced by an open beta: signup.admit() auto-admits under a cap, so nobody waits for an invite code. Paths renamed accordingly. The cookie-consent path was also rewritten — see its own note.",
   "paths": [
     {
-      "name": "request-invite",
-      "description": "The conversion path: landing page -> email carried to step 2 -> submit -> told what happens next",
+      "name": "get-link",
+      "description": "The conversion path: landing page -> email carried to step 2 -> submit -> handed the Telegram link straight away",
       "persona": "genz-digital-native",
       "priority": "critical",
       "steps": [
@@ -11,24 +12,36 @@
         { "action": "task", "do": "enter an email in the hero form and submit" },
         { "action": "verify", "url": "/request-invite.html" },
         { "action": "verify", "element": "email carried across and prefilled" },
-        { "action": "task", "do": "add a dream destination and submit the invite request" },
-        { "action": "verify", "element": "confirmation that the request was received" }
+        { "action": "task", "do": "add a dream destination and submit" },
+        { "action": "verify", "element": "a working link to Maria on Telegram, offered immediately — not a promise of one by email" }
       ]
     },
     {
-      "name": "existing-invite-to-telegram",
-      "description": "Someone who already has an invite can reach the bot",
+      "name": "returning-user-to-telegram",
+      "description": "Someone already talking to Maria can get back to the bot from any page",
       "persona": "millennial",
       "priority": "critical",
       "steps": [
         { "action": "navigate", "to": "/" },
-        { "action": "task", "do": "find the link for people who already have an invite" },
+        { "action": "task", "do": "find the link for people already talking to Maria" },
         { "action": "verify", "element": "link points at the live Telegram bot" }
       ]
     },
     {
+      "name": "tips",
+      "description": "The tips page is reachable from the site and explains how to get better answers out of Maria",
+      "persona": "millennial",
+      "priority": "medium",
+      "steps": [
+        { "action": "navigate", "to": "/" },
+        { "action": "task", "do": "reach the tips page from the homepage" },
+        { "action": "verify", "url": "/tips/" },
+        { "action": "verify", "element": "a way back to the homepage without scrolling to the bottom" }
+      ]
+    },
+    {
       "name": "legal-and-contact",
-      "description": "Privacy, terms and a working contact address are reachable from any page",
+      "description": "Legal pages and a contact address are reachable from the footer of any page",
       "persona": "boomer-tech-averse",
       "priority": "high",
       "steps": [
@@ -40,13 +53,15 @@
     },
     {
       "name": "cookie-consent",
-      "description": "GA must not load before consent, and a refusal must stick",
+      "description": "No cookies before consent, and a refusal must stick",
+      "_note": "Rewritten 2026-08-27. This used to read 'GA must not load before consent'. That is deliberately no longer true: under Consent Mode v2 gtag.js and GTM load for every visitor with analytics_storage denied in the page head, because a tag that only appears after a button press cannot be found by Google's own checks — GA4 reported 'your Google tag wasn't detected' for as long as loading depended on a click. The requirement was always about STORAGE, not about the script, so the check is now for cookies.",
       "persona": "privacy-conscious",
       "priority": "high",
       "steps": [
         { "action": "navigate", "to": "/" },
         { "action": "verify", "element": "consent banner with an equal-weight decline" },
-        { "action": "verify", "element": "no Google Analytics before a choice is made" },
+        { "action": "verify", "element": "no cookies set before a choice is made — the Google tag loads, but analytics_storage is denied so nothing is stored" },
+        { "action": "task", "do": "accept, and confirm _ga cookies appear only then" },
         { "action": "task", "do": "decline, reload, and confirm the refusal is remembered" }
       ]
     }

@@ -3,9 +3,15 @@
 Static site for the Maria airfare assistant. No build step, no dependencies.
 
     index.html           landing page  (step 1: takes an email, hands off)
-    request-invite.html  invite form   (step 2: asks where they want to fly)
+    request-invite.html  signup form   (step 2: asks where they want to fly)
+    tips/index.html      how to get better answers out of Maria
     privacy.html         privacy notice (site / bot / booking-link capture)
     terms.html           terms + affiliate disclosure
+
+`tips/` is a directory, not `tips.html`, so that `/tips` resolves on GitHub
+Pages. It is the only secondary page WITHOUT `noindex` — it is content rather
+than boilerplate, so it carries a description, a canonical URL, and a
+sitemap entry.
 
 Signup is deliberately two steps, as in the comp: the landing page only
 carries the address across in the query string, and `request-invite.html`
@@ -19,17 +25,17 @@ HTML + vanilla JS.
 
     ./serve.sh          # http://localhost:8799 (+ a LAN URL for your phone)
 
-## Before it goes live — the one required edit
+## The signup endpoint
 
 `request-invite.html` has a config constant near the bottom (this is the
 only place a signup endpoint is needed — the landing page never submits):
 
-    var SIGNUP_ENDPOINT = "";
+    var SIGNUP_ENDPOINT = "https://assets.mailerlite.com/jsonp/.../subscribe"
 
-**It is empty on purpose.** With no endpoint there is nowhere for an email
-address to go, so the form does *not* show "You're on the list" — that would
-be a lie to a real visitor. Until it's set, submitting opens Telegram, which
-is the flow that genuinely works today.
+It was empty until 2026-08-22, on the principle that with nowhere for an
+address to go the form must not claim "You're on the list". That guard still
+matters if you ever blank it: with no endpoint the page hands over the
+Telegram link instead of lying.
 
 Wired to MailerLite since 2026-08-22. It posts form-encoded fields, not JSON:
 
@@ -102,19 +108,37 @@ tracker reads that attribute. It used to infer the label from the link's
 wording, which broke the moment the copy was reworded — anything untagged now
 reports as `unlabelled` rather than guessing.
 
-    GOATCOUNTER_CODE   = "askmaria"   live since 2026-08-20
-    GA_MEASUREMENT_ID  = ""           off — paste a G-XXXXXXXXXX to enable
+    GOATCOUNTER_CODE   = "askmaria"        live since 2026-08-20
+    GA_MEASUREMENT_ID  = "G-GM3WSJVE2V"    live since 2026-08-20
 
-They are treated differently on purpose. GoatCounter sets no cookies, so
-under PECR it needs no consent and runs for everyone. GA4 does set cookies,
-so `gtag.js` is injected **only** after someone presses Allow — never on load
-with a banner over the top. Declining is remembered and GA is then never
-fetched at all.
+Google Tag Manager (`GTM-TWRBWLNP`) is also on every page, pasted by hand into
+each `<head>` — there is no build step to keep those copies in sync, so if you
+edit one, edit all five (`index`, `request-invite`, `privacy`, `terms`,
+`tips/index`).
 
-The banner only appears when `GA_MEASUREMENT_ID` is non-empty, so today there
-is no banner: there is nothing cookie-setting to consent to. Every footer has
-a **Cookies** link that reopens the choice, because withdrawing consent has to
-be as easy as giving it.
+They are treated differently on purpose. GoatCounter sets no cookies, so under
+PECR it needs no consent and runs for everyone.
+
+GA4 does set cookies — but PECR governs the STORAGE, not the script. Since
+2026-08-25 `gtag.js` loads for every visitor with **Consent Mode v2** declared
+in each page head ABOVE both tags: `analytics_storage` starts `denied`, so the
+tag runs cookieless and writes nothing until Allow is pressed. Advertising
+storage is denied permanently and never updated.
+
+**Why it loads for everyone, when it used to load only on accept:** a tag that
+appears only after a button press cannot be found by anything that does not
+press the button. GA4 reported "your Google tag wasn't detected on your
+website" for as long as loading depended on a click.
+
+The consent DEFAULT must stay in the page head, above the tags. A default
+declared after a tag has started is a default that arrived too late — and if
+it lives in `analytics.js` instead, GTM has no consent state at all and
+anything added to the container fires straight through the banner.
+
+Every footer has a **Cookies** link that reopens the choice, because
+withdrawing consent has to be as easy as giving it — and reopening it revokes
+the previous grant immediately rather than leaving storage on while the banner
+asks again.
 
 Expect GA to under-count against GoatCounter once it is on. That gap is the
 consent rate, not a bug — GoatCounter is the number to trust for "how many
@@ -125,12 +149,13 @@ matches what you have switched on.
 
 ## Still to fill
 
-    OPERATOR_NAME            all four pages (footers + legal) — currently
-                             "AskMaria.app", which is a domain, not a legal
-                             person. UK GDPR wants a named controller and the
-                             E-commerce Regs want a trading name, so this
-                             needs a real name or company before you charge
-                             anyone or field a data-subject request.
+    OPERATOR_NAME            footers now read "Operated by AskMaria.app,
+                             London, United Kingdom". That is a domain, not a
+                             legal person. UK GDPR wants a named controller
+                             and the E-commerce Regs want a trading name, so
+                             this still needs a real name or company before
+                             you charge anyone or field a data-subject
+                             request.
 
 Use a dedicated address (hello@askmaria.app), not a personal inbox — it goes on
 a public page. Owning the domain does not by itself give you mail on it; add a
