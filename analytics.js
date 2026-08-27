@@ -173,7 +173,15 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
 
     var text = document.createElement("p");
     text.style.cssText = "margin:0;flex:1 1 280px;max-width:46ch;font-weight:400;";
-    text.innerHTML = "Use Google Analytics to see how the site is used? It sets cookies. " +
+    /* Standard cookie-notice wording rather than naming the vendor. The
+       second sentence is not padding: ad_storage, ad_user_data and
+       ad_personalization are denied permanently in the head block and never
+       updated, so "no ads, no tracking across other sites" is a claim this
+       code actually keeps. Do not soften it into a generic "improve your
+       experience" — that phrasing describes nothing and is the reason
+       people click Accept without reading. */
+    text.innerHTML = "We use cookies to see how this site is used. No ads, and " +
+      "no tracking across other sites. " +
       '<a href="/privacy.html" style="color:#7d4510;text-decoration:underline;">Privacy</a>';
 
     var row = document.createElement("div");
