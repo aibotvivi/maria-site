@@ -230,8 +230,9 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
      bare <a href> with no handler, so page views could be counted and the
      thing the page exists to cause could not.
 
-     Delegated rather than per-link, so it covers all of them (currently
-     seven across two pages) and keeps covering any added later.
+     Delegated rather than per-link, so it covers every t.me link on the
+     page and keeps covering any added later — including ones built in JS
+     after load, which a per-link binding at start-up would miss.
 
      GoatCounter only — it is cookieless, so this needs no consent and works
      for the people who decline GA. And it counts the CLICK, never the link:
@@ -242,9 +243,7 @@ var GA_MEASUREMENT_ID = "G-GM3WSJVE2V";  // live since 2026-08-20
      next copy edit renamed that link to "Already talking to Maria?", so every
      returning-user click was silently counted as "primary". Analytics that
      break when someone rewrites a sentence are worse than none: they keep
-     reporting, just wrongly.
-
-     Falls back to position for any link that predates the attribute. */
+     reporting, just wrongly. */
   function tgLabel(a) {
     // Unlabelled links report as "unlabelled" rather than guessing "primary".
     // The old positional heuristic is gone: every link now carries data-tg, so

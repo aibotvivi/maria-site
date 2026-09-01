@@ -454,7 +454,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       note.innerHTML = lead +
         "Open Maria on Telegram now and she'll pick up" +
         (dream ? " from <strong></strong>" : " from here") + ". " +
-        '<a href="' + tgLink(dream, "web") + '" target="_blank" rel="noopener">Open Maria on Telegram &rarr;</a>';
+        '<a href="' + tgLink(dream, "web") + '" target="_blank" rel="noopener" data-tg="fallback">Open Maria on Telegram &rarr;</a>';
     }
     if (dream) note.querySelector("strong").textContent = dream;
     form.appendChild(note);
@@ -470,7 +470,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       go.href = wantsWhatsapp
         ? "mailto:hello@askmaria.app?subject=WhatsApp%20waitlist"
         : tgLink(dream, "web");
-      if (!wantsWhatsapp) { go.target = "_blank"; go.rel = "noopener"; }
+      // data-tg is not optional here. analytics.js reads the label off the
+      // attribute and never off the wording, so a link built in JS without it
+      // reports as "unlabelled" — and these two are the whole failure path,
+      // the clicks you most need to be able to count separately.
+      if (!wantsWhatsapp) { go.target = "_blank"; go.rel = "noopener"; go.setAttribute("data-tg", "fallback"); }
       go.textContent = wantsWhatsapp ? "Email her instead" : "Open Maria on Telegram";
       go.style.cssText = btn.getAttribute("style") + ";text-decoration:none;";
       btn.parentNode.replaceChild(go, btn);

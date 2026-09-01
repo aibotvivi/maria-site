@@ -103,8 +103,12 @@ first-name reviews from beta users, with permission, once they exist.
 
 Both trackers are configured in one place, `analytics.js`, and every page
 loads that one file. One contract lives outside it: every `t.me` link carries
-a **`data-tg`** attribute (`primary` | `returning` | `footer`) and the click
-tracker reads that attribute. It used to infer the label from the link's
+a **`data-tg`** attribute (`primary` | `returning` | `footer` | `fallback`)
+and the click tracker reads that attribute. `fallback` is the pair on
+`request-invite.html` that appear only when the signup POST fails or the
+endpoint is blank — worth counting apart, since a rise there means the form
+is broken, not that the CTA is working. Links BUILT IN JS need the attribute
+set explicitly (`setAttribute`), which is exactly where it gets forgotten. It used to infer the label from the link's
 wording, which broke the moment the copy was reworded — anything untagged now
 reports as `unlabelled` rather than guessing.
 
