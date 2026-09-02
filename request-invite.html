@@ -400,10 +400,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
      reads "Step 2 of 2" instead of asking for it cold. */
   var params = new URLSearchParams(location.search);
   var prefill = (params.get("email") || "").trim();
-  /* The landing page's "tell me when she's on WhatsApp" tick arrives here in
-     the query string. Carried into the POST rather than dropped, because the
-     whole point of that checkbox is measuring how much demand Telegram costs. */
-  var wantsWhatsapp = params.get("whatsapp") !== null;
+  /* The WhatsApp waitlist lives entirely on index.html now (its own form,
+     posting fields[wants_whatsapp] itself), so nothing arrives here with a
+     ?whatsapp param and this page never sets that field. */
   var input = document.querySelector('input[name="email"]');
   if (prefill && input) {
     input.value = prefill;
@@ -449,21 +448,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var lead = (reason === "failed")
       ? "Couldn't save your email \u2014 but that doesn't hold you up. "
       : "Email isn't switched on yet \u2014 but that doesn't hold you up. ";
-    if (wantsWhatsapp) {
-      // Someone who just said "WhatsApp instead" is the last person to send to
-      // Telegram. Give them the one route that doesn't need it.
-      note.innerHTML = lead +
-        "You asked to be told when she's on WhatsApp, and there's nowhere to " +
-        "record that yet \u2014 so email her directly and she'll note it" +
-        (dream ? ", mentioning <strong></strong>" : "") + ". " +
-        '<a href="mailto:hello@askmaria.app?subject=WhatsApp%20waitlist">' +
-        'hello@askmaria.app &rarr;</a>';
-    } else {
-      note.innerHTML = lead +
-        "Open Maria on Telegram now and she'll pick up" +
-        (dream ? " from <strong></strong>" : " from here") + ". " +
-        '<a href="' + tgLink(dream, "web") + '" target="_blank" rel="noopener" data-tg="fallback">Open Maria on Telegram &rarr;</a>';
-    }
+    note.innerHTML = lead +
+      "Open Maria on Telegram now and she'll pick up" +
+      (dream ? " from <strong></strong>" : " from here") + ". " +
+      '<a href="' + tgLink(dream, "web") + '" target="_blank" rel="noopener" data-tg="fallback">Open Maria on Telegram &rarr;</a>';
     if (dream) note.querySelector("strong").textContent = dream;
     form.appendChild(note);
 
@@ -475,15 +463,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     var btn = form.querySelector('button[type="submit"]');
     if (btn && reason !== "failed") {
       var go = document.createElement("a");
-      go.href = wantsWhatsapp
-        ? "mailto:hello@askmaria.app?subject=WhatsApp%20waitlist"
-        : tgLink(dream, "web");
+      go.href = tgLink(dream, "web");
       // data-tg is not optional here. analytics.js reads the label off the
       // attribute and never off the wording, so a link built in JS without it
       // reports as "unlabelled" — and these two are the whole failure path,
       // the clicks you most need to be able to count separately.
-      if (!wantsWhatsapp) { go.target = "_blank"; go.rel = "noopener"; go.setAttribute("data-tg", "fallback"); }
-      go.textContent = wantsWhatsapp ? "Email her instead" : "Open Maria on Telegram";
+      go.target = "_blank"; go.rel = "noopener"; go.setAttribute("data-tg", "fallback");
+      go.textContent = "Open Maria on Telegram";
       go.style.cssText = btn.getAttribute("style") + ";text-decoration:none;";
       btn.parentNode.replaceChild(go, btn);
       go.focus({ preventScroll: true });
@@ -565,7 +551,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     body.set("fields[tg_link]", tgLink(dream, "email"));
     body.set("fields[consent]", consent ? "yes" : "no");
     body.set("fields[consent_version]", CONSENT_VERSION);
-    body.set("fields[wants_whatsapp]", wantsWhatsapp ? "yes" : "no");
+    /* No fields[wants_whatsapp] here, and deliberately not "no": MailerLite
+       updates an existing subscriber, so posting "no" from this form would
+       overwrite a "yes" the same person gave on the landing page's waitlist. */
     body.set("ml-submit", "1");
     body.set("anticsrf", "true");
 
