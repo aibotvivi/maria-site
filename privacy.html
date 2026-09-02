@@ -111,9 +111,10 @@ question about your data, or to exercise any right below, email
       press No thanks and they never do. Change your mind whenever you like —
       withdrawing stops the storage straight away.</li>
 </ul>
-<p>Those are the only two, and this site runs no advertising trackers. Both
-Google tags are delivered through Google Tag Manager, which sets no cookies of
-its own. The Google Analytics cookies are the only cookies set here — you choose whether
+<p>Those are the only two, and this site runs no advertising trackers. The
+Google Analytics tag is loaded directly by our own script. A Google Tag Manager
+container is also loaded on every page; it is currently empty, and Tag Manager
+sets no cookies of its own. The Google Analytics cookies are the only cookies set here — you choose whether
 they are, and you can change your mind at any time with the
 <button type="button" onclick="askMariaCookieSettings()" style="font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;">Cookies</button> link
 in the footer of any page. We also store one small item on your own device to
@@ -121,10 +122,18 @@ remember that choice; it never leaves your browser.</p>
 
 <h3 style="font-size:19px;font-weight:500;margin:26px 0 6px;">In the Telegram bot</h3>
 <ul>
-  <li><strong>Your Telegram chat ID and messages to Maria</strong> — needed to reply
-      to you and to remember your conversation so follow-up questions make
-      sense. Conversation memory is capped: older messages roll off
-      automatically (roughly the last 60 exchanges).</li>
+  <li><strong>Your Telegram chat ID, first name and messages to Maria</strong> —
+      needed to reply to you and to remember your conversation so follow-up
+      questions make sense. The first name is the one Telegram shows on your
+      account; Maria uses it to greet you. Conversation memory is capped:
+      older messages roll off automatically (roughly the last 60
+      exchanges).</li>
+  <li><strong>How you arrived</strong> — the link that opens Maria carries a
+      short tag saying whether it came from this website, from an email, or
+      from a link someone shared, plus the destination you typed on the form,
+      if any. Stored against your chat as the route you signed up with and
+      the way you joined, so we can tell which way in actually works. Not
+      shared with anyone.</li>
   <li><strong>The flight routes you ask Maria to watch</strong>, and the prices found
       for them.</li>
   <li><strong>Basic usage counts</strong> — when you joined, how many alerts and
