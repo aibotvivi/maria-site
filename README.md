@@ -13,9 +13,13 @@ Pages. It is the only secondary page WITHOUT `noindex` — it is content rather
 than boilerplate, so it carries a description, a canonical URL, and a
 sitemap entry.
 
-Signup is deliberately two steps, as in the comp: the landing page only
-carries the address across in the query string, and `request-invite.html`
-owns the real submit. Nothing is stored until that second page.
+Signup is deliberately two steps, as in the comp: the landing page's two
+"Get my link" forms only carry the address across in the query string, and
+`request-invite.html` owns the real submit. The landing page does post to
+MailerLite for two smaller things that are not signups: the WhatsApp
+waitlist (`fields[wants_whatsapp]=yes`) and the "occasional updates" box
+(`fields[consent]=yes` + `consent_version`). Each sends only the fields it
+asked for — see the whitelist note on `mlSubscribe()` in `index.html`.
 
 Built from the Claude Design comp (`design-source/claude-design-export.html`),
 converted from that tool's `<sc-if>` / `DCLogic` template runtime into plain
@@ -27,8 +31,10 @@ HTML + vanilla JS.
 
 ## The signup endpoint
 
-`request-invite.html` has a config constant near the bottom (this is the
-only place a signup endpoint is needed — the landing page never submits):
+The same MailerLite form URL is pasted into two places, with no build step
+to keep them in sync: `SIGNUP_ENDPOINT` near the bottom of
+`request-invite.html` (the signup) and `ML_ENDPOINT` in `index.html` (the
+WhatsApp waitlist and updates forms).
 
     var SIGNUP_ENDPOINT = "https://assets.mailerlite.com/jsonp/.../subscribe"
 
@@ -37,14 +43,19 @@ address to go the form must not claim "You're on the list". That guard still
 matters if you ever blank it: with no endpoint the page hands over the
 Telegram link instead of lying.
 
-Wired to MailerLite since 2026-08-22. It posts form-encoded fields, not JSON:
+Wired to MailerLite since 2026-08-22. The invite form posts form-encoded
+fields, not JSON:
 
     fields[email]            the address
     fields[dream]            "where are you dreaming of flying next?"
     fields[tg_link]          the Telegram deep link for the EMAIL button
     fields[consent]          yes | no
     fields[consent_version]  which wording they agreed to
-    fields[wants_whatsapp]   yes | no
+
+`fields[wants_whatsapp]` is written only by the landing page's waitlist form
+(always `yes`). The invite page has no control that could set it and must not
+send `no`: MailerLite updates an existing subscriber, so that would overwrite
+a `yes` given earlier.
 
 Two of these need care.
 
@@ -61,8 +72,11 @@ DISCARDED — no error, `success:true`, and a blank button in every email.
 The domain is **askmaria.app** (bought 2026-08-20). It is already wired in:
 
     CNAME        askmaria.app        — GitHub Pages reads this file
-    robots.txt   allows /, blocks /request-invite.html, points at the sitemap
-    sitemap.xml  the landing page only (the other pages are noindex)
+    robots.txt   Allow: / for everything, points at the sitemap. Nothing is
+                 Disallowed: request-invite / privacy / terms carry
+                 <meta name="robots" content="noindex">, and a crawler has
+                 to be allowed to fetch a page to see that tag
+    sitemap.xml  / and /tips/ (the other pages are noindex)
     og.png       1200x630 link preview, referenced absolutely in index.html
                  rebuild it from design-source/og-card.html:
                  chrome --headless --screenshot=og.png --window-size=1200,630 \
@@ -83,8 +97,9 @@ DNS for the apex domain — four A records, all four needed:
     CNAME www   <github-username>.github.io.
 
 Note GitHub Pages needs a **public** repo on a free account. Nothing here is
-secret (no keys, no endpoint yet), so publishing the source is fine — but it is
-a deliberate choice, not an accident.
+secret — no keys; the MailerLite endpoint is a public embedded-form URL that
+any visitor's browser posts to anyway — so publishing the source is fine, but
+it is a deliberate choice, not an accident.
 
 ## Honesty constraints baked into the copy
 
@@ -93,11 +108,12 @@ Deliberate, and worth preserving if the copy is edited:
 - no cheapest-price guarantee
 - footer states Maria is an information service, not a travel agent
 
-The two quotes are Vivien's own real results, attributed to the trip itself
-("London → Hong Kong, £386 return" / "Found while building Maria"). The comp
-had them attributed to invented people; fabricated consumer reviews are
-illegal in the UK (DMCC Act fake-review ban, CMA-enforced). Swap in real
-first-name reviews from beta users, with permission, once they exist.
+There are no testimonials on the page, deliberately. The comp had quotes
+attributed to invented people, and a later version carried Vivien's own
+results labelled as such; both were cut in commit 3c6839d. Fabricated
+consumer reviews are illegal in the UK (DMCC Act fake-review ban,
+CMA-enforced). Add real first-name reviews from beta users, with their
+permission, once they exist — nothing before that.
 
 ## Analytics
 
@@ -166,15 +182,34 @@ a public page. Owning the domain does not by itself give you mail on it; add a
 forwarder at the registrar, or Fastmail / Google Workspace, and confirm mail
 actually arrives before the address goes on a legal page.
 
+## Pre-launch checklist
+
+Manual items the code cannot do for you:
+
+- **www certificate.** Reissue the certificate in the GitHub Pages settings so
+  `www.askmaria.app` is covered as well as the apex (HSTS preload means a
+  bad cert on www is a hard failure, not a warning).
+- **MailerLite fields and automations.** `tg_link`, `dream`, `consent`,
+  `consent_version` and `wants_whatsapp` must exist under Subscribers >
+  Fields, and the confirmation + "your Telegram link" automations must be
+  verified with a **real signup** end to end. An unknown field is silently
+  discarded, so the absence of an error proves nothing.
+- **Legal operator name.** Replace "Operated by AskMaria.app" in every footer
+  with the named controller / trading name (see "Still to fill").
+- **Solicitor review** of `privacy.html` and `terms.html` before charging
+  anyone.
+
 ## Copy decisions that are deliberate
 
 - The hero says "like having a friend who's brilliant at finding flights",
   **not** "a travel agent". The earlier wording contradicted the footer
   disclaimer, and "travel agent" is a regulated description in the UK
   (ATOL/bonding). Don't reintroduce it.
-- The two quotes are labelled "Vivien, who built Maria / Her own trips — not
-  a customer review". They are real results but not customer testimonials;
-  presenting them as testimonials would be a fabricated endorsement.
+- No quotes or testimonials until there are real, permissioned ones from
+  beta users. Vivien's own results are not customer reviews, and presenting
+  them as such would be a fabricated endorsement; the £386 Hong Kong fare
+  survives only as a plainly-attributed example in the "What happens next"
+  list on the invite page.
 - No "24/7" or "instant" claims; no cheapest-price guarantee.
 - privacy.html / terms.html are plain-English and honest, but **not
   solicitor-reviewed**. Get them checked before charging anyone.
