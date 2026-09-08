@@ -104,6 +104,7 @@ textarea.field{resize:vertical}
 .parsed dt{font-size:13px;color:var(--ink-3)}
 .parsed dd{margin:0;font-size:15.5px;font-weight:600;text-align:right}
 .parsed dl{margin:18px 0 0;display:flex;flex-direction:column;gap:14px}
+[hidden]{display:none!important}
 .parsed .pair{display:flex;justify-content:space-between;gap:18px;align-items:baseline}
 .parsed__note{margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2);font-size:13.5px;line-height:1.55;color:var(--ink-3)}
 
@@ -177,3 +178,14 @@ textarea.field{resize:vertical}
   .table { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
   .table__grid { min-width: 460px; }
 }
+
+/* Several watches parsed out of one sentence. The single-value <dl> above can
+   only show one of each field, so anything with two routes or two prices had
+   to be listed instead — the alternative was dropping one, which is what the
+   first version did silently. */
+.watches{display:flex;flex-direction:column;gap:8px;margin-top:2px}
+.watch{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+  gap:4px 14px;padding:10px 12px;border:1px solid var(--line-2);border-radius:12px;
+  background:var(--card)}
+.watch__route{font-weight:600;font-size:15px;color:var(--ink)}
+.watch__meta{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}

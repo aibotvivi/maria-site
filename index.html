@@ -154,12 +154,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </div>
     <div class="parsed">
       <div class="eyebrow">What Maria heard</div>
-      <dl>
+      <dl data-parsed-single>
         <div class="pair"><dt>Route</dt><dd data-parsed="route">&mdash;</dd></div>
         <div class="pair"><dt>When</dt><dd data-parsed="when">&mdash;</dd></div>
         <div class="pair"><dt>Travellers</dt><dd data-parsed="who">1 traveller</dd></div>
-        <div class="pair"><dt>Alert me under</dt><dd data-parsed="threshold" style="color:var(--brand)">&mdash;</dd></div>
+        <div class="pair"><dt data-threshold-label>Alert me under</dt><dd data-parsed="threshold" style="color:var(--brand)">&mdash;</dd></div>
       </dl>
+      <!-- Several asks in one sentence become several watches, listed. The
+           single-value layout above cannot represent them without dropping
+           something, which is what it used to do. -->
+      <div class="watches" data-parsed-list hidden></div>
       <p class="parsed__note" data-parsed="note">Start typing and she&rsquo;ll pull the route, the dates and your price out of it.</p>
     </div>
   </div>
