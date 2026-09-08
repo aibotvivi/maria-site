@@ -251,3 +251,8 @@ textarea.field{resize:vertical}
 /* A pulsing dot is decoration; anyone who has asked for less motion should
    still see the dot, just still. */
 @media (prefers-reduced-motion: reduce){ .dot--live{animation:none} }
+
+/* The chat mock-up now uses the real avatar file, which carries its own dark
+   plate — so the placeholder's gradient fill and letter-centring go, and only
+   the circular clip stays. */
+img.chat__avatar{background:none;object-fit:cover}
