@@ -95,7 +95,18 @@ textarea.field{resize:vertical}
 .num{font-variant-numeric:tabular-nums;color:var(--ink-2)}
 
 /* try it */
-.try{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px;align-items:start}
+.try{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
+/* Wide enough for two columns: field top-left, examples under it, answer down
+   the right. Narrower, the source order takes over — field, ANSWER, examples —
+   so the thing you are watching update is never below four example buttons. */
+@media (min-width:760px){
+  /* auto/1fr, or the panel spanning both rows stretches row 1 and leaves a
+     dead gap between the field and the examples underneath it. */
+  .try{grid-template-columns:1fr 1fr;grid-template-rows:auto 1fr}
+  .try__field{grid-column:1;grid-row:1}
+  .try__examples{grid-column:1;grid-row:2}
+  .parsed{grid-column:2;grid-row:1 / span 2}
+}
 .chips{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;margin-top:14px}
 .chip{padding:8px 14px;border-radius:999px;border:1px solid rgba(46,38,34,.16);background:var(--card);color:var(--ink-2);font-size:13.5px;line-height:1.4;cursor:pointer;text-align:left;height:auto;white-space:normal;flex:0 1 auto}
 .chip:hover{border-color:var(--brand);color:var(--brand)}
@@ -201,3 +212,42 @@ textarea.field{resize:vertical}
 .flags li::before{content:"?";position:absolute;left:11px;top:9px;width:13px;height:13px;
   border-radius:50%;background:#D08A2C;color:#fff;font-size:10px;font-weight:700;
   line-height:13px;text-align:center}
+
+/* ── The live demo ────────────────────────────────────────────────────────
+   Two complaints drove this: the input did not read as an input, and nothing
+   said the section was interactive at all. It sat in the same visual register
+   as the prose around it, so it scanned as another block of copy that happened
+   to contain a form field.
+
+   So the whole thing becomes a bounded surface — a place you do something,
+   rather than more page — and the field inside it is the loudest element on
+   it: white against the warm ground, a heavier keyline, and type at 17px so
+   it reads as somewhere to write rather than somewhere something is written. */
+.demo{background:var(--warm);border:1px solid var(--line-2);border-radius:26px;
+  padding:clamp(24px,3.6vw,40px)}
+.demo__badge{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;
+  padding:7px 14px;border-radius:999px;background:var(--card);
+  border:1px solid rgba(138,74,8,.22);font-size:11.5px;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:700;color:var(--brand)}
+
+.try__label{display:block;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-3);margin-bottom:9px}
+.field--try{background:var(--card);border-width:1.5px;font-size:17px;min-height:112px;
+  padding:16px 18px;box-shadow:0 10px 30px -22px rgba(74,42,20,.55)}
+.field--try::placeholder{color:var(--ink-4)}
+.field--try:focus{box-shadow:0 0 0 4px rgba(138,74,8,.15)}
+.try__hint{margin:16px 0 10px;font-size:13.5px;color:var(--ink-3)}
+.chips{margin-top:0}
+.chip{background:var(--card)}
+
+/* The panel updates on every keystroke, which is invisible until you type.
+   Saying so is what turns "a box of text" into "a thing that is listening". */
+.live{display:inline-flex;align-items:center;gap:6px;margin-left:10px;padding:3px 9px;
+  border-radius:999px;background:rgba(208,138,44,.12);color:#8A5A14;
+  font-size:10px;letter-spacing:.1em}
+.dot--live{width:6px;height:6px;border-radius:50%;background:#D08A2C;
+  animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+/* A pulsing dot is decoration; anyone who has asked for less motion should
+   still see the dot, just still. */
+@media (prefers-reduced-motion: reduce){ .dot--live{animation:none} }

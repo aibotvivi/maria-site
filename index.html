@@ -145,15 +145,21 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </section>
 
 <section class="wrap section">
+  <div class="demo">
+  <div class="demo__badge"><span class="dot dot--live"></span>Try it now &middot; nothing to sign up for</div>
   <h2 class="h2">Say it how you&rsquo;d say it.</h2>
-  <p class="sub" style="margin-bottom:28px">Type a watch below the way you&rsquo;d text a friend. This is what she takes from it &mdash; no signup needed.</p>
+  <p class="sub" style="margin-bottom:26px">Type a watch the way you&rsquo;d text a friend &mdash; she reads it as you go. This is exactly what she takes from it.</p>
+  <!-- Three children, not two, so the examples can be placed BELOW the answer
+       on a phone. Nested inside the field's column they pushed the result panel
+       a full screen down, and a live demo you have to scroll away from to read
+       is not a live demo. -->
   <div class="try">
-    <div>
-      <textarea class="field" id="try-input" rows="3" placeholder="Watch London to Tokyo, first two weeks of April, under &pound;600"></textarea>
-      <div class="chips" id="try-chips"></div>
+    <div class="try__field">
+      <label class="try__label" for="try-input">Your message to Maria</label>
+      <textarea class="field field--try" id="try-input" rows="3" placeholder="Watch London to Tokyo, first two weeks of April, under &pound;600"></textarea>
     </div>
     <div class="parsed">
-      <div class="eyebrow">What Maria heard</div>
+      <div class="eyebrow">What Maria heard <span class="live"><span class="dot dot--live"></span>live</span></div>
       <dl data-parsed-single>
         <div class="pair"><dt>Route</dt><dd data-parsed="route">&mdash;</dd></div>
         <div class="pair"><dt>When</dt><dd data-parsed="when">&mdash;</dd></div>
@@ -170,6 +176,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <ul class="flags" data-parsed-flags hidden></ul>
       <p class="parsed__note" data-parsed="note">Start typing and she&rsquo;ll pull the route, the dates and your price out of it.</p>
     </div>
+    <div class="try__examples">
+      <p class="try__hint">Not sure what to type? Tap one:</p>
+      <div class="chips" id="try-chips"></div>
+    </div>
+  </div>
   </div>
 </section>
 
