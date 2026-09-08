@@ -83,7 +83,22 @@ const CASES = [
 
   { in: "Tokyo",
     shape: "one", routes: ["Tokyo"],
-    flags: ["leaving from", "No price yet", "No dates yet"] }
+    flags: ["leaving from", "No price yet", "No dates yet"] },
+
+  // A length of stay for each place means ONE trip through all of them, even
+  // though the sentence also says "or". Also: a misspelled month must read as
+  // a date, not become a city called Novermber.
+  { in: 'London to Tokyo, Osaka or Seoul", novermber 18-december 5, 3 days in tokyo, 5 days in osaka, 6 days in seoul for now, ranging maximum 800 total',
+    shape: "trip", routes: ["London → Tokyo → Osaka → Seoul"],
+    when: "18 November – 5 December", price: "?800",
+    flags: ["one trip through all 3", "3 days in Tokyo, 5 days in Osaka, 6 days in Seoul",
+            "17-day window", "Reading “novermber” as November", "no currency"] },
+
+  // Guard for the fuzzy month matcher: at two edits on a five-letter word,
+  // "watch" matches "march". The threshold must keep this at no date.
+  { in: "Watch Barcelona under £120",
+    shape: "one", routes: ["Barcelona"],
+    flags: ["No dates yet"] }
 ];
 
 let failed = 0;

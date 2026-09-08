@@ -98,13 +98,52 @@
 
   /* A single total across several legs. This — not the number of cities — is
      what makes something a trip Maria sums rather than separate watches. */
-  var WHOLE_TRIP = /\b(?:for\s+)?(?:the\s+)?whole\s+(?:thing|trip|lot|journey)\b|\bfor the lot\b|\bin total\b|\baltogether\b|\ball in\b|\bfor everything\b|\bfor all of it\b|\bcombined\b/;
+  var WHOLE_TRIP = /\b(?:for\s+)?(?:the\s+)?whole\s+(?:thing|trip|lot|journey)\b|\bfor the lot\b|\bin total\b|\baltogether\b|\ball in\b|\bfor everything\b|\bfor all of it\b|\bcombined\b|\btotal\b/;
 
   /* Words that end a place phrase. Without these, "Tokyo in April" resolves as
      a city called "Tokyo In April". */
   var STOP = /^(in|on|at|under|below|within|for|around|about|during|next|this|each|per|from|by|before|after|until|till|and|or|with|when|its|it|i|want|know|to|whole|trip|journey|lot|total|altogether|everything|combined|return|returning|outbound)$/;
 
   var EM = "—";
+
+  /* Levenshtein, small strings only. Exists so that "novermber" is read as a
+     date rather than becoming a city called Novermber — which is what happened,
+     complete with a confident "she doesn't recognise Novermber" underneath. */
+  function editDistance(a, b) {
+    var prev = [], cur = [], i, j;
+    for (j = 0; j <= b.length; j++) prev[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      cur[0] = i;
+      for (j = 1; j <= b.length; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1,
+                          prev[j - 1] + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+      }
+      prev = cur.slice();
+    }
+    return prev[b.length];
+  }
+
+  function monthIndexOf(w) {
+    for (var i = 0; i < MONTH_ALIASES.length; i++) {
+      if (MONTH_ALIASES[i][0] === w) return i;
+      if (MONTH_ALIASES[i][1].indexOf(w) > -1) return i;
+    }
+    return -1;
+  }
+
+  /* Deliberately tight. At distance 2 on a five-letter word, "watch" matches
+     "march" — and "Watch London to Tokyo" would sprout a March date out of
+     nowhere. So: one edit up to six letters, two only from seven. */
+  function fuzzyMonth(w) {
+    if (w.length < 5 || CITIES[w] || COUNTRIES[w] || STOP.test(w)) return -1;
+    var allow = w.length >= 7 ? 2 : 1;
+    for (var i = 0; i < MONTH_ALIASES.length; i++) {
+      var full = MONTH_ALIASES[i][0];
+      if (Math.abs(full.length - w.length) > allow) continue;
+      if (editDistance(w, full) <= allow) return i;
+    }
+    return -1;
+  }
 
   function isMonthWord(w) {
     for (var i = 0; i < MONTH_ALIASES.length; i++) {
@@ -228,27 +267,16 @@
      list January-first and returned whichever came earliest in the calendar,
      so "20th july - may 19" reported "May". */
   function datesIn(text) {
-    var low = text.toLowerCase(), hits = [];
-    MONTH_ALIASES.forEach(function (entry, idx) {
-      var forms = [entry[0]].concat(entry[1]);
-      forms.forEach(function (m) {
-        var at = low.indexOf(m);
-        while (at > -1) {
-          // Whole word, or "may" fires inside "maybe" and "mar" inside "march".
-          var after = low.charAt(at + m.length) || " ";
-          var before = at === 0 ? " " : low.charAt(at - 1);
-          if (!/[a-z]/.test(before) && !/[a-z]/.test(after)) {
-            hits.push({ at: at, end: at + m.length, idx: idx, label: titleWords(entry[0]) });
-          }
-          at = low.indexOf(m, at + m.length);
-        }
-      });
-    });
-    hits.sort(function (a, b) { return a.at - b.at; });
-    // A month matched by two forms ("sept" and "sep") lands twice.
-    hits = hits.filter(function (h, i) {
-      return i === 0 || h.idx !== hits[i - 1].idx || h.at > hits[i - 1].end;
-    });
+    var low = text.toLowerCase(), hits = [], re = /[a-z\u00e0-\u00ff]+/g, m;
+    while ((m = re.exec(low)) !== null) {
+      var w = m[0];
+      var idx = monthIndexOf(w), fuzzy = false;
+      if (idx === -1) { idx = fuzzyMonth(w); fuzzy = idx > -1; }
+      if (idx > -1) {
+        hits.push({ at: m.index, end: m.index + w.length, idx: idx,
+                    label: titleWords(MONTH_ALIASES[idx][0]), fuzzy: fuzzy, raw: w });
+      }
+    }
 
     hits.forEach(function (h) {
       var before = low.slice(Math.max(0, h.at - 9), h.at);
@@ -258,6 +286,37 @@
     });
 
     return hits;
+  }
+
+  /* Rough day count between two (month, day) points, wrapping the year. Only
+     needs to be good enough to say "14 nights inside an 18-day window". */
+  var MONTH_DAYS = [31,28,31,30,31,30,31,31,30,31,30,31];
+  function dayOfYear(idx, day) {
+    var n = day || 1;
+    for (var i = 0; i < idx; i++) n += MONTH_DAYS[i];
+    return n;
+  }
+  function windowDays(a, b) {
+    if (!a || !b || !a.day || !b.day) return null;
+    var d = dayOfYear(b.idx, b.day) - dayOfYear(a.idx, a.day);
+    return d < 0 ? d + 365 : d;
+  }
+
+  /* "3 days in Tokyo, 5 days in Osaka" is an ITINERARY — a single trip through
+     all of them, in that order. Read as alternatives it becomes three separate
+     watches, which is the opposite of what was asked for. Giving a length of
+     stay for each place is the strongest signal in the sentence and it was
+     being ignored entirely. */
+  function staysIn(text) {
+    var out = [], re = /(\d+)\s*(day|days|night|nights|week|weeks)\s+in\s+([a-z\u00e0-\u00ff'\u2019 -]+)/gi, m;
+    while ((m = re.exec(text)) !== null) {
+      var p = resolvePlace(m[3]);
+      if (!p) continue;
+      var n = parseInt(m[1], 10);
+      if (/week/i.test(m[2])) n *= 7;
+      out.push({ nights: n, place: p });
+    }
+    return out;
   }
 
   function dateLabel(h) { return (h.day ? h.day + " " : "") + h.label; }
@@ -324,6 +383,55 @@
     var each    = /\beach\b|per person|\bpp\b/.test(lowAll);
 
     var watches = [], flags = [], legs = 0, unknowns = [], countries = [], openAsk = false;
+
+    /* An itinerary beats everything else in the sentence. Giving a length of
+       stay for each place says "one trip, in this order" more strongly than
+       "or" says "pick one" — people write "Tokyo, Osaka or Seoul" while
+       meaning all three, and then spell out the nights. Read as alternatives
+       it produced three separate watches, which is the opposite of the ask. */
+    var stays = staysIn(text);
+    if (stays.length >= 2) {
+      var firstChain = chainIn(parts[0]);
+      var origin = firstChain ? firstChain[0] : null;
+      if (origin) noteUnknownInto(origin, unknowns, countries);
+      stays.forEach(function (st) { noteUnknownInto(st.place, unknowns, countries); });
+
+      var seq = stays.map(function (st) { return st.place.name; });
+      var routeStr = (origin ? origin.name + " → " : "") + seq.join(" → ");
+      watches.push({ route: routeStr, when: whenAll, n: nAll, price: priceIn(text) });
+
+      var nights = stays.reduce(function (t, st) { return t + st.nights; }, 0);
+      var win = whenAll && whenAll.hits.length >= 2
+        ? windowDays(whenAll.hits[0], whenAll.hits[1]) : null;
+
+      flags.push("She’s read that as one trip through all " + stays.length +
+        (/\bor\b/i.test(text) ? ", not a choice between them — you wrote “or”, but you gave a length of stay for each." : "."));
+      flags.push(stays.map(function (st) {
+          return st.nights + (st.nights === 1 ? " day in " : " days in ") + st.place.name;
+        }).join(", ") + " — " + nights + " days" +
+        (win ? " inside a " + win + "-day window, leaving " + (win - nights) + " for travel." : "."));
+
+      if (whenAll) whenAll.hits.forEach(function (h) {
+        if (h.fuzzy) flags.push("Reading “" + h.raw + "” as " + h.label + ".");
+      });
+      if (!priceIn(text)) flags.push("No price yet. Give her a number and she’ll only message you under it.");
+      else if (!priceIn(text).symbol) flags.push("You said " + priceIn(text).amount +
+        " with no currency — she’ll take that as £" + priceIn(text).amount + " unless you tell her otherwise.");
+      if (countries.length) flags.push(countries.join(" and ") +
+        (countries.length > 1 ? " are countries" : " is a country") + " — she’ll ask which airport.");
+      if (unknowns.length) flags.push("She doesn’t recognise " +
+        unknowns.map(function (u) { return "“" + u + "”"; }).join(" or ") + " yet — she’ll check what you meant.");
+
+      return { shape: "trip", watches: watches, flags: flags,
+               note: wholeT
+                 ? "One trip, not separate flights — she adds the legs up and alerts on the total."
+                 : "One trip through " + stays.length + " stops. She’d total the legs unless you give each its own price." };
+    }
+
+    function noteUnknownInto(p, unk, ctry) {
+      if (p.kind === "unknown" && unk.indexOf(p.name) === -1) unk.push(p.name);
+      if (p.kind === "country" && ctry.indexOf(p.name) === -1) ctry.push(p.name);
+    }
 
     function noteUnknown(p) {
       if (p.kind === "unknown" && unknowns.indexOf(p.name) === -1) unknowns.push(p.name);
