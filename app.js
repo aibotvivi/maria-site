@@ -86,17 +86,33 @@
 
   var MONTHS = ["january","february","march","april","may","june","july",
                 "august","september","october","november","december"];
+  /* "28th Aug-19th Jan" reported no dates at all, because only the full names
+     were known. Longest-first within each month so "sept" wins over "sep". */
+  var MONTH_ALIASES = [
+    ["january",["jan"]], ["february",["feb"]], ["march",["mar"]],
+    ["april",["apr"]], ["may",[]], ["june",["jun"]], ["july",["jul"]],
+    ["august",["aug"]], ["september",["sept","sep"]], ["october",["oct"]],
+    ["november",["nov"]], ["december",["dec"]]
+  ];
   var WORD_NUMS = { one:1, two:2, three:3, four:4, five:5, six:6 };
 
   /* A single total across several legs. This — not the number of cities — is
      what makes something a trip Maria sums rather than separate watches. */
-  var WHOLE_TRIP = /\b(for the lot|in total|altogether|all in|the whole (thing|trip|lot)|for everything|for all of it|combined)\b/;
+  var WHOLE_TRIP = /\b(?:for\s+)?(?:the\s+)?whole\s+(?:thing|trip|lot|journey)\b|\bfor the lot\b|\bin total\b|\baltogether\b|\ball in\b|\bfor everything\b|\bfor all of it\b|\bcombined\b/;
 
   /* Words that end a place phrase. Without these, "Tokyo in April" resolves as
      a city called "Tokyo In April". */
-  var STOP = /^(in|on|at|under|below|within|for|around|about|during|next|this|each|per|from|by|before|after|until|till|and|or|with|when|its|it|i|want|know|to)$/;
+  var STOP = /^(in|on|at|under|below|within|for|around|about|during|next|this|each|per|from|by|before|after|until|till|and|or|with|when|its|it|i|want|know|to|whole|trip|journey|lot|total|altogether|everything|combined|return|returning|outbound)$/;
 
   var EM = "—";
+
+  function isMonthWord(w) {
+    for (var i = 0; i < MONTH_ALIASES.length; i++) {
+      if (MONTH_ALIASES[i][0] === w) return true;
+      if (MONTH_ALIASES[i][1].indexOf(w) > -1) return true;
+    }
+    return false;
+  }
 
   function titleWords(s) {
     return s.replace(/\S+/g, function (w) {
@@ -123,7 +139,7 @@
     while (words.length && STOP.test(words[0])) words.shift();
     var cut = [];
     for (var wi = 0; wi < words.length; wi++) {
-      if (STOP.test(words[wi])) break;
+      if (STOP.test(words[wi]) || isMonthWord(words[wi])) break;
       cut.push(words[wi]);
     }
     words = cut;
@@ -146,8 +162,7 @@
     var out = [];
     for (var i = 0; i < segs.length; i++) {
       var p = resolvePlace(segs[i]);
-      if (!p) return null;
-      out.push(p);
+      if (p) out.push(p);
     }
     return out.length >= 2 ? out : null;
   }
@@ -192,16 +207,20 @@
      old version saw no "£" and reported "No number set" — which reads as the
      user having forgotten to give one. The currency being absent is worth
      saying; the number being absent is not the same thing. */
+  function trimNum(n) { return String(n).replace(/[,.]+$/, ""); }
+
   function priceIn(text) {
     var m = text.match(/([£$€])\s?(\d[\d,]*)/);
-    if (m) return { amount: m[2], symbol: m[1] };
+    // [\d,]* happily swallows the comma that ENDS the clause, so "£555, 28th
+    // Aug" produced the amount "555," and rendered as "£555,".
+    if (m) return { amount: trimNum(m[2]), symbol: m[1] };
     var w = text.match(/\b(\d[\d,]*)\s?(gbp|pounds?|usd|dollars?|eur|euros?)\b/i);
     if (w) {
       var sym = /gbp|pound/i.test(w[2]) ? "£" : (/usd|dollar/i.test(w[2]) ? "$" : "€");
-      return { amount: w[1], symbol: sym };
+      return { amount: trimNum(w[1]), symbol: sym };
     }
     var b = text.match(/\b(?:under|within|below|max(?:imum)?|up to|less than|no more than|around|about)\s*(\d[\d,]*)\b/i);
-    if (b) return { amount: b[1], symbol: null };
+    if (b) return { amount: trimNum(b[1]), symbol: null };
     return null;
   }
 
@@ -210,14 +229,26 @@
      so "20th july - may 19" reported "May". */
   function datesIn(text) {
     var low = text.toLowerCase(), hits = [];
-    MONTHS.forEach(function (m, idx) {
-      var at = low.indexOf(m);
-      while (at > -1) {
-        hits.push({ at: at, end: at + m.length, idx: idx, label: titleWords(m) });
-        at = low.indexOf(m, at + m.length);
-      }
+    MONTH_ALIASES.forEach(function (entry, idx) {
+      var forms = [entry[0]].concat(entry[1]);
+      forms.forEach(function (m) {
+        var at = low.indexOf(m);
+        while (at > -1) {
+          // Whole word, or "may" fires inside "maybe" and "mar" inside "march".
+          var after = low.charAt(at + m.length) || " ";
+          var before = at === 0 ? " " : low.charAt(at - 1);
+          if (!/[a-z]/.test(before) && !/[a-z]/.test(after)) {
+            hits.push({ at: at, end: at + m.length, idx: idx, label: titleWords(entry[0]) });
+          }
+          at = low.indexOf(m, at + m.length);
+        }
+      });
     });
     hits.sort(function (a, b) { return a.at - b.at; });
+    // A month matched by two forms ("sept" and "sep") lands twice.
+    hits = hits.filter(function (h, i) {
+      return i === 0 || h.idx !== hits[i - 1].idx || h.at > hits[i - 1].end;
+    });
 
     hits.forEach(function (h) {
       var before = low.slice(Math.max(0, h.at - 9), h.at);
@@ -381,12 +412,17 @@
 
     if (whenAll && whenAll.hits.length >= 2 && whenAll.range) {
       var a = whenAll.hits[0], b = whenAll.hits[1];
+      // A range whose second month is earlier in the calendar has crossed the
+      // new year — which is ordinary for a long trip, not an error. Say which
+      // reading she is taking rather than accusing them of typing it wrong.
+      var span = (b.idx - a.idx + 12) % 12;
       if (b.idx < a.idx) {
-        flags.push("“" + whenAll.label + "” runs backwards — she’ll ask whether you meant " +
-                   dateLabel(b) + " the following year, or two separate trips.");
-      } else if (b.idx - a.idx > 5) {
-        flags.push("That’s a " + (b.idx - a.idx) + "-month window — she’ll ask whether you meant " +
-                   "one long stay or the cheapest week in it.");
+        flags.push("That crosses the new year — she’ll read it as " + dateLabel(a) +
+                   " to " + dateLabel(b) + " the following year. Say so if you meant two separate trips.");
+      }
+      if (span > 5) {
+        flags.push("That’s a " + span + "-month window — she’ll ask whether you want one long stay, " +
+                   "or the cheapest week anywhere inside it.");
       }
     } else if (whenAll && whenAll.hits.length >= 2 && !whenAll.range) {
       flags.push("You named two dates — she’ll ask which is the outbound and which the return.");
@@ -398,6 +434,16 @@
       flags.push("She’ll ask which airport you’re leaving from.");
     } else if (openAsk) {
       flags.push("She’ll ask where you’re flying from, then suggest somewhere that fits.");
+    }
+
+    /* "Tokyo, Osaka or Seoul" says pick one; "whole trip £555" says add them
+       up. Both cannot be true, and neither reading is safe to assume — one
+       watches three fares against £555 each, the other watches a single
+       journey totalling £555. So say so instead of silently choosing. */
+    if (shape === "many" && wholeT) {
+      flags.push("You’ve said “or” — a choice of destinations — but given one whole-trip total. " +
+                 "She’ll ask whether that’s the budget for whichever one you pick, or for a single " +
+                 "journey through all of them.");
     }
 
     /* ---- the headline sentence -------------------------------------------- */

@@ -13,6 +13,7 @@ beyond the Google Fonts link.
 
     styles.css          all styles; design tokens in :root
     app.js              the "say it how you'd say it" demo parser, nothing else
+    test-parser.js      fixtures for that parser — `node test-parser.js`
     invite.js           the signup form: MailerLite + deep link + spam guards
     confirmed.js        fills the success screen from sessionStorage
     analytics.js        GoatCounter + GA4, and the consent banner
@@ -21,6 +22,19 @@ beyond the Google Fonts link.
 `tips/` is a directory, not `tips.html`, so `/tips` resolves on GitHub Pages.
 It is the only secondary page WITHOUT `noindex` — it is content rather than
 funnel, so it carries a description, a canonical URL and a sitemap entry.
+
+## Run the parser fixtures after touching app.js
+
+    node test-parser.js
+
+Every fix to that demo parser has silently broken something else, always the
+same way: a place, a price or a date quietly stops appearing, the panel still
+looks confident, and nothing throws. Tokyo vanished from "London to Tokyo,
+Osaka or Seoul" when alternatives were added; Athens vanished from "Milan,
+Naples and Athens in June" when place phrases learned to stop at "in"; "whole
+trip" became a destination when trip totals were added. The fixtures exist
+because "does it run" is not the question — "does it still hear everything it
+heard yesterday" is.
 
 ## Three things that are easy to break
 
