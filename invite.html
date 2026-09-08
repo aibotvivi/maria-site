@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Consent Mode defaults. MUST run before gtm.js and gtag.js below: a default
+     declared after the tag has started is a default that arrived too late.
+     Storage is denied until the banner in /analytics.js says otherwise, so both
+     tags start up cookieless. The localStorage read re-grants for a returning
+     visitor who already accepted — without it the first hit of every later
+     visit would be recorded with storage off, and the banner would re-ask. -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{
+  ad_storage:'denied',
+  ad_user_data:'denied',
+  ad_personalization:'denied',
+  analytics_storage:'denied',
+  wait_for_update:500
+});
+try{if(localStorage.getItem('askmaria-consent')==='granted'){
+  gtag('consent','update',{analytics_storage:'granted'});
+}}catch(e){}
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TWRBWLNP');</script>
+<!-- End Google Tag Manager -->
+
+<meta name="robots" content="noindex, follow">
+
+<meta name="description" content="Leave your email and Ask Maria hands you the Telegram link straight away.">
+
+<link rel="canonical" href="https://askmaria.app/invite">
+
+<meta name="theme-color" content="#F6EFE7">
+
+<link rel="icon" type="image/svg+xml" href="/logo/ask-maria-favicon.svg">
+<title>Almost there &mdash; Ask Maria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<div class="band band--short">
+  <header class="wrap site-head">
+  <a class="logo" href="index.html"><svg width="26" height="22" viewBox="0 0 26 22" fill="none" aria-hidden="true"><path d="M1 21 9 3l7 13" stroke="#7B4FD1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21 19 7l6 14" stroke="#C4529A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21.5" cy="2.5" r="2.5" fill="#E0913F"/></svg><span>Ask <em>Maria</em></span></a>
+  <div class="pill"><span class="dot"></span>Free beta &middot; Limited places</div>
+</header>
+  <section class="wrap wrap--narrow" style="padding-top:34px;padding-bottom:60px">
+    <div class="pill" style="margin-bottom:22px">Step 2 of 2</div>
+    <h1 style="font-size:clamp(36px,5vw,52px);line-height:1.06;letter-spacing:-.02em;margin-bottom:18px">Almost there</h1>
+    <p class="lede" style="font-size:17.5px;max-width:32em">One last thing &mdash; tell Maria where you&rsquo;re dreaming of flying, then send it and she&rsquo;ll open the conversation already knowing your route.</p>
+  </section>
+</div>
+
+<section class="wrap wrap--narrow pull">
+  <form class="confirm-card stack" id="invite-form" action="confirmed.html" method="get" novalidate style="gap:22px">
+    <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+      <label for="company">Leave this empty</label>
+      <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
+    </div>
+    <div class="stack" style="gap:8px">
+      <label class="label" for="email">Email <span>Edit if this isn&rsquo;t right</span></label>
+      <input class="field" id="email" name="email" type="email" required value="">
+    </div>
+    <div class="stack" style="gap:8px">
+      <label class="label" for="route">Where are you dreaming of flying next? <span>Optional</span></label>
+      <textarea class="field" id="route" name="route" rows="3" placeholder="Tokyo in April, or anywhere warm in half term&hellip;"></textarea>
+      <p class="note">It means the first thing she checks is a trip you&rsquo;d actually take.</p>
+    </div>
+    <label class="check"><input type="checkbox" name="marketing"> Send me flight deals and Maria updates.</label>
+    <button class="btn btn--block" type="submit">Get my link to Maria</button>
+    <p class="fine">Your email is used to send you a copy of your Telegram link and, if you tick the box, occasional updates. Nothing else, no sharing, unsubscribe in one click. See our <a href="privacy.html">Privacy notice</a> and <a href="terms.html">Terms</a>.</p>
+  </form>
+
+  <p style="margin-top:22px;font-size:15px"><a href="https://t.me/AskMariaTravelBot">Already talking to Maria? Open Telegram</a></p>
+
+  <div class="panel" style="display:block;margin-top:40px;padding:clamp(24px,4vw,36px)">
+    <h2 style="font-size:26px;margin-bottom:22px">What happens next</h2>
+    <ol class="ol">
+      <li><span class="n">1</span><p>Your link to Telegram, on the next screen &mdash; plus a copy by email in case you&rsquo;d rather open it on your phone.</p></li>
+      <li><span class="n">2</span><p>Straight away &mdash; a short note on what Maria actually does, with the chat she&rsquo;d have with you.</p></li>
+      <li><span class="n">3</span><p>A couple of days later &mdash; one real story with real numbers: the &pound;386 Hong Kong fare, and the bag fee that made a &ldquo;cheaper&rdquo; flight cost more.</p></li>
+    </ol>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap wrap--narrow"><p>Ask Maria is an information service, not a travel agent or booking site &mdash; she doesn&rsquo;t sell travel or take payment for it. Prices change; always confirm at booking. Some booking links (e.g. Aviasales) are affiliate links: booking through them may earn Ask Maria a commission at no extra cost to you, and this never affects which fare she recommends.</p>
+  <p>Operated by AskMaria.app, London, United Kingdom &middot; <a href="mailto:hello@askmaria.app">hello@askmaria.app</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/privacy">Cookies</a></p>
+  <p style="color:var(--ink-4)">&copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot">@AskMariaTravelBot</a></p></div>
+</footer>
+<script src="analytics.js"></script>
+<script src="invite.js"></script>
+</body>
+</html>

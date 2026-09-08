@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Consent Mode defaults. MUST run before gtm.js and gtag.js below: a default
+     declared after the tag has started is a default that arrived too late.
+     Storage is denied until the banner in /analytics.js says otherwise, so both
+     tags start up cookieless. The localStorage read re-grants for a returning
+     visitor who already accepted — without it the first hit of every later
+     visit would be recorded with storage off, and the banner would re-ask. -->
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{
+  ad_storage:'denied',
+  ad_user_data:'denied',
+  ad_personalization:'denied',
+  analytics_storage:'denied',
+  wait_for_update:500
+});
+try{if(localStorage.getItem('askmaria-consent')==='granted'){
+  gtag('consent','update',{analytics_storage:'granted'});
+}}catch(e){}
+</script>
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TWRBWLNP');</script>
+<!-- End Google Tag Manager -->
+
+<meta name="robots" content="noindex, follow">
+
+<meta name="description" content="Your link to Maria on Telegram.">
+
+<link rel="canonical" href="https://askmaria.app/confirmed">
+
+<meta name="theme-color" content="#F6EFE7">
+
+<link rel="icon" type="image/svg+xml" href="/logo/ask-maria-favicon.svg">
+<title>You&rsquo;re in &mdash; Ask Maria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+<div class="band band--short">
+  <header class="wrap site-head">
+  <a class="logo" href="index.html"><svg width="26" height="22" viewBox="0 0 26 22" fill="none" aria-hidden="true"><path d="M1 21 9 3l7 13" stroke="#7B4FD1" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 21 19 7l6 14" stroke="#C4529A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="21.5" cy="2.5" r="2.5" fill="#E0913F"/></svg><span>Ask <em>Maria</em></span></a>
+  <div class="pill">You&rsquo;re in</div>
+</header>
+  <section class="wrap wrap--narrow" style="padding-top:34px;padding-bottom:60px">
+    <h1 style="font-size:clamp(36px,5vw,52px);line-height:1.06;letter-spacing:-.02em;margin-bottom:18px">Maria&rsquo;s waiting for you</h1>
+    <p class="lede" style="font-size:17.5px;max-width:32em">Open the chat and press Start. She already knows what you told us, so the first thing she checks is a trip you&rsquo;d actually take.</p>
+  </section>
+</div>
+
+<section class="wrap wrap--narrow pull">
+  <div class="confirm-card confirm-card--split">
+    <div class="stack" style="gap:16px">
+      <a class="btn btn--block" data-tg-open href="https://t.me/AskMariaTravelBot">
+        <svg width="19" height="17" viewBox="0 0 24 21" fill="currentColor" aria-hidden="true"><path d="M23.6 1.9 20 19.3c-.3 1.2-1 1.5-2 .9l-5.5-4-2.7 2.6c-.3.3-.6.6-1.2.6l.4-5.6L19.2 4c.4-.4-.1-.6-.7-.2L5.9 12l-5.4-1.7c-1.2-.4-1.2-1.2.2-1.7L22.1.3c1-.4 1.8.2 1.5 1.6Z"/></svg>
+        Open the chat with Maria
+      </a>
+      <p class="note" style="line-height:1.55" data-slot="sent">Opens Telegram and starts the conversation. We&rsquo;ve emailed the same link to <strong data-slot="email">your inbox</strong> in case you&rsquo;d rather open it later.</p>
+      <div style="border-top:1px solid var(--line-2);padding-top:16px">
+        <p style="font-size:13px;color:var(--ink-3);margin-bottom:6px">First thing she&rsquo;ll check</p>
+        <p style="font-size:16px;font-weight:600;line-height:1.45" data-slot="route">She&rsquo;ll ask you on the first message.</p>
+      </div>
+    </div>
+    <div style="justify-self:center;text-align:center">
+      <div class="qr"><img src="qr-telegram.svg" width="164" height="164" alt="QR code that opens the Telegram chat with Ask Maria" loading="lazy"></div>
+      <p class="note" style="margin-top:12px;max-width:20em">On a laptop? Scan to open Maria on your phone. Your route is in the email &mdash; or tap the button, which carries it.</p>
+    </div>
+  </div>
+
+  <div class="panel" style="display:block;margin-top:40px;padding:clamp(24px,4vw,36px)">
+    <h2 style="font-size:26px;margin-bottom:8px">Good things to say first</h2>
+    <p style="font-size:15px;color:var(--ink-2);margin-bottom:20px">Plain sentences work. No commands to learn.</p>
+    <div class="stack" style="gap:10px">
+      <div class="said">&ldquo;Watch London to Lisbon in October, under &pound;90 return.&rdquo;</div>
+      <div class="said">&ldquo;Anywhere sunny in half term, two of us, under &pound;400 each.&rdquo;</div>
+      <div class="said">&ldquo;What have you seen on Tokyo lately?&rdquo;</div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:32px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
+    <div><h3 style="font-size:19px;margin-bottom:6px">She checks twice a day</h3><p style="font-size:14.5px;line-height:1.55;color:var(--ink-2)">06:30 and 18:30, every day, for as long as the watch is open. You don&rsquo;t need to come back here.</p></div>
+    <div><h3 style="font-size:19px;margin-bottom:6px">Alerts look different to replies</h3><p style="font-size:14.5px;line-height:1.55;color:var(--ink-2)">Anything she sends unprompted is marked &#128276; AUTO-ALERT. Answers to you start &#128172; REPLY.</p></div>
+    <div><h3 style="font-size:19px;margin-bottom:6px">Stop her any time</h3><p style="font-size:14.5px;line-height:1.55;color:var(--ink-2)">&ldquo;Stop watching Tokyo&rdquo; ends a watch. &ldquo;Delete everything&rdquo; removes your data for good.</p></div>
+  </div>
+
+  <p class="note" style="margin-top:28px">Link not working? Message <a href="mailto:hello@askmaria.app">hello@askmaria.app</a> and it&rsquo;ll be sorted the same day.</p>
+</section>
+
+<footer class="site-foot">
+  <div class="wrap wrap--narrow"><p>Ask Maria is an information service, not a travel agent or booking site &mdash; she doesn&rsquo;t sell travel or take payment for it. Prices change; always confirm at booking. Some booking links (e.g. Aviasales) are affiliate links: booking through them may earn Ask Maria a commission at no extra cost to you, and this never affects which fare she recommends.</p>
+  <p>Operated by AskMaria.app, London, United Kingdom &middot; <a href="mailto:hello@askmaria.app">hello@askmaria.app</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/privacy">Cookies</a></p>
+  <p style="color:var(--ink-4)">&copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot">@AskMariaTravelBot</a></p></div>
+</footer>
+<script src="analytics.js"></script>
+<script src="confirmed.js"></script>
+</body>
+</html>
