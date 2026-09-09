@@ -98,7 +98,32 @@ const CASES = [
   // "watch" matches "march". The threshold must keep this at no date.
   { in: "Watch Barcelona under £120",
     shape: "one", routes: ["Barcelona"],
-    flags: ["No dates yet"] }
+    flags: ["No dates yet"] },
+
+  // IATA codes, and the airport kept rather than collapsed to the city —
+  // LHR, LGW, STN and LTN are four different fares out of London.
+  { in: "lhr to hkg in april under £600",
+    shape: "one", routes: ["London Heathrow → Hong Kong"],
+    when: "April", price: "£600", noFlags: true },
+
+  { in: "LGW to AGP, 3 nights, under 120",
+    shape: "one", routes: ["London Gatwick → Málaga"], price: "?120" },
+
+  { in: "STN to DUB and LTN to KRK, under £40 each",
+    shape: "many", routes: ["London Stansted → Dublin", "London Luton → Kraków"] },
+
+  // Short forms people actually type.
+  { in: "cdmx to nyc, 2 weeks in may",
+    shape: "one", routes: ["Mexico City → New York"], when: "May" },
+
+  { in: "hk to bkk, 12 dec, max 400",
+    shape: "one", routes: ["Hong Kong → Bangkok"], when: "12 December", price: "?400" },
+
+  // Durations describe the stops, they do not define them: rebuilding the
+  // route from the durations alone dropped Sydney.
+  { in: "MAN to DXB to SIN to SYD, 5 days in dubai, 4 days in singapore, £1200 total",
+    shape: "trip", routes: ["Manchester → Dubai → Singapore → Sydney"], price: "£1200",
+    flags: ["all 3 stops", "No length of stay for Sydney"] }
 ];
 
 let failed = 0;

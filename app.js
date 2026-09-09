@@ -43,45 +43,246 @@
      endpoint running the same Claude parse step the bot uses, and render the
      returned fields into the [data-parsed] slots. */
 
-  /* Cities it can name confidently. This list is a CONVENIENCE, not the
-     parser's understanding of the world — everything below works on sentence
-     structure, and an unrecognised word is reported as unrecognised rather
-     than dropped. The first version matched vocabulary instead of structure,
-     so "london to japan to hong kong to florence" silently became
-     "London → Hong Kong": two of the four places were not on the list, and
-     nothing said so. A fixed list is always incomplete; the bug was trusting
-     it to be complete. */
+  /* What she can name. This is a CONVENIENCE, not the parser's understanding
+     of the world — everything below works on sentence structure, and anything
+     absent is reported as unrecognised rather than dropped. But "hkg" and
+     "cdmx" showed the list was too thin to be useful: people type codes and
+     short names constantly, and being told she does not recognise LHR reads
+     as her not knowing what an airport is.
+
+     Keys are lowercase; resolvePlace() lowercases before looking up. */
+
+  /* City and country-capital names, plus the short forms and old names people
+     actually type. Values are what gets shown back. */
   var CITIES = {
-    "london":"London","tokyo":"Tokyo","lisbon":"Lisbon","cancun":"Cancún",
-    "cancún":"Cancún","lima":"Lima","cusco":"Cusco","hong kong":"Hong Kong",
-    "new york":"New York","bangkok":"Bangkok","reykjavik":"Reykjavik",
-    "athens":"Athens","milan":"Milan","dubai":"Dubai","porto":"Porto",
-    "marrakesh":"Marrakesh","marrakech":"Marrakesh","naples":"Naples",
-    "faro":"Faro","osaka":"Osaka","seoul":"Seoul","paris":"Paris","rome":"Rome",
-    "florence":"Florence","venice":"Venice","barcelona":"Barcelona",
-    "madrid":"Madrid","berlin":"Berlin","amsterdam":"Amsterdam","dublin":"Dublin",
-    "singapore":"Singapore","bali":"Bali","denpasar":"Bali","manchester":"Manchester",
-    "edinburgh":"Edinburgh","glasgow":"Glasgow","malaga":"Málaga","málaga":"Málaga",
-    "alicante":"Alicante","nice":"Nice","prague":"Prague","vienna":"Vienna",
-    "budapest":"Budapest","krakow":"Kraków","copenhagen":"Copenhagen",
-    "istanbul":"Istanbul","cairo":"Cairo","delhi":"Delhi","mumbai":"Mumbai",
-    "sydney":"Sydney","toronto":"Toronto","miami":"Miami","boston":"Boston",
-    "chicago":"Chicago","los angeles":"Los Angeles","san francisco":"San Francisco",
-    "split":"Split"
+    // UK & Ireland
+    "london":"London","manchester":"Manchester","edinburgh":"Edinburgh",
+    "glasgow":"Glasgow","birmingham":"Birmingham","bristol":"Bristol",
+    "newcastle":"Newcastle","liverpool":"Liverpool","leeds":"Leeds",
+    "belfast":"Belfast","cardiff":"Cardiff","aberdeen":"Aberdeen",
+    "dublin":"Dublin","cork":"Cork","shannon":"Shannon",
+    // Western Europe
+    "paris":"Paris","amsterdam":"Amsterdam","brussels":"Brussels",
+    "luxembourg":"Luxembourg","geneva":"Geneva","zurich":"Zurich",
+    "basel":"Basel","frankfurt":"Frankfurt","munich":"Munich","berlin":"Berlin",
+    "hamburg":"Hamburg","cologne":"Cologne","dusseldorf":"Düsseldorf",
+    "vienna":"Vienna","salzburg":"Salzburg","innsbruck":"Innsbruck",
+    // Iberia
+    "madrid":"Madrid","barcelona":"Barcelona","seville":"Seville",
+    "valencia":"Valencia","bilbao":"Bilbao","malaga":"Málaga","málaga":"Málaga",
+    "alicante":"Alicante","murcia":"Murcia","almeria":"Almería",
+    "palma":"Palma","majorca":"Palma","mallorca":"Palma","ibiza":"Ibiza",
+    "menorca":"Menorca","gran canaria":"Gran Canaria","tenerife":"Tenerife",
+    "lanzarote":"Lanzarote","fuerteventura":"Fuerteventura",
+    "lisbon":"Lisbon","porto":"Porto","faro":"Faro","madeira":"Madeira",
+    "funchal":"Madeira","azores":"the Azores",
+    // Italy, Greece, Balkans
+    "rome":"Rome","milan":"Milan","venice":"Venice","florence":"Florence",
+    "naples":"Naples","turin":"Turin","bologna":"Bologna","pisa":"Pisa",
+    "bari":"Bari","catania":"Catania","palermo":"Palermo","sardinia":"Sardinia",
+    "athens":"Athens","thessaloniki":"Thessaloniki","crete":"Crete",
+    "heraklion":"Crete","rhodes":"Rhodes","corfu":"Corfu","santorini":"Santorini",
+    "mykonos":"Mykonos","kos":"Kos","zakynthos":"Zakynthos",
+    "split":"Split","dubrovnik":"Dubrovnik","zagreb":"Zagreb","tirana":"Tirana",
+    "ljubljana":"Ljubljana","sarajevo":"Sarajevo","belgrade":"Belgrade",
+    "sofia":"Sofia","bucharest":"Bucharest",
+    // Nordics & Baltics
+    "copenhagen":"Copenhagen","stockholm":"Stockholm","gothenburg":"Gothenburg",
+    "oslo":"Oslo","bergen":"Bergen","helsinki":"Helsinki","reykjavik":"Reykjavik",
+    "reykjavík":"Reykjavik","tromso":"Tromsø","riga":"Riga","tallinn":"Tallinn",
+    "vilnius":"Vilnius",
+    // Central & Eastern Europe
+    "nice":"Nice","marseille":"Marseille","lyon":"Lyon","toulouse":"Toulouse",
+    "bordeaux":"Bordeaux","cannes":"Nice","strasbourg":"Strasbourg",
+    "prague":"Prague","budapest":"Budapest","krakow":"Kraków","kraków":"Kraków",
+    "warsaw":"Warsaw","gdansk":"Gdańsk","wroclaw":"Wrocław","bratislava":"Bratislava",
+    // Türkiye, Middle East, North Africa
+    "istanbul":"Istanbul","antalya":"Antalya","izmir":"Izmir",
+    "dubai":"Dubai","abu dhabi":"Abu Dhabi","doha":"Doha","muscat":"Muscat",
+    "amman":"Amman","beirut":"Beirut","tel aviv":"Tel Aviv","jerusalem":"Tel Aviv",
+    "cairo":"Cairo","hurghada":"Hurghada","sharm el sheikh":"Sharm el-Sheikh",
+    "marrakesh":"Marrakesh","marrakech":"Marrakesh","casablanca":"Casablanca",
+    "agadir":"Agadir","tunis":"Tunis",
+    // Sub-Saharan Africa
+    "johannesburg":"Johannesburg","cape town":"Cape Town","durban":"Durban",
+    "nairobi":"Nairobi","lagos":"Lagos","accra":"Accra","addis ababa":"Addis Ababa",
+    "zanzibar":"Zanzibar","mauritius":"Mauritius","seychelles":"the Seychelles",
+    // South & Southeast Asia
+    "delhi":"Delhi","new delhi":"Delhi","mumbai":"Mumbai","bombay":"Mumbai",
+    "bangalore":"Bangalore","bengaluru":"Bangalore","chennai":"Chennai",
+    "kolkata":"Kolkata","goa":"Goa","kochi":"Kochi","hyderabad":"Hyderabad",
+    "colombo":"Colombo","male":"the Maldives","maldives":"the Maldives",
+    "kathmandu":"Kathmandu","dhaka":"Dhaka",
+    "bangkok":"Bangkok","phuket":"Phuket","chiang mai":"Chiang Mai",
+    "krabi":"Krabi","koh samui":"Koh Samui","singapore":"Singapore",
+    "kuala lumpur":"Kuala Lumpur","penang":"Penang","bali":"Bali",
+    "denpasar":"Bali","jakarta":"Jakarta","manila":"Manila","cebu":"Cebu",
+    "hanoi":"Hanoi","ho chi minh city":"Ho Chi Minh City","saigon":"Ho Chi Minh City",
+    "da nang":"Da Nang","phnom penh":"Phnom Penh","siem reap":"Siem Reap",
+    "vientiane":"Vientiane","yangon":"Yangon",
+    // East Asia
+    "hong kong":"Hong Kong","macau":"Macau","tokyo":"Tokyo","osaka":"Osaka",
+    "kyoto":"Osaka","sapporo":"Sapporo","fukuoka":"Fukuoka","okinawa":"Okinawa",
+    "seoul":"Seoul","busan":"Busan","beijing":"Beijing","peking":"Beijing",
+    "shanghai":"Shanghai","guangzhou":"Guangzhou","shenzhen":"Shenzhen",
+    "chengdu":"Chengdu","taipei":"Taipei","ulaanbaatar":"Ulaanbaatar",
+    // Oceania
+    "sydney":"Sydney","melbourne":"Melbourne","brisbane":"Brisbane",
+    "perth":"Perth","adelaide":"Adelaide","cairns":"Cairns",
+    "auckland":"Auckland","wellington":"Wellington","christchurch":"Christchurch",
+    "queenstown":"Queenstown","fiji":"Fiji","nadi":"Fiji",
+    // North America
+    "new york":"New York","nyc":"New York","boston":"Boston",
+    "washington":"Washington DC","washington dc":"Washington DC",
+    "philadelphia":"Philadelphia","chicago":"Chicago","detroit":"Detroit",
+    "atlanta":"Atlanta","miami":"Miami","orlando":"Orlando","tampa":"Tampa",
+    "houston":"Houston","dallas":"Dallas","austin":"Austin","denver":"Denver",
+    "phoenix":"Phoenix","las vegas":"Las Vegas","vegas":"Las Vegas",
+    "los angeles":"Los Angeles","san francisco":"San Francisco",
+    "san diego":"San Diego","seattle":"Seattle","portland":"Portland",
+    "honolulu":"Honolulu","hawaii":"Honolulu","anchorage":"Anchorage",
+    "toronto":"Toronto","vancouver":"Vancouver","montreal":"Montreal",
+    "calgary":"Calgary","ottawa":"Ottawa","quebec":"Quebec City",
+    "mexico city":"Mexico City","cdmx":"Mexico City","cancun":"Cancún",
+    "cancún":"Cancún","tulum":"Cancún","guadalajara":"Guadalajara",
+    "puerto vallarta":"Puerto Vallarta","los cabos":"Los Cabos",
+    // Caribbean & Central America
+    "havana":"Havana","montego bay":"Montego Bay","kingston":"Kingston",
+    "punta cana":"Punta Cana","barbados":"Barbados","bridgetown":"Barbados",
+    "antigua":"Antigua","st lucia":"St Lucia","nassau":"Nassau",
+    "bahamas":"Nassau","aruba":"Aruba","san juan":"San Juan",
+    "panama city":"Panama City","san jose":"San José","costa rica":"San José",
+    "belize city":"Belize City","guatemala city":"Guatemala City",
+    // South America
+    "sao paulo":"São Paulo","são paulo":"São Paulo","rio":"Rio de Janeiro",
+    "rio de janeiro":"Rio de Janeiro","brasilia":"Brasília",
+    "buenos aires":"Buenos Aires","santiago":"Santiago","lima":"Lima",
+    "cusco":"Cusco","cuzco":"Cusco","la paz":"La Paz","quito":"Quito",
+    "bogota":"Bogotá","bogotá":"Bogotá","cartagena":"Cartagena",
+    "medellin":"Medellín","montevideo":"Montevideo","asuncion":"Asunción",
+    "galapagos":"the Galápagos",
+    // Short forms people type
+    "hk":"Hong Kong","kl":"Kuala Lumpur","sf":"San Francisco",
+    "la":"Los Angeles","ny":"New York","dc":"Washington DC","bcn":"Barcelona"
+  };
+
+  /* IATA codes. Kept SEPARATE from names, and deliberately NOT collapsed to
+     the city: LHR, LGW, STN and LTN are four different fares out of London,
+     and Maria's own config tracks them individually — so "LGW to AGP" must
+     come back as Gatwick, not as "London". Where a city has one airport the
+     city name is the honest answer. */
+  var AIRPORTS = {
+    // London and the UK
+    "lhr":"London Heathrow","lgw":"London Gatwick","stn":"London Stansted",
+    "ltn":"London Luton","lcy":"London City","sen":"London Southend",
+    "man":"Manchester","edi":"Edinburgh","gla":"Glasgow","bhx":"Birmingham",
+    "brs":"Bristol","ncl":"Newcastle","lpl":"Liverpool","lba":"Leeds",
+    "bfs":"Belfast","cwl":"Cardiff","abz":"Aberdeen","ema":"East Midlands",
+    "gla":"Glasgow","dub":"Dublin","ork":"Cork","snn":"Shannon",
+    // Europe
+    "cdg":"Paris Charles de Gaulle","ory":"Paris Orly","bva":"Paris Beauvais",
+    "ams":"Amsterdam","bru":"Brussels","crl":"Brussels Charleroi",
+    "lux":"Luxembourg","gva":"Geneva","zrh":"Zurich","bsl":"Basel",
+    "fra":"Frankfurt","muc":"Munich","ber":"Berlin","ham":"Hamburg",
+    "cgn":"Cologne","dus":"Düsseldorf","vie":"Vienna","szg":"Salzburg",
+    "inn":"Innsbruck",
+    "mad":"Madrid","bcn":"Barcelona","svq":"Seville","vlc":"Valencia",
+    "bio":"Bilbao","agp":"Málaga","alc":"Alicante","rmu":"Murcia",
+    "lei":"Almería","pmi":"Palma","ibz":"Ibiza","mah":"Menorca",
+    "lpa":"Gran Canaria","tfs":"Tenerife South","tfn":"Tenerife North",
+    "ace":"Lanzarote","fue":"Fuerteventura",
+    "lis":"Lisbon","opo":"Porto","fao":"Faro","fnc":"Madeira",
+    "fco":"Rome Fiumicino","cia":"Rome Ciampino","mxp":"Milan Malpensa",
+    "lin":"Milan Linate","bgy":"Milan Bergamo","vce":"Venice","trv":"Venice Treviso",
+    "flr":"Florence","nap":"Naples","trn":"Turin","blq":"Bologna","psa":"Pisa",
+    "bri":"Bari","cta":"Catania","pmo":"Palermo","cag":"Sardinia",
+    "ath":"Athens","skg":"Thessaloniki","her":"Crete","rho":"Rhodes",
+    "cfu":"Corfu","jtr":"Santorini","jmk":"Mykonos","kgs":"Kos","zth":"Zakynthos",
+    "spu":"Split","dbv":"Dubrovnik","zag":"Zagreb","tia":"Tirana","lju":"Ljubljana",
+    "beg":"Belgrade","sof":"Sofia","otp":"Bucharest",
+    "cph":"Copenhagen","arn":"Stockholm","nyo":"Stockholm Skavsta",
+    "got":"Gothenburg","osl":"Oslo","trf":"Oslo Torp","bgo":"Bergen",
+    "hel":"Helsinki","kef":"Reykjavik","tos":"Tromsø","rix":"Riga",
+    "tll":"Tallinn","vno":"Vilnius",
+    "prg":"Prague","bud":"Budapest","krk":"Kraków","waw":"Warsaw",
+    "wmi":"Warsaw Modlin","gdn":"Gdańsk","wro":"Wrocław","bts":"Bratislava",
+    "nce":"Nice","mrs":"Marseille","lys":"Lyon","tls":"Toulouse","bod":"Bordeaux",
+    // Türkiye, Middle East, Africa
+    "ist":"Istanbul","saw":"Istanbul Sabiha","ayt":"Antalya","adb":"Izmir",
+    "dxb":"Dubai","dwc":"Dubai World Central","auh":"Abu Dhabi","doh":"Doha",
+    "mct":"Muscat","amm":"Amman","bey":"Beirut","tlv":"Tel Aviv",
+    "cai":"Cairo","hrg":"Hurghada","ssh":"Sharm el-Sheikh",
+    "rak":"Marrakesh","cmn":"Casablanca","aga":"Agadir","tun":"Tunis",
+    "jnb":"Johannesburg","cpt":"Cape Town","dur":"Durban","nbo":"Nairobi",
+    "los":"Lagos","acc":"Accra","add":"Addis Ababa","znz":"Zanzibar",
+    "mru":"Mauritius","sez":"the Seychelles",
+    // Asia
+    "del":"Delhi","bom":"Mumbai","blr":"Bangalore","maa":"Chennai",
+    "ccu":"Kolkata","goi":"Goa","cok":"Kochi","hyd":"Hyderabad",
+    "cmb":"Colombo","mle":"the Maldives","ktm":"Kathmandu","dac":"Dhaka",
+    "bkk":"Bangkok","dmk":"Bangkok Don Mueang","hkt":"Phuket","cnx":"Chiang Mai",
+    "kbv":"Krabi","usm":"Koh Samui","sin":"Singapore","kul":"Kuala Lumpur",
+    "pen":"Penang","dps":"Bali","cgk":"Jakarta","mnl":"Manila","ceb":"Cebu",
+    "han":"Hanoi","sgn":"Ho Chi Minh City","dad":"Da Nang","pnh":"Phnom Penh",
+    "rep":"Siem Reap","vte":"Vientiane","rgn":"Yangon",
+    "hkg":"Hong Kong","mfm":"Macau","nrt":"Tokyo Narita","hnd":"Tokyo Haneda",
+    "kix":"Osaka Kansai","itm":"Osaka Itami","cts":"Sapporo","fuk":"Fukuoka",
+    "oka":"Okinawa","icn":"Seoul Incheon","gmp":"Seoul Gimpo","pus":"Busan",
+    "pek":"Beijing","pkx":"Beijing Daxing","pvg":"Shanghai Pudong",
+    "sha":"Shanghai Hongqiao","can":"Guangzhou","szx":"Shenzhen",
+    "ctu":"Chengdu","tpe":"Taipei","uln":"Ulaanbaatar",
+    // Oceania
+    "syd":"Sydney","mel":"Melbourne","bne":"Brisbane","per":"Perth",
+    "adl":"Adelaide","cns":"Cairns","akl":"Auckland","wlg":"Wellington",
+    "chc":"Christchurch","zqn":"Queenstown","nan":"Fiji",
+    // North America
+    "jfk":"New York JFK","ewr":"New York Newark","lga":"New York LaGuardia",
+    "bos":"Boston","iad":"Washington Dulles","dca":"Washington Reagan",
+    "bwi":"Baltimore","phl":"Philadelphia","ord":"Chicago O'Hare",
+    "mdw":"Chicago Midway","dtw":"Detroit","atl":"Atlanta","mia":"Miami",
+    "fll":"Fort Lauderdale","mco":"Orlando","tpa":"Tampa","iah":"Houston",
+    "dfw":"Dallas Fort Worth","dal":"Dallas Love","aus":"Austin","den":"Denver",
+    "phx":"Phoenix","las":"Las Vegas","lax":"Los Angeles","sfo":"San Francisco",
+    "oak":"Oakland","sjc":"San Jose","san":"San Diego","sea":"Seattle",
+    "pdx":"Portland","hnl":"Honolulu","anc":"Anchorage",
+    "yyz":"Toronto","yvr":"Vancouver","yul":"Montreal","yyc":"Calgary",
+    "yow":"Ottawa","yqb":"Quebec City",
+    "mex":"Mexico City","cun":"Cancún","gdl":"Guadalajara","pvr":"Puerto Vallarta",
+    "sjd":"Los Cabos",
+    // Caribbean & Latin America
+    "hav":"Havana","mbj":"Montego Bay","kin":"Kingston","puj":"Punta Cana",
+    "bgi":"Barbados","anu":"Antigua","uvf":"St Lucia","nas":"Nassau",
+    "aua":"Aruba","sju":"San Juan","pty":"Panama City","sjo":"San José",
+    "bze":"Belize City","gua":"Guatemala City",
+    "gru":"São Paulo","gig":"Rio de Janeiro","bsb":"Brasília",
+    "eze":"Buenos Aires","scl":"Santiago","lim":"Lima","cuz":"Cusco",
+    "lpb":"La Paz","uio":"Quito","bog":"Bogotá","ctg":"Cartagena",
+    "mde":"Medellín","mvd":"Montevideo","asu":"Asunción","gps":"the Galápagos"
   };
 
   /* A country is not a destination she can watch — it has several airports and
      the fare depends entirely on which. Naming them separately lets the panel
      say something useful ("Japan is a country — which airport?") instead of
-     treating it as an unknown word. */
+     treating it as a word she has never seen. */
   var COUNTRIES = {
     "japan":"Japan","italy":"Italy","spain":"Spain","france":"France",
     "portugal":"Portugal","greece":"Greece","thailand":"Thailand",
     "india":"India","china":"China","australia":"Australia","morocco":"Morocco",
-    "turkey":"Turkey","germany":"Germany","netherlands":"Netherlands",
+    "turkey":"Türkiye","türkiye":"Türkiye","germany":"Germany",
+    "netherlands":"the Netherlands","holland":"the Netherlands",
     "mexico":"Mexico","brazil":"Brazil","vietnam":"Vietnam","indonesia":"Indonesia",
     "usa":"the USA","america":"the USA","united states":"the USA","uk":"the UK",
-    "scotland":"Scotland","ireland":"Ireland","croatia":"Croatia","poland":"Poland"
+    "scotland":"Scotland","wales":"Wales","ireland":"Ireland","croatia":"Croatia",
+    "poland":"Poland","norway":"Norway","sweden":"Sweden","denmark":"Denmark",
+    "finland":"Finland","iceland":"Iceland","switzerland":"Switzerland",
+    "austria":"Austria","belgium":"Belgium","egypt":"Egypt","kenya":"Kenya",
+    "south africa":"South Africa","canada":"Canada","argentina":"Argentina",
+    "chile":"Chile","peru":"Peru","colombia":"Colombia","cuba":"Cuba",
+    "jamaica":"Jamaica","malaysia":"Malaysia","philippines":"the Philippines",
+    "singapore":"Singapore","korea":"South Korea","south korea":"South Korea",
+    "new zealand":"New Zealand","sri lanka":"Sri Lanka","nepal":"Nepal",
+    "cambodia":"Cambodia","laos":"Laos","czechia":"Czechia",
+    "czech republic":"Czechia","hungary":"Hungary","romania":"Romania"
   };
 
   var MONTHS = ["january","february","march","april","may","june","july",
@@ -135,7 +336,7 @@
      "march" — and "Watch London to Tokyo" would sprout a March date out of
      nowhere. So: one edit up to six letters, two only from seven. */
   function fuzzyMonth(w) {
-    if (w.length < 5 || CITIES[w] || COUNTRIES[w] || STOP.test(w)) return -1;
+    if (w.length < 5 || CITIES[w] || AIRPORTS[w] || COUNTRIES[w] || STOP.test(w)) return -1;
     var allow = w.length >= 7 ? 2 : 1;
     for (var i = 0; i < MONTH_ALIASES.length; i++) {
       var full = MONTH_ALIASES[i][0];
@@ -186,6 +387,10 @@
     if (!t) return null;
 
     if (CITIES[t])    return { name: CITIES[t],    kind: "city" };
+    /* Codes after names, so a name that is also a code resolves to the name.
+       An IATA hit counts as a city: she knows exactly what it is, and flagging
+       LHR as unrecognised was the complaint that prompted all of this. */
+    if (AIRPORTS[t])  return { name: AIRPORTS[t],  kind: "city" };
     if (COUNTRIES[t]) return { name: COUNTRIES[t], kind: "country" };
     if (t.length > 20 || words.length > 3) return null;   // a sentence, not a place
     return { name: titleWords(t), kind: "unknown" };
@@ -396,21 +601,41 @@
       if (origin) noteUnknownInto(origin, unknowns, countries);
       stays.forEach(function (st) { noteUnknownInto(st.place, unknowns, countries); });
 
-      var seq = stays.map(function (st) { return st.place.name; });
+      /* The chain is authoritative for the SEQUENCE when it names more than a
+         single destination — "MAN to DXB to SIN to SYD, 5 days in dubai,
+         4 days in singapore" lists four stops but only two durations, and
+         rebuilding the route from the durations alone silently dropped
+         Sydney. Durations describe the stops; they do not define them. */
+      var seqPlaces = (firstChain && firstChain.length > 2)
+        ? firstChain.slice(1)
+        : stays.map(function (st) { return st.place; });
+      seqPlaces.forEach(function (pl) { noteUnknownInto(pl, unknowns, countries); });
+
+      var seq = seqPlaces.map(function (pl) { return pl.name; });
       var routeStr = (origin ? origin.name + " → " : "") + seq.join(" → ");
       watches.push({ route: routeStr, when: whenAll, n: nAll, price: priceIn(text) });
+
+      // A stop nobody gave a length for is worth saying out loud — it is the
+      // difference between "she has your plan" and "she has most of it".
+      var timed = {};
+      stays.forEach(function (st) { timed[st.place.name] = true; });
+      var untimed = seq.filter(function (nm) { return !timed[nm]; });
 
       var nights = stays.reduce(function (t, st) { return t + st.nights; }, 0);
       var win = whenAll && whenAll.hits.length >= 2
         ? windowDays(whenAll.hits[0], whenAll.hits[1]) : null;
 
-      flags.push("She’s read that as one trip through all " + stays.length +
+      flags.push("She’s read that as one trip through all " + seq.length + " stops" +
         (/\bor\b/i.test(text) ? ", not a choice between them — you wrote “or”, but you gave a length of stay for each." : "."));
       flags.push(stays.map(function (st) {
           return st.nights + (st.nights === 1 ? " day in " : " days in ") + st.place.name;
         }).join(", ") + " — " + nights + " days" +
         (win ? " inside a " + win + "-day window, leaving " + (win - nights) + " for travel." : "."));
 
+      if (untimed.length) flags.push("No length of stay for " +
+        (untimed.length < 3 ? untimed.join(" or ")
+                            : untimed.slice(0, -1).join(", ") + " or " + untimed[untimed.length - 1]) +
+        " — she’ll ask how long you want there.");
       if (whenAll) whenAll.hits.forEach(function (h) {
         if (h.fuzzy) flags.push("Reading “" + h.raw + "” as " + h.label + ".");
       });
