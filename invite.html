@@ -48,6 +48,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 
+<noscript><style>
+  /* Signing up needs a fetch, so with scripting off this form cannot work and
+     must not pretend to: hidden outright rather than left there to submit the
+     address into a query string. Access never depended on the email arriving,
+     so the Telegram link is handed over instead — that path needs no JS. */
+  #invite-form, .js-only { display: none !important; }
+  .noscript-only { display: block !important; }
+</style></noscript>
+
 </head>
 <body>
 <div class="band band--short">
@@ -63,7 +72,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 
 <section class="wrap wrap--narrow pull">
-  <form class="confirm-card stack" id="invite-form" action="confirmed.html" method="get" novalidate style="gap:22px">
+  <!-- No action/method on purpose. invite.js owns the submit; without it there
+       is no endpoint that could process this, and a native GET put the address
+       and the free-text route into the URL, browser history and the address
+       bar. The <noscript> block in the head hides the form outright when
+       scripting is off and offers the Telegram link instead, which is the path
+       that actually works without JavaScript. -->
+  <form class="confirm-card stack" id="invite-form" novalidate style="gap:22px">
     <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
       <label for="company">Leave this empty</label>
       <input id="company" name="company" type="text" tabindex="-1" autocomplete="off">
@@ -81,6 +96,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <button class="btn btn--block" type="submit">Get my link to Maria</button>
     <p class="fine">Your email is used to send you a copy of your Telegram link and, if you tick the box, occasional updates. Nothing else, no sharing, unsubscribe in one click. See our <a href="privacy.html">Privacy notice</a> and <a href="terms.html">Terms</a>.</p>
   </form>
+
+  <div class="confirm-card stack noscript-only" style="gap:16px">
+    <h2 style="font-size:22px;margin:0">Open the chat instead</h2>
+    <p class="note" style="line-height:1.55;margin:0">Saving your email needs JavaScript, which is switched off &mdash; but that doesn&rsquo;t hold you up. Maria works in Telegram, and she&rsquo;ll take your route from your first message.</p>
+    <a class="btn btn--block" href="https://t.me/AskMariaTravelBot" data-tg="noscript">Open the chat with Maria</a>
+  </div>
 
   <p style="margin-top:22px;font-size:15px"><a href="https://t.me/AskMariaTravelBot">Already talking to Maria? Open Telegram</a></p>
 

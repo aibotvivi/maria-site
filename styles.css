@@ -256,3 +256,9 @@ textarea.field{resize:vertical}
    plate — so the placeholder's gradient fill and letter-centring go, and only
    the circular clip stays. */
 img.chat__avatar{background:none;object-fit:cover}
+
+/* Shown only when scripting is off (the <noscript> block in invite.html's head
+   flips it). Hidden by default here rather than with the hidden attribute,
+   because a <noscript> stylesheet cannot outrank [hidden]{display:none
+   !important} — and that rule exists for good reasons elsewhere. */
+.noscript-only{display:none}

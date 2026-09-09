@@ -15,7 +15,12 @@
 
   var email  = get("am_email");
   var route  = get("am_route");
-  var posted = get("am_posted") !== "0";
+  /* Positive evidence only. This read used to be `!== "0"`, so an ABSENT value
+     — a direct link, a refresh, storage blocked, a form that submitted without
+     invite.js — counted as "an email was sent", and the page said so. Claiming
+     a message is in someone's inbox when nothing was sent is the one lie this
+     screen must not tell: they stop waiting for it, or go looking for it. */
+  var posted = get("am_posted") === "1";
 
   /* The finished deep link is built by invite.js and stored, never rebuilt
      here: tgLink() must stay in step with signup.build_payload() in the

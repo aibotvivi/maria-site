@@ -208,7 +208,13 @@
       // the clicks you most need to be able to count separately.
       go.target = "_blank"; go.rel = "noopener"; go.setAttribute("data-tg", "fallback");
       go.textContent = "Open Maria on Telegram";
-      go.style.cssText = btn.getAttribute("style") + ";text-decoration:none;";
+      // Copy the CLASS, not the inline style. The old button carried its
+      // styling inline; the redesigned one is styled by .btn, so
+      // getAttribute("style") returned null and this produced the literal
+      // CSS "null;text-decoration:none;" — the replacement link rendered
+      // unstyled, on the one path where it is the only way forward.
+      go.className = btn.className;
+      go.style.textDecoration = "none";
       btn.parentNode.replaceChild(go, btn);
       go.focus({ preventScroll: true });
     }
