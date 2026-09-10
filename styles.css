@@ -50,6 +50,15 @@ textarea.field{resize:vertical}
 .btn--block{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:17px 26px;font-size:16.5px;text-decoration:none}
 .btn--ghost{background:transparent;color:var(--ink-2);border:1px solid rgba(46,38,34,.2);box-shadow:none;padding:9px 18px;font-size:14px;font-weight:400}
 .btn--ghost:hover{background:#F5F1EC;color:var(--ink-2)}
+/* .btn is a <button> everywhere else; as an <a> it needs the two properties a
+   button gets for free, or the ghost "skip" links render underlined inline. */
+a.btn{display:inline-block;text-decoration:none}
+a.btn--block{display:flex}
+/* The demo's call to action. No border-top: .parsed__note directly above it
+   already draws one, and two rules 16px apart read as a mistake. */
+.parsed__go{margin-top:16px}
+.parsed__alt{display:block;width:100%;margin-top:12px;padding:0;border:none;background:none;color:var(--ink-3);font-size:13.5px;font-family:inherit;text-decoration:underline;cursor:pointer}
+.parsed__alt:hover{color:var(--brand)}
 .note{font-size:14px;color:var(--ink-3)}
 .fine{font-size:13.5px;line-height:1.6;color:var(--ink-3)}
 .label{font-size:15px;font-weight:600}

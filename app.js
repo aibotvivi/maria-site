@@ -815,6 +815,10 @@
     var singleEl = document.querySelector("[data-parsed-single]");
     var flagsEl  = document.querySelector("[data-parsed-flags]");
     var labelEl  = document.querySelector("[data-threshold-label]");
+    var goEl     = document.querySelector("[data-demo-go]");
+    var goLink   = document.querySelector("[data-demo-tg]");
+    var goEmail  = document.querySelector("[data-demo-email]");
+    var counted  = false;
 
     /* A number with no currency is shown as "£200?" rather than "£200": the
        question mark is the difference between what she was told and what she
@@ -877,6 +881,24 @@
           flagsEl.appendChild(li);
         });
       }
+
+      /* The panel is only a dead end while there is nothing to act on. As
+         soon as she has read a route out of the text, offer the actual next
+         step, carrying the visitor's own words into the chat.
+
+         Guarded on window.Maria rather than assumed: maria-core.js is a
+         separate request and app.js must degrade to the old behaviour (a
+         demo that demonstrates and nothing more) rather than throwing
+         halfway through render() and freezing the live panel. */
+      var ready = out.watches.length > 0 && !!window.Maria;
+      if (goEl) goEl.hidden = !ready;
+      if (ready && goLink) {
+        goLink.href = window.Maria.tgLink(tryInput.value, "web");
+        /* Once per visit, not per keystroke — this fires on every input
+           event. Without it there is no way to tell whether the strongest
+           thing on the page is being used at all. */
+        if (!counted) { counted = true; window.Maria.track("demo-parsed", "Landing demo"); }
+      }
     }
 
     tryInput.addEventListener("input", render);
@@ -899,6 +921,76 @@
       });
     }
 
+    /* The slower door out of the demo, for someone who would rather have the
+       link in their inbox than open Telegram now. The route goes over in
+       sessionStorage, not ?route=, for the same reason the email does — see
+       cleanUrl() in analytics.js. */
+    if (goEmail) {
+      goEmail.addEventListener("click", function () {
+        try { sessionStorage.setItem("am_demo_route", tryInput.value.trim()); } catch (e) {}
+        if (window.Maria) window.Maria.track("demo-to-email", "Landing demo");
+        location.href = "invite.html";
+      });
+    }
+
     render();
   }
+
+  /* ---------- hero and footer signup --------------------------------------
+     One step, not two. These forms used to be a plain GET to invite.html,
+     which meant the address was not captured until the SECOND page — so
+     anyone who typed their email here and then hesitated on invite.html was
+     lost completely, with nothing left to follow up on. The email is posted
+     here and now; the route is optional and comes later, in the demo box
+     above or from Maria's first message.
+
+     If maria-core.js failed to load, or there is no endpoint configured, this
+     does NOT preventDefault: the native GET to invite.html still runs and the
+     visitor lands on the old two-step path rather than on a button that does
+     nothing. */
+  function wireSignup(form) {
+    if (!form) return;
+    var renderedAt = Date.now();
+
+    form.addEventListener("submit", function (e) {
+      var M = window.Maria;
+      if (!M || !M.hasEndpoint()) return;          // fall through to invite.html
+
+      var input = form.querySelector('input[name="email"]');
+      var email = input ? String(input.value || "").trim() : "";
+      if (!email) return;                          // let the browser complain
+
+      e.preventDefault();
+
+      /* Same timing guard as the invite form, and safer here: this field
+         starts empty, so a genuine visitor cannot read the page and type an
+         address inside 1.2s. Fails the way that one does — pretend it
+         worked, post nothing, and never tell whoever wrote the bot why. */
+      var tooFast = Date.now() - renderedAt < 1200;
+
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) { btn.disabled = true; btn.textContent = "Sending\u2026"; }
+
+      var done = function (posted) {
+        /* No route from here, and posted says whether an email is genuinely
+           on its way — confirmed.html reads both and must not claim an email
+           it did not send. Access never depends on this succeeding. */
+        M.handOff(email, "", posted);
+        location.href = "confirmed.html";
+      };
+
+      if (tooFast) { done(false); return; }
+
+      /* consent is deliberately omitted, not false: this form has no
+         marketing tick, and writing "no" from a form that never asked would
+         revoke a "yes" the same person gave on the invite form. */
+      M.postSignup({ email: email }).then(function (ok) {
+        M.track(ok ? "hero-signup" : "hero-signup-failed", "Landing signup");
+        done(ok);
+      });
+    });
+  }
+
+  wireSignup(document.getElementById("hero-form"));
+  wireSignup(document.getElementById("hero-form-foot"));
 })();

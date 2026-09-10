@@ -68,12 +68,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div>
       <h1>Like having a friend who&rsquo;s brilliant at finding flights.</h1>
       <p class="lede" style="margin-bottom:28px">She watches your route twice a day for months, remembers every price she&rsquo;s ever seen, and messages you only when it&rsquo;s worth acting on.</p>
-      <form class="signup" action="invite.html" method="get">
+      <!-- action/method are the no-JS fallback and must stay: without them a
+           visitor with scripts off loses the form entirely. app.js intercepts
+           the submit and posts the address HERE rather than carrying it to
+           invite.html in a query string, which is what it used to do — that
+           meant nothing was captured until the second page, so everyone who
+           hesitated there was lost with no address to follow up. -->
+      <form class="signup" id="hero-form" action="invite.html" method="get">
         <input class="input" type="email" name="email" required placeholder="you@example.com" aria-label="Email address">
-        <button class="btn" type="submit">Continue</button>
+        <button class="btn" type="submit">Get my link to Maria</button>
       </form>
-      <p class="note" style="margin-top:14px">Free while she&rsquo;s in beta. Works in Telegram &mdash; 30 seconds to install.</p>
-      <p class="note" style="margin-top:10px"><a href="https://t.me/AskMariaTravelBot">Already talking to Maria? Open Telegram</a></p>
+      <!-- This form has no marketing tick, so the copy must not imply one.
+           It promises exactly what the POST does: the link, and nothing else.
+           The opt-in for deals lives on invite.html, which this fast path
+           deliberately skips. -->
+      <p class="note" style="margin-top:12px">Free while she&rsquo;s in beta. We&rsquo;ll email you the link and nothing else &mdash; unsubscribe in one click. <a href="privacy.html">Privacy notice</a>.</p>
+      <!-- The bot is the product and Telegram is the whole reason it is
+           low-friction, so there has to be a door that is not an email form.
+           The old link here read "Already talking to Maria?", which tells a
+           new visitor it is not for them. -->
+      <p style="margin-top:18px"><a class="btn btn--ghost" href="https://t.me/AskMariaTravelBot" data-tg="hero-skip">Skip the email &mdash; open Telegram</a></p>
     </div>
     <div class="chat">
       <div class="chat__head">
@@ -95,9 +109,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <section class="stats">
   <div class="wrap stats__grid" style="padding-left:28px;padding-right:28px">
-    <div><div class="stat__n" data-stat="prices">2,796</div><div class="stat__l">prices recorded and kept</div></div>
-    <div><div class="stat__n" data-stat="routes">130</div><div class="stat__l">routes under watch</div></div>
-    <div><div class="stat__n" data-stat="alerts">831</div><div class="stat__l">alerts sent when it mattered</div></div>
+    <div><div class="stat__n" data-stat="prices">2,820</div><div class="stat__l">prices recorded and kept</div></div>
+    <div><div class="stat__n" data-stat="routes">137</div><div class="stat__l">routes under watch</div></div>
+    <div><div class="stat__n" data-stat="alerts">832</div><div class="stat__l">alerts sent when it mattered</div></div>
     <div><div class="stat__n" data-stat="since">2 May</div><div class="stat__l">watching without a gap since</div></div>
   </div>
 </section>
@@ -175,6 +189,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
            mentioned in a sentence underneath might as well not be mentioned. -->
       <ul class="flags" data-parsed-flags hidden></ul>
       <p class="parsed__note" data-parsed="note">Start typing and she&rsquo;ll pull the route, the dates and your price out of it.</p>
+      <!-- Peak intent is right here: someone who has just watched Maria read
+           their own trip back to them. Until 2026-09-10 this panel was a dead
+           end — no button, nowhere to go — and they had to scroll back up to
+           a generic email field, which threw away the one thing the demo had
+           just earned. The link carries the text they actually typed. -->
+      <div class="parsed__go" data-demo-go hidden>
+        <a class="btn btn--block" href="https://t.me/AskMariaTravelBot" data-tg="demo" data-demo-tg>Start this watch in Telegram &rarr;</a>
+        <button class="parsed__alt" type="button" data-demo-email>Email me the link instead</button>
+      </div>
     </div>
     <div class="try__examples">
       <p class="try__hint">Not sure what to type? Tap one:</p>
@@ -196,12 +219,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <section class="wrap section">
   <div class="panel panel--cta">
     <h2 style="font-size:clamp(28px,3.6vw,40px);margin-bottom:22px">Tell her where you&rsquo;d rather be.</h2>
-    <form class="signup" action="invite.html" method="get" style="margin:0 auto;justify-content:center">
+    <form class="signup" id="hero-form-foot" action="invite.html" method="get" style="margin:0 auto;justify-content:center">
       <input class="input" type="email" name="email" required placeholder="you@example.com" aria-label="Email address">
-      <button class="btn" type="submit">Continue</button>
+      <button class="btn" type="submit">Get my link to Maria</button>
     </form>
-    <p class="note" style="margin-top:14px;color:#5C4A3E">One field, no commitment. She hands you the link straight away.</p>
-    <p class="note" style="margin-top:10px"><a href="https://t.me/AskMariaTravelBot">Already talking to Maria? Open Telegram</a></p>
+    <p class="note" style="margin-top:14px;color:#5C4A3E">One field, no commitment. She hands you the link straight away &mdash; we email it too, and nothing else.</p>
+    <p style="margin-top:16px"><a class="btn btn--ghost" href="https://t.me/AskMariaTravelBot" data-tg="foot-skip">Skip the email &mdash; open Telegram</a></p>
   </div>
 </section>
 
@@ -225,6 +248,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <p style="color:var(--ink-4)">&copy; 2026 Ask Maria &middot; Telegram: <a href="https://t.me/AskMariaTravelBot">@AskMariaTravelBot</a></p></div>
 </footer>
 <script src="analytics.js"></script>
+<script src="maria-core.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
