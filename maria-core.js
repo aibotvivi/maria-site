@@ -35,8 +35,57 @@
 
   var TELEGRAM_URL    = "https://t.me/AskMariaTravelBot";
 
+  /* ── route packing ───────────────────────────────────────────────────────
+     Telegram allows 64 characters in a start payload and base64 costs 4/3, so
+     only ~45 plain characters survive. Measured 2026-09-15 on nine realistic
+     demo-box inputs: FIVE were truncated, including this site's own
+     placeholder example — the first sentence a new user read showed them
+     their own words visibly mangled.
+
+     Deflate does not help (72 -> 75 characters on the placeholder, measured);
+     on strings this short its overhead exceeds the redundancy it removes.
+     The vocabulary is what helps: " to ", "under ", month names. One byte each.
+
+     A token byte is 0x80|index, which collides with UTF-8 continuation bytes,
+     so any literal byte >= 0x7F is escaped with a leading 0x7F. CJK therefore
+     costs six bytes a character rather than three, and packing can come out
+     LARGER than plain text — so this returns whichever is smaller and marks
+     the choice with a leading version byte. No marker means plain UTF-8, which
+     is also every link minted before today.
+
+     ROUTE_TOKENS is generated from the same source as signup.py's copy and
+     tests/test_payload_parity.py fails if the two drift. Do not edit by hand. */
+  var ROUTE_TOKENS = ["first two weeks of ", "second half of ", "school holidays", "beginning of ", "last two weeks of ", "for the lot", "the cheapest", "somewhere ", "September", "return flight", "half term", "Christmas", "New Year", "February", "November", "December", "anywhere", "weekend", "nonstop", "one way", "January", "October", "August", "adults", "direct", "nights", "flight", "people", "Easter", "summer", "winter", "spring", "autumn", "cheap", "under ", "March", "April", "June", "July", "each", "kids", "adult", "month", "sunny", "warm", "week", "days", "from ", "and ", "May", " to ", " or ", " in ", " on ", " a "];
+  var PACK_MARK = 0x01, ESCAPE = 0x7F;
+
+  function packRoute(text) {
+    var out = [PACK_MARK], i = 0, enc = new TextEncoder();
+    while (i < text.length) {
+      var hit = -1;
+      for (var k = 0; k < ROUTE_TOKENS.length; k++) {
+        if (text.startsWith(ROUTE_TOKENS[k], i)) { hit = k; break; }
+      }
+      if (hit >= 0) { out.push(0x80 | hit); i += ROUTE_TOKENS[hit].length; }
+      else {
+        // Code POINT, not code unit: an astral character is two units and
+        // must be encoded whole or its surrogates arrive broken.
+        var cp = String.fromCodePoint(text.codePointAt(i));
+        enc.encode(cp).forEach(function (b) {
+          if (b >= ESCAPE) out.push(ESCAPE);
+          out.push(b);
+        });
+        i += cp.length;
+      }
+    }
+    var plain = enc.encode(text);
+    return out.length < plain.length ? new Uint8Array(out) : plain;
+  }
+
   function b64url(s) {
-    var bytes = new TextEncoder().encode(s), bin = "";
+    // Packs first. Every caller passes a route string, and the packing must
+    // happen on both the fits() probe and the emitted body or the two
+    // disagree about what fits.
+    var bytes = packRoute(s), bin = "";
     bytes.forEach(function (b) { bin += String.fromCharCode(b); });
     return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
   }
